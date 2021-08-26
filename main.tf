@@ -147,3 +147,25 @@ resource "vault_pki_secret_backend_role" "prod-docker-app-servers" {
   require_cn         = true
 }
 
+//transit secret engine
+resource "vault_mount" "encryption-as-a-service" {
+  path                      = "EaaS"
+  type                      = "transit"
+  description               = "Encryption/Decryption as a Service for HashiCorp SE"
+  default_lease_ttl_seconds = 3600
+  max_lease_ttl_seconds     = 86400
+}
+resource "vault_transit_secret_backend_key" "hashi-encryption-key" {
+  backend                = vault_mount.encryption-as-a-service.path
+  name                   = "hashi-encryption-key"
+  deletion_allowed       = true
+  exportable             = false
+  allow_plaintext_backup = true
+}
+//Audit device
+resource "vault_audit" "auditlog" {
+  type = "file"
+  options = {
+    file_path = "/tmp/vault_audit.log"
+  }
+}
