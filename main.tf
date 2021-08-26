@@ -162,4 +162,10 @@ resource "vault_transit_secret_backend_key" "hashi-encryption-key" {
   exportable             = false
   allow_plaintext_backup = true
 }
-
+//Audit device
+resource "vault_audit" "auditlog" {
+  type = "file"
+  options = {
+    file_path = "/tmp/vault_audit.log"
+  }
+}
