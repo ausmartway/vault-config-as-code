@@ -13,6 +13,20 @@ resource "vault_policy" "super-user" {
  EOF
 }
 
+
+//aws auth method
+
+resource "vault_auth_backend" "aws" {
+  type = "aws"
+  path = "aws"
+}
+
+resource "vault_aws_auth_backend_client" "aws_client" {
+  backend    = vault_auth_backend.aws.path
+  access_key = ""
+  secret_key = ""
+}
+
 // //pki root CA secret engine
 resource "vault_mount" "pki_root" {
   path                      = "pki_root"
@@ -162,6 +176,7 @@ resource "vault_transit_secret_backend_key" "hashi-encryption-key" {
   exportable             = false
   allow_plaintext_backup = true
 }
+
 //Audit device
 resource "vault_audit" "auditlog" {
   type = "file"
