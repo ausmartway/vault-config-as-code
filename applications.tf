@@ -9,6 +9,7 @@ locals {
 
 module "applications" {
   source  = "github.com/ausmartway/terraform-specialcustomer-vault-app-module"
+  version = "0.3.1"
   for_each = local.inputmap
   appname = each.value.appid
   enviroments=each.value.enviroments
