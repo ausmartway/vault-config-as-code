@@ -1,0 +1,7 @@
+{
+    "appid":"APP00002",
+    "name":"mysecondapplication",
+    "contact":"yulei@hashicorp.com",
+    "enviroments":[
+        "production","prod-support"]
+}
