@@ -8,7 +8,7 @@ locals {
 
 resource "vault_pki_secret_backend_role" "role" {
     for_each = local.inputpkirolemap
-  backend         = each.value.backendpath
+  backend         = each.value.backend
   name            = each.value.name
   ttl             = each.value.ttl
   max_ttl         = each.value.maxttl
