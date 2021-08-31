@@ -32,9 +32,10 @@ resource "vault_aws_auth_backend_role" "test-role" {
   backend                         = vault_auth_backend.aws.path
   role                            = "test-role"
   auth_type                       = "iam"
+  bound_account_ids               = ["123456789012"]
   token_ttl                       = 600
   token_max_ttl                   = 1200
-  token_policies                  = ["default", "dev", "prod"]
+  token_policies                  = ["default", "super-user"]
 }
 // //pki root CA secret engine
 resource "vault_mount" "pki_root" {
