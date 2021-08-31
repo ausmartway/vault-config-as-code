@@ -1,6 +1,6 @@
 locals {
   # Take a directory of JSON files, read each one and bring them in to Terraform's native data set
-  inputpkirolevars = [ for f in fileset(path.module, "pkiroles/[pkirole]*.json") : jsondecode(file(f)) ]
+  inputpkirolevars = [ for f in fileset(path.module, "pkiroles/{pkirole}*.json") : jsondecode(file(f)) ]
   # Take that data set and format it so that it can be used with the for_each command by converting it to a map where each top level key is a unique identifier.
   # In this case I am using the name key from my example JSON files
   inputpkirolemap = {for pkirole in toset(local.inputpkirolevars): pkirole.name => pkirole}
