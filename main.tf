@@ -103,6 +103,13 @@ resource "vault_transit_secret_backend_key" "hashi-encryption-key" {
   allow_plaintext_backup = true
 }
 
+//aws secrets engine
+resource "vault_aws_secret_backend" "aws" {
+  description = "AWS secrets engine"
+  region      = "ap-southeast-2"
+}
+
+
 //Audit device
 resource "vault_audit" "auditlog" {
   type = "file"
