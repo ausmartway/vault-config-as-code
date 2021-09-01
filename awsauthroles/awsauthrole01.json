@@ -9,7 +9,7 @@
     "bound_subnet_ids":[],
     "bound_vpc_ids":[],
     "inferred_entity_type":"ec2_instance",
-    "inferred_region":"ap-southeast-2",
+    "inferred_aws_region":"ap-southeast-2",
     "token_ttl":3600,
     "token_max_ttl":36000,
     "token_policies":["default"]
