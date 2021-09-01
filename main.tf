@@ -37,7 +37,7 @@ resource "vault_aws_auth_backend_role" "test-role" {
 inferred_aws_region  = "ap-southeast-2"
   token_ttl                       = 600
   token_max_ttl                   = 1200
-  token_policies                  = ["default", "super-user"]
+  token_policies                  = ["default"]
 }
 // //pki root CA secret engine
 resource "vault_mount" "pki_root" {
