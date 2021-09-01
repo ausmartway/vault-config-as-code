@@ -85,81 +85,81 @@ resource "vault_pki_secret_backend_config_urls" "config_urls_int" {
   issuing_certificates    = ["${var.vault_url}/v1/${vault_mount.pki_intermediate.path}/ca"]
   crl_distribution_points = ["${var.vault_url}/v1/${vault_mount.pki_intermediate.path}/crl"]
 }
-// a few PKI roles that applications can use
-resource "vault_pki_secret_backend_role" "dev-vm-app-servers" {
-  backend         = vault_mount.pki_intermediate.path
-  name            = "dev-vm-app-servers"
-  ttl             = 3600 * 24 * 31 * 1 //1 Months
-  max_ttl         = 3600 * 24 * 31 * 2 //2 Months
-  allow_localhost = false
-  allowed_domains = ["dev.hashicorp.demo"]
-  key_usage = [
-    "DigitalSignature",
-    "KeyAgreement",
-    "KeyEncipherment"
-  ]
-  allow_bare_domains = false
-  allow_subdomains   = true
-  allow_any_name     = false
-  allow_ip_sans      = false
-  require_cn         = true
-}
+// // a few PKI roles that applications can use
+// resource "vault_pki_secret_backend_role" "dev-vm-app-servers" {
+//   backend         = vault_mount.pki_intermediate.path
+//   name            = "dev-vm-app-servers"
+//   ttl             = 3600 * 24 * 31 * 1 //1 Months
+//   max_ttl         = 3600 * 24 * 31 * 2 //2 Months
+//   allow_localhost = false
+//   allowed_domains = ["dev.hashicorp.demo"]
+//   key_usage = [
+//     "DigitalSignature",
+//     "KeyAgreement",
+//     "KeyEncipherment"
+//   ]
+//   allow_bare_domains = false
+//   allow_subdomains   = true
+//   allow_any_name     = false
+//   allow_ip_sans      = false
+//   require_cn         = true
+// }
 
-resource "vault_pki_secret_backend_role" "dev-docker-app-servers" {
-  backend         = vault_mount.pki_intermediate.path
-  name            = "dev-docker-app-servers"
-  ttl             = 3600 * 24 * 3 //3 days
-  max_ttl         = 3600 * 24 * 7 //7 days
-  allow_localhost = false
-  allowed_domains = ["dev.hashicorp.demo"]
-  key_usage = [
-    "DigitalSignature",
-    "KeyAgreement",
-    "KeyEncipherment"
-  ]
-  allow_bare_domains = false
-  allow_subdomains   = true
-  allow_any_name     = false
-  allow_ip_sans      = false
-  require_cn         = true
-}
-resource "vault_pki_secret_backend_role" "prod-vm-app-servers" {
-  backend         = vault_mount.pki_intermediate.path
-  name            = "prod-vm-app-servers"
-  ttl             = 3600 * 24 * 31 * 1 //6 Months
-  max_ttl         = 3600 * 24 * 31 * 2 //12 Months
-  allow_localhost = false
-  allowed_domains = ["prod.hashicorp.demo"]
-  key_usage = [
-    "DigitalSignature",
-    "KeyAgreement",
-    "KeyEncipherment"
-  ]
-  allow_bare_domains = false
-  allow_subdomains   = true
-  allow_any_name     = false
-  allow_ip_sans      = false
-  require_cn         = true
-}
+// resource "vault_pki_secret_backend_role" "dev-docker-app-servers" {
+//   backend         = vault_mount.pki_intermediate.path
+//   name            = "dev-docker-app-servers"
+//   ttl             = 3600 * 24 * 3 //3 days
+//   max_ttl         = 3600 * 24 * 7 //7 days
+//   allow_localhost = false
+//   allowed_domains = ["dev.hashicorp.demo"]
+//   key_usage = [
+//     "DigitalSignature",
+//     "KeyAgreement",
+//     "KeyEncipherment"
+//   ]
+//   allow_bare_domains = false
+//   allow_subdomains   = true
+//   allow_any_name     = false
+//   allow_ip_sans      = false
+//   require_cn         = true
+// }
+// resource "vault_pki_secret_backend_role" "prod-vm-app-servers" {
+//   backend         = vault_mount.pki_intermediate.path
+//   name            = "prod-vm-app-servers"
+//   ttl             = 3600 * 24 * 31 * 1 //6 Months
+//   max_ttl         = 3600 * 24 * 31 * 2 //12 Months
+//   allow_localhost = false
+//   allowed_domains = ["prod.hashicorp.demo"]
+//   key_usage = [
+//     "DigitalSignature",
+//     "KeyAgreement",
+//     "KeyEncipherment"
+//   ]
+//   allow_bare_domains = false
+//   allow_subdomains   = true
+//   allow_any_name     = false
+//   allow_ip_sans      = false
+//   require_cn         = true
+// }
 
-resource "vault_pki_secret_backend_role" "prod-docker-app-servers" {
-  backend         = vault_mount.pki_intermediate.path
-  name            = "prod-docker-app-servers"
-  ttl             = 3600 * 24 * 7 * 2 //2 weeks
-  max_ttl         = 3600 * 24 * 7 * 4 //4 weeks
-  allow_localhost = false
-  allowed_domains = ["prod.hashicorp.demo"]
-  key_usage = [
-    "DigitalSignature",
-    "KeyAgreement",
-    "KeyEncipherment"
-  ]
-  allow_bare_domains = false
-  allow_subdomains   = true
-  allow_any_name     = false
-  allow_ip_sans      = false
-  require_cn         = true
-}
+// resource "vault_pki_secret_backend_role" "prod-docker-app-servers" {
+//   backend         = vault_mount.pki_intermediate.path
+//   name            = "prod-docker-app-servers"
+//   ttl             = 3600 * 24 * 7 * 2 //2 weeks
+//   max_ttl         = 3600 * 24 * 7 * 4 //4 weeks
+//   allow_localhost = false
+//   allowed_domains = ["prod.hashicorp.demo"]
+//   key_usage = [
+//     "DigitalSignature",
+//     "KeyAgreement",
+//     "KeyEncipherment"
+//   ]
+//   allow_bare_domains = false
+//   allow_subdomains   = true
+//   allow_any_name     = false
+//   allow_ip_sans      = false
+//   require_cn         = true
+// }
 
 //transit secret engine
 resource "vault_mount" "encryption-as-a-service" {
