@@ -7,9 +7,9 @@ locals {
   inputnamespacemap = { for namespace in toset(local.inputnamespacevars) : namespace.name => namespace }
 }
 
-module "vault_namespace_example" {
-  source   = "ausmartway/terraform-vault-namespace"
-  version  = "0.0.2"
+module "vault_namespace" {
+  source   = "ausmartway/namespace/vault"
+  version  = "0.0.3"
   for_each = local.inputnamespacemap
   name     = each.value.name
 } 
