@@ -111,8 +111,8 @@ resource "vault_aws_secret_backend" "aws" {
 
 
 resource "vault_aws_secret_backend_role" "iam_manager" {
-  backend = vault_aws_secret_backend.aws.path
-  name    = "iam_manager"
+  backend         = vault_aws_secret_backend.aws.path
+  name            = "iam_manager"
   credential_type = "iam_user"
 
   policy_document = <<EOT
@@ -131,8 +131,8 @@ EOT
 
 
 resource "vault_aws_secret_backend_role" "s3_manager" {
-  backend = vault_aws_secret_backend.aws.path
-  name    = "s3_manager"
+  backend         = vault_aws_secret_backend.aws.path
+  name            = "s3_manager"
   credential_type = "iam_user"
 
   policy_document = <<EOT
