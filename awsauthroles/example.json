@@ -1,5 +1,5 @@
 {
-    "name":"test-role",
+    "role":"test-role",
     "backend":"aws",
     "bound_account_ids":["711129375688"],
     "bound_ec2_instance_ids":[],
