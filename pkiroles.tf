@@ -1,8 +1,8 @@
 locals {
-  # Take a directory of JSON files, read each one and bring them in to Terraform's native data set
-  inputpkirolevars = [for f in fileset(path.module, "pkiroles/{pkirole}*.json") : jsondecode(file(f))]
+  # Take a directory of YAML files, read each one that matches naming pattern and bring them in to Terraform's native data set
+  inputpkirolevars = [for f in fileset(path.module, "pkiroles/{pkirole}*.yaml") : yamldecode(file(f))]
   # Take that data set and format it so that it can be used with the for_each command by converting it to a map where each top level key is a unique identifier.
-  # In this case I am using the name key from my example JSON files
+  # In this case I am using the name key from my example YAML files
   inputpkirolemap = { for pkirole in toset(local.inputpkirolevars) : pkirole.name => pkirole }
 }
 
