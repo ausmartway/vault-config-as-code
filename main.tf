@@ -44,8 +44,7 @@ resource "vault_azure_auth_backend_config" "azure_auth_config" {
 resource "vault_azure_auth_backend_role" "azurerole" {
   backend                         = vault_auth_backend.azure.path
   role                            = "test-role"
-  bound_subscription_ids          = ["11111111-2222-3333-4444-555555555555"]
-  bound_resource_groups           = ["123456789012"]
+  bound_subscription_ids          = [var.azure_subscription_id]
   token_ttl                       = 300
   token_max_ttl                   = 600
   token_policies                  = []
