@@ -27,6 +27,20 @@ resource "vault_aws_auth_backend_client" "aws_client" {
   secret_key = ""
 }
 
+//azure auth method
+resource "vault_auth_backend" "azure" {
+  type = "azure"
+  path = "azure"
+}
+
+resource "vault_azure_auth_backend_config" "azure_auth_config" {
+  backend=vault_auth_backend.azure.path
+  tenant_id     = var.azure_tanent_id
+  client_id     = var.azure_client_id
+  client_secret = var.azure_client_secret
+  resource      = "https://vault.hashicorp.com"
+
+}
 // //pki root CA secret engine
 resource "vault_mount" "pki_root" {
   path                      = "pki_root"
