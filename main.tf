@@ -39,8 +39,18 @@ resource "vault_azure_auth_backend_config" "azure_auth_config" {
   client_id     = var.azure_client_id
   client_secret = var.azure_client_secret
   resource      = "https://vault.hashicorp.com"
-
 }
+
+resource "vault_azure_auth_backend_role" "azurerole" {
+  backend                         = vault_auth_backend.azure.path
+  role                            = "test-role"
+  bound_subscription_ids          = [var.azure_subscription_id]
+  token_ttl                       = 300
+  token_max_ttl                   = 600
+  token_policies                  = []
+}
+
+
 // //pki root CA secret engine
 resource "vault_mount" "pki_root" {
   path                      = "pki_root"
