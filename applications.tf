@@ -9,7 +9,7 @@ locals {
 
 module "applications" {
   source      = "ausmartway/kv-for-application/vault"
-  version     = "0.3.1"
+  version     = "0.4.0"
   for_each    = local.inputappmap
   appname     = each.value.appid
   enviroments = each.value.enviroments

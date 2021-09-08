@@ -56,22 +56,26 @@ resource "vault_auth_backend" "approle" {
   type = "approle"
 }
 
-resource "vault_approle_auth_backend_role" "example" {
-  backend   = vault_auth_backend.approle.path
-  role_name = "test-role"
-  policies  = ["default", "dev", "prod"]
-}
+# Approle should only be used when there is no better/native authentication, eg, aws/gcp/azure/k8s/ldap.
+# The approle roles in this repository will be created by the application module, for each application and enviroments. 
+# Below codes are just examples if you want to create approle roles outside of the application module.
+#
+# resource "vault_approle_auth_backend_role" "example" {
+#   backend   = vault_auth_backend.approle.path
+#   role_name = "test-role"
+#   policies  = ["default", "dev", "prod"]
+# }
 
-resource "vault_approle_auth_backend_role_secret_id" "id" {
-  backend   = vault_auth_backend.approle.path
-  role_name = vault_approle_auth_backend_role.example.role_name
-}
+# resource "vault_approle_auth_backend_role_secret_id" "id" {
+#   backend   = vault_auth_backend.approle.path
+#   role_name = vault_approle_auth_backend_role.example.role_name
+# }
 
-resource "vault_approle_auth_backend_login" "login" {
-  backend   = vault_auth_backend.approle.path
-  role_id   = vault_approle_auth_backend_role.example.role_id
-  secret_id = vault_approle_auth_backend_role_secret_id.id.secret_id
-}
+# resource "vault_approle_auth_backend_login" "login" {
+#   backend   = vault_auth_backend.approle.path
+#   role_id   = vault_approle_auth_backend_role.example.role_id
+#   secret_id = vault_approle_auth_backend_role_secret_id.id.secret_id
+# }
 
 
 // //pki root CA secret engine
@@ -104,8 +108,8 @@ resource "vault_mount" "pki_intermediate" {
   depends_on                = [vault_pki_secret_backend_root_cert.self-signing-cert]
   path                      = "pki_intermediate"
   type                      = "pki"
-  default_lease_ttl_seconds = 2678400  //31 days
-  max_lease_ttl_seconds     = 24819200 //13 Months
+  default_lease_ttl_seconds = 2678400  //Default expiry of the certificates signed by this CA - 31 days
+  max_lease_ttl_seconds     = 24819200 //Max expiry of the certificates signed by this CA - 13 Months
 }
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
   depends_on  = [vault_pki_secret_backend_root_cert.self-signing-cert]
@@ -189,6 +193,26 @@ resource "vault_aws_secret_backend_role" "s3_manager" {
     {
       "Effect": "Allow",
       "Action": "s3:*",
+      "Resource": "*"
+    }
+  ]
+}
+EOT
+}
+
+
+resource "vault_aws_secret_backend_role" "cicdpipeline" {
+  backend         = vault_aws_secret_backend.aws.path
+  name            = "cicdpipeline"
+  credential_type = "iam_user"
+
+  policy_document = <<EOT
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "*",
       "Resource": "*"
     }
   ]
