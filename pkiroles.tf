@@ -24,4 +24,7 @@ resource "vault_pki_secret_backend_role" "role" {
   allow_any_name     = false
   allow_ip_sans      = false
   require_cn         = true
+  depends_on = [
+    vault_mount.pki_intermediate
+  ]
 }
