@@ -7,7 +7,7 @@ locals {
 }
 
 
-resource "vault_aws_auth_backend_role" "test-role" {
+resource "vault_aws_auth_backend_role" "aws-role" {
   for_each                        = local.inputawsauthrolemap
   role                            = each.value.role
   backend                         = each.value.backend
@@ -24,4 +24,7 @@ resource "vault_aws_auth_backend_role" "test-role" {
   token_ttl                       = each.value.token_ttl
   token_max_ttl                   = each.value.token_max_ttl
   token_policies                  = each.value.token_policies
+  depends_on = [
+    vault_auth_backend.aws
+  ]
 }

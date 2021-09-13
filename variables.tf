@@ -4,8 +4,8 @@ variable "vault_url" {
 }
 
 variable "azure_tanent_id" {
-  type = string
-  description="Azure tanent id"
+  type        = string
+  description = "Azure tanent id"
 }
 
 variable "azure_client_id" {

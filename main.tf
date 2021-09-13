@@ -34,7 +34,7 @@ resource "vault_auth_backend" "azure" {
 }
 
 resource "vault_azure_auth_backend_config" "azure_auth_config" {
-  backend=vault_auth_backend.azure.path
+  backend       = vault_auth_backend.azure.path
   tenant_id     = var.azure_tanent_id
   client_id     = var.azure_client_id
   client_secret = var.azure_client_secret
@@ -42,12 +42,12 @@ resource "vault_azure_auth_backend_config" "azure_auth_config" {
 }
 
 resource "vault_azure_auth_backend_role" "azurerole" {
-  backend                         = vault_auth_backend.azure.path
-  role                            = "test-role"
-  bound_subscription_ids          = [var.azure_subscription_id]
-  token_ttl                       = 300
-  token_max_ttl                   = 600
-  token_policies                  = []
+  backend                = vault_auth_backend.azure.path
+  role                   = "test-role"
+  bound_subscription_ids = [var.azure_subscription_id]
+  token_ttl              = 300
+  token_max_ttl          = 600
+  token_policies         = []
 }
 
 //Approle auth method

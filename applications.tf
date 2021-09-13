@@ -8,13 +8,13 @@ locals {
 
 
 module "applications" {
-  source      = "ausmartway/kv-for-application/vault"
-  version     = "0.4.1"
-  for_each    = local.inputappmap
-  appname     = each.value.appid
+  source         = "ausmartway/kv-for-application/vault"
+  version        = "0.4.1"
+  for_each       = local.inputappmap
+  appname        = each.value.appid
   enable_approle = each.value.enable_approle
-  enviroments = each.value.enviroments
-  depends_on  = [
-     vault_auth_backend.approle
+  enviroments    = each.value.enviroments
+  depends_on = [
+    vault_auth_backend.approle
   ]
 }
