@@ -60,17 +60,17 @@ resource "vault_azure_secret_backend" "azure" {
   environment     = "AzurePublicCloud"
 }
 
-resource "vault_azure_secret_backend_role" "generated_role" {
-  backend                     = vault_azure_secret_backend.azure.path
-  role                        = "generated_role"
-  ttl                         = 300
-  max_ttl                     = 600
+# resource "vault_azure_secret_backend_role" "generated_role" {
+#   backend                     = vault_azure_secret_backend.azure.path
+#   role                        = "generated_role"
+#   ttl                         = 300
+#   max_ttl                     = 600
 
-  azure_roles {
-    role_name = "Reader"
-    scope =  "/subscriptions/${var.subscription_id}/resourceGroups/azure-vault-group"
-  }
-}
+#   azure_roles {
+#     role_name = "Reader"
+#     scope =  "/subscriptions/${var.subscription_id}/resourceGroups/azure-vault-group"
+#   }
+# }
 
 
 //Approle auth method
