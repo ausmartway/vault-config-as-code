@@ -50,6 +50,29 @@ resource "vault_azure_auth_backend_role" "azurerole" {
   token_policies         = []
 }
 
+//azure secret engine
+
+resource "vault_azure_secret_backend" "azure" {
+  subscription_id = var.azure_subscription_id
+  tenant_id       = var.azure_tanent_id
+  client_id       = var.azure_client_id
+  client_secret   = var.azure_client_secret
+  environment     = "AzurePublicCloud"
+}
+
+# resource "vault_azure_secret_backend_role" "generated_role" {
+#   backend                     = vault_azure_secret_backend.azure.path
+#   role                        = "generated_role"
+#   ttl                         = 300
+#   max_ttl                     = 600
+
+#   azure_roles {
+#     role_name = "Reader"
+#     scope =  "/subscriptions/${var.subscription_id}/resourceGroups/azure-vault-group"
+#   }
+# }
+
+
 //Approle auth method
 
 resource "vault_auth_backend" "approle" {
@@ -156,10 +179,10 @@ resource "vault_transit_secret_backend_key" "hashi-encryption-key" {
 
 //aws secrets engine
 resource "vault_aws_secret_backend" "aws" {
-  description = "AWS secrets engine"
-  region      = "ap-southeast-2"
+  description               = "AWS secrets engine"
+  region                    = "ap-southeast-2"
   default_lease_ttl_seconds = 600
-  max_lease_ttl_seconds = 3600
+  max_lease_ttl_seconds     = 3600
 }
 
 
@@ -206,7 +229,7 @@ EOT
 resource "vault_aws_secret_backend_role" "cicdpipeline" {
   backend         = vault_aws_secret_backend.aws.path
   name            = "cicdpipeline"
-  credential_type = "iam_user"
+  credential_type = "federation_token"
 
   policy_document = <<EOT
 {
