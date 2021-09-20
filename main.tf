@@ -246,6 +246,26 @@ EOT
 }
 
 
+resource "vault_aws_secret_backend_role" "cicdpipelinests" {
+  backend         = vault_aws_secret_backend.aws.path
+  name            = "cicdpipelinests"
+  credential_type = "federation_token"
+
+  policy_document = <<EOT
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "*",
+      "Resource": "*"
+    }
+  ]
+}
+EOT
+}
+
+
 //Audit device
 resource "vault_audit" "auditlog" {
   type = "file"
