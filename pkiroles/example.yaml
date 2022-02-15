@@ -1,4 +1,4 @@
-name: demorole
+name: hashicorp.demo
 backend: pki
 ttl: 604800
 maxttl: 2419200
