@@ -1,7 +1,7 @@
 role: test-role
 backend: aws
 bound_account_ids:
-  - '711129375688'
+  - '057558422541'
 bound_ec2_instance_ids: []
 bound_iam_instance_profile_arns: []
 bound_iam_principal_arns: []
