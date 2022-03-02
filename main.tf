@@ -267,10 +267,10 @@ EOT
 }
 
 
-//Audit device
-resource "vault_audit" "auditlog" {
-  type = "file"
-  options = {
-    file_path = "/tmp/vault_audit.log"
-  }
-}
+# //Audit device
+# resource "vault_audit" "auditlog" {
+#   type = "file"
+#   options = {
+#     file_path = "/tmp/vault_audit.log"
+#   }
+# }
