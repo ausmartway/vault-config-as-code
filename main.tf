@@ -27,6 +27,11 @@ resource "vault_aws_auth_backend_client" "aws_client" {
   secret_key = ""
 }
 
+resource "vault_aws_auth_backend_sts_role" "sts_role" {
+  backend    = vault_auth_backend.aws.path
+  account_id = "711129375688"
+  sts_role   = "arn:aws:iam::711129375688:role/hcp-vault-auth"
+}
 # //azure auth method
 # resource "vault_auth_backend" "azure" {
 #   type = "azure"
