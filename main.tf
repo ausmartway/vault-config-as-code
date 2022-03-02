@@ -23,8 +23,8 @@ resource "vault_auth_backend" "aws" {
 
 resource "vault_aws_auth_backend_client" "aws_client" {
   backend    = vault_auth_backend.aws.path
-  access_key = ""
-  secret_key = ""
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
 }
 
 resource "vault_aws_auth_backend_sts_role" "sts_role" {

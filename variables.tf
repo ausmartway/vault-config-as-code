@@ -3,6 +3,13 @@ variable "vault_url" {
   default     = "http://vault.yulei.aws.hashidemos.io:8200/"
 }
 
+variable "aws_secret_key" {
+  description="aws_secret_key"
+}
+
+variable "aws_access_key" {
+  description="aws_access_key"
+}
 # variable "azure_tanent_id" {
 #   type        = string
 #   description = "Azure tanent id"
