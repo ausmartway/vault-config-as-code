@@ -12,6 +12,9 @@ resource "vault_aws_auth_backend_role" "aws-role" {
   role                            = each.value.role
   backend                         = each.value.backend
   auth_type                       = "iam"
+
+  # Enable below so that HCP can validate iam from other account.
+  
   resolve_aws_unique_ids = false
   bound_account_ids               = each.value.bound_account_ids
   bound_ec2_instance_ids          = each.value.bound_ec2_instance_ids
