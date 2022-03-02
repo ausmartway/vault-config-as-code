@@ -1,8 +1,0 @@
-appid: myfirstapplication
-name: myfirstapplication
-contact: yulei@hashicorp.com
-enable_approle: true
-enviroments:
-  - production
-  - dev
-  - test
