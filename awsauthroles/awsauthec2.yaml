@@ -13,4 +13,4 @@ inferred_aws_region: ap-southeast-2
 token_ttl: 3600
 token_max_ttl: 36000
 token_policies:
-  - default
+  - test-role-policy
