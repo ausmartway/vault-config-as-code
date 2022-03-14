@@ -1,4 +1,4 @@
-name: fastrole
+name: fast-pki
 backend: pki_intermediate
 ttl: 180
 maxttl: 2419200
