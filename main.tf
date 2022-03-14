@@ -27,38 +27,38 @@ resource "vault_aws_auth_backend_client" "aws_client" {
   secret_key = ""
 }
 
-//azure auth method
-resource "vault_auth_backend" "azure" {
-  type = "azure"
-  path = "azure"
-}
+# //azure auth method
+# resource "vault_auth_backend" "azure" {
+#   type = "azure"
+#   path = "azure"
+# }
 
-resource "vault_azure_auth_backend_config" "azure_auth_config" {
-  backend       = vault_auth_backend.azure.path
-  tenant_id     = var.azure_tanent_id
-  client_id     = var.azure_client_id
-  client_secret = var.azure_client_secret
-  resource      = "https://vault.hashicorp.com"
-}
+# resource "vault_azure_auth_backend_config" "azure_auth_config" {
+#   backend       = vault_auth_backend.azure.path
+#   tenant_id     = var.azure_tanent_id
+#   client_id     = var.azure_client_id
+#   client_secret = var.azure_client_secret
+#   resource      = "https://vault.hashicorp.com"
+# }
 
-resource "vault_azure_auth_backend_role" "azurerole" {
-  backend                = vault_auth_backend.azure.path
-  role                   = "test-role"
-  bound_subscription_ids = [var.azure_subscription_id]
-  token_ttl              = 300
-  token_max_ttl          = 600
-  token_policies         = []
-}
+# resource "vault_azure_auth_backend_role" "azurerole" {
+#   backend                = vault_auth_backend.azure.path
+#   role                   = "test-role"
+#   bound_subscription_ids = [var.azure_subscription_id]
+#   token_ttl              = 300
+#   token_max_ttl          = 600
+#   token_policies         = []
+# }
 
-//azure secret engine
+# //azure secret engine
 
-resource "vault_azure_secret_backend" "azure" {
-  subscription_id = var.azure_subscription_id
-  tenant_id       = var.azure_tanent_id
-  client_id       = var.azure_client_id
-  client_secret   = var.azure_client_secret
-  environment     = "AzurePublicCloud"
-}
+# resource "vault_azure_secret_backend" "azure" {
+#   subscription_id = var.azure_subscription_id
+#   tenant_id       = var.azure_tanent_id
+#   client_id       = var.azure_client_id
+#   client_secret   = var.azure_client_secret
+#   environment     = "AzurePublicCloud"
+# }
 
 # resource "vault_azure_secret_backend_role" "generated_role" {
 #   backend                     = vault_azure_secret_backend.azure.path
