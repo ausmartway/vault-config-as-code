@@ -6,5 +6,5 @@ contact: yulei@hashicorp.com
 policies:
   - superuser
 allowed_names:
-  - vault-client
-  - server1
+  - vault-client.machine-id.cba.demo
+  - server1.machine-id.cba.demo
