@@ -8,6 +8,7 @@ locals {
 
 resource "vault_cert_auth_backend_role" "authrole" {
   for_each       = local.inputpki-auth-role-map
+  certificate    = vault_pki_secret_backend_root_sign_intermediate.root.certificate
   backend        = each.value.backend
   name           = each.value.name
   ttl            = each.value.ttl
