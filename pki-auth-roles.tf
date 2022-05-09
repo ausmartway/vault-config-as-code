@@ -6,29 +6,6 @@ locals {
   inputpki-auth-role-map = { for pki-auth-role in toset(local.inputpki-auth-role-vars) : pki-auth-role.name => pki-auth-role }
 }
 
-resource "vault_pki_secret_backend_role" "role" {
-  for_each        = local.inputpki-auth-role-map
-  backend         = each.value.backend
-  name            = each.value.name
-  ttl             = each.value.ttl
-  max_ttl         = each.value.maxttl
-  allow_localhost = false
-  allowed_domains = each.value.allowed_domains
-  key_usage = [
-    "DigitalSignature",
-    "KeyAgreement",
-    "KeyEncipherment"
-  ]
-  allow_bare_domains = false
-  allow_subdomains   = true
-  allow_any_name     = false
-  allow_ip_sans      = false
-  require_cn         = true
-  depends_on = [
-    vault_mount.pki_intermediate
-  ]
-}
-
 resource "vault_cert_auth_backend_role" "authrole" {
   for_each       = local.inputpki-auth-role-map
   backend        = each.value.backend
