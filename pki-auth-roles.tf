@@ -11,8 +11,8 @@ resource "vault_cert_auth_backend_role" "authrole" {
   certificate    = vault_pki_secret_backend_root_sign_intermediate.root.certificate
   backend        = each.value.backend
   name           = each.value.name
-  ttl            = each.value.ttl
-  max_ttl        = each.value.maxttl
+  token_ttl      = each.value.ttl
+  token_max_ttl  = each.value.maxttl
   token_policies = [each.value.policies]
   allowed_names  = [each.value.allowed_names]
 }
