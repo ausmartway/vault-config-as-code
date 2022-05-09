@@ -16,3 +16,12 @@ resource "vault_cert_auth_backend_role" "authrole" {
   token_policies = each.value.policies
   allowed_names  = each.value.allowed_names
 }
+
+resource "vault_policy" "pki-self-renewal" {
+  name   = "pki-self-renewal"
+  policy = <<EOF
+ path "pki_intermediate/issue/machine-id" {
+   capabilities = ["update","list"]
+ }
+ EOF
+}
