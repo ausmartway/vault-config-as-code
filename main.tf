@@ -150,11 +150,13 @@ resource "vault_pki_secret_backend_root_sign_intermediate" "root" {
   ou                   = "APJ SE"
   organization         = "Hashicorp Demo Org"
 }
+
 resource "vault_pki_secret_backend_intermediate_set_signed" "intermediate" {
 depends_on = [vault_pki_secret_backend_config_urls.config_urls_int]
   backend     = vault_mount.pki_intermediate.path
   certificate = vault_pki_secret_backend_root_sign_intermediate.root.certificate
 }
+
 resource "vault_pki_secret_backend_config_urls" "config_urls_int" {
   backend                 = vault_mount.pki_intermediate.path
   issuing_certificates    = ["${var.vault_url}/v1/${vault_mount.pki_intermediate.path}/ca"]
