@@ -59,3 +59,19 @@ resource "vault_pki_secret_backend_config_urls" "config_urls_int" {
   issuing_certificates    = ["${var.vault_url}/v1/${vault_mount.pki_intermediate.path}/ca"]
   crl_distribution_points = ["${var.vault_url}/v1/${vault_mount.pki_intermediate.path}/crl"]
 }
+
+
+resource "vault_auth_backend" "cert" {
+    path = "cert"
+    type = "cert"
+}
+
+# resource "vault_cert_auth_backend_role" "cert" {
+#     name           = "foo"
+#     certificate    = file("/path/to/certs/ca-cert.pem")
+#     backend        = vault_auth_backend.cert.path
+#     allowed_names  = ["foo.example.org", "baz.example.org"]
+#     token_ttl      = 300
+#     token_max_ttl  = 600
+#     token_policies = ["foo"]
+# }
