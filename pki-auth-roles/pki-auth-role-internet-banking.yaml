@@ -1,0 +1,10 @@
+name: internet-banking
+backend: cert
+ttl: 604800
+maxttl: 2419200
+contact: yulei@hashicorp.com
+policies:
+  - pki-self-renewal
+  - ad-consumer
+allowed_names:
+  - internet-banking1.machine-id.cba.demo
