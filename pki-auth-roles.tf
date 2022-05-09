@@ -30,11 +30,11 @@ resource "vault_pki_secret_backend_role" "role" {
 }
 
 resource "vault_cert_auth_backend_role" "authrole" {
-    for_each = local.inputpki-auth-role-map
-    backend = each.value.backend
-    name = each.value.name
-    ttl             = each.value.ttl
-    max_ttl         = each.value.maxttl
-    token_policies  =  [each.value.policies]
-    allowed_names[each.value.allowed_names]
+  for_each       = local.inputpki-auth-role-map
+  backend        = each.value.backend
+  name           = each.value.name
+  ttl            = each.value.ttl
+  max_ttl        = each.value.maxttl
+  token_policies = [each.value.policies]
+  allowed_names  = [each.value.allowed_names]
 }

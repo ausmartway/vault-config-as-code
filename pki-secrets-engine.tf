@@ -49,7 +49,7 @@ resource "vault_pki_secret_backend_root_sign_intermediate" "root" {
 }
 
 resource "vault_pki_secret_backend_intermediate_set_signed" "intermediate" {
-depends_on = [vault_pki_secret_backend_config_urls.config_urls_int]
+  depends_on  = [vault_pki_secret_backend_config_urls.config_urls_int]
   backend     = vault_mount.pki_intermediate.path
   certificate = vault_pki_secret_backend_root_sign_intermediate.root.certificate
 }
@@ -62,8 +62,8 @@ resource "vault_pki_secret_backend_config_urls" "config_urls_int" {
 
 
 resource "vault_auth_backend" "cert" {
-    path = "cert"
-    type = "cert"
+  path = "cert"
+  type = "cert"
 }
 
 # resource "vault_cert_auth_backend_role" "cert" {
@@ -77,8 +77,8 @@ resource "vault_auth_backend" "cert" {
 # }
 
 resource "vault_pki_secret_backend_role" "vault-self" {
-  backend = vault_mount.pki_intermediate.path
-  name = "vault-self"
-  ttl = 94608000 #3 years
+  backend        = vault_mount.pki_intermediate.path
+  name           = "vault-self"
+  ttl            = 94608000 #3 years
   allow_any_name = true
 }
