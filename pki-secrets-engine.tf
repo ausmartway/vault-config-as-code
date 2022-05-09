@@ -75,3 +75,10 @@ resource "vault_auth_backend" "cert" {
 #     token_max_ttl  = 600
 #     token_policies = ["foo"]
 # }
+
+resource "vault_pki_secret_backend_role" "vault-self" {
+  backend = vault_mount.pki_intermediate.path
+  name = "vault-self"
+  ttl = 94608000 #3 years
+  allow_any_name = true
+}

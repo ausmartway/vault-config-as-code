@@ -28,3 +28,4 @@ resource "vault_pki_secret_backend_role" "role" {
     vault_mount.pki_intermediate
   ]
 }
+
