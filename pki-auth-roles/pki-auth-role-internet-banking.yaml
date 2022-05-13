@@ -8,3 +8,4 @@ policies:
   - ad-consumer
 allowed_names:
   - internet-banking1.machine-id.cba.demo
+  - vault-client.machine-id.cba.demo

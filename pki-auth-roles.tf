@@ -25,3 +25,12 @@ resource "vault_policy" "pki-self-renewal" {
  }
  EOF
 }
+
+resource "vault_policy" "trusted-orchestrator" {
+  name   = "trusted-orchestrator"
+  policy = <<EOF
+ path "pki_intermediate/issue/machine-id" {
+    capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+ }
+ EOF
+}
