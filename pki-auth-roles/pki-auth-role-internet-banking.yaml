@@ -6,6 +6,8 @@ contact: yulei@hashicorp.com
 policies:
   - pki-self-renewal
   - ad-consumer
+  - internet-banking-consumer
+  - internet-banking-admin
 allowed_names:
   - internet-banking1.machine-id.cba.demo
   - vault-client.machine-id.cba.demo
