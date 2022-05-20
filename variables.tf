@@ -3,6 +3,10 @@ variable "vault_url" {
   default     = "http://vault.yulei.aws.hashidemos.io:8200/"
 }
 
+variable "customername" {
+  description = "Name of the customer that this demo is built for"
+  default     = "VeryImportantCustomer"
+}
 
 # disable azure
 

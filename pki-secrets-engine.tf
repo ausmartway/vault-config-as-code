@@ -15,8 +15,8 @@ resource "vault_pki_secret_backend_root_cert" "self-signing-cert" {
   key_type             = "rsa"
   key_bits             = 4096
   exclude_cn_from_sans = true
-  ou                   = "APJ SE"
-  organization         = "Hashicorp Demo Org"
+  ou                   = "${customername} Orgnisation Unit"
+  organization         = "${customername} Demo Org"
 }
 resource "vault_pki_secret_backend_config_urls" "config_urls" {
   backend                 = vault_mount.pki_root.path
@@ -35,17 +35,17 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
   depends_on  = [vault_pki_secret_backend_root_cert.self-signing-cert]
   backend     = vault_mount.pki_intermediate.path
   type        = "internal"
-  common_name = "apj-ca.hashicorp.demo"
+  common_name = "ca.${customername}.hashicorp.demo"
 }
 resource "vault_pki_secret_backend_root_sign_intermediate" "root" {
   depends_on           = [vault_pki_secret_backend_root_cert.self-signing-cert]
   backend              = vault_mount.pki_root.path
   csr                  = vault_pki_secret_backend_intermediate_cert_request.intermediate.csr
   ttl                  = 3600 * 24 * 31 * 12 * 2 //2 Years
-  common_name          = "apj-ca.hashicorp.demo"
+  common_name          = "ca.${customername}.hashicorp.demo"
   exclude_cn_from_sans = true
-  ou                   = "APJ SE"
-  organization         = "Hashicorp Demo Org"
+  ou                   = "${customername} Orgnisation Unit"
+  organization         = "${customername} Demo Org"
 }
 
 resource "vault_pki_secret_backend_intermediate_set_signed" "intermediate" {

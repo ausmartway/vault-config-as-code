@@ -106,14 +106,14 @@ resource "vault_auth_backend" "approle" {
 resource "vault_mount" "encryption-as-a-service" {
   path                      = "EaaS"
   type                      = "transit"
-  description               = "Encryption/Decryption as a Service for HashiCorp SE"
+  description               = "Encryption/Decryption as a Service for ${customername}"
   default_lease_ttl_seconds = 3600
   max_lease_ttl_seconds     = 86400
 }
 
 resource "vault_transit_secret_backend_key" "hashi-encryption-key" {
   backend                = vault_mount.encryption-as-a-service.path
-  name                   = "hashi-encryption-key"
+  name                   = "${customername}-encryption-key"
   deletion_allowed       = true
   exportable             = false
   allow_plaintext_backup = true
