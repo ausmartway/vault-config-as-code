@@ -9,5 +9,5 @@ policies:
   - internet-banking-consumer
   - internet-banking-admin
 allowed_names:
-  - internet-banking1.machine-id.cba.demo
-  - vault-client.machine-id.cba.demo
+  - internet-banking1.machine-id.customer.demo
+  - vault-client.machine-id.customer.demo

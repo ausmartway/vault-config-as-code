@@ -8,6 +8,6 @@ policies:
   - super-user
   - ad-consumer
 allowed_names:
-  - vault-client.machine-id.cba.demo
-  - server1.machine-id.cba.demo
-  - server2.machine-id.cba.demo
+  - vault-client.machine-id.customer.demo
+  - server1.machine-id.customer.demo
+  - server2.machine-id.customer.demo

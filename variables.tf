@@ -5,7 +5,7 @@ variable "vault_url" {
 
 variable "customername" {
   description = "Name of the customer that this demo is built for"
-  default     = "VeryImportantCustomer"
+  default     = "customer"
 }
 
 # disable azure
