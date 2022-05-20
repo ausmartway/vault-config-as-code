@@ -35,8 +35,18 @@ resource "vault_policy" "trusted-orchestrator" {
  EOF
 }
 
+resource "vault_token_auth_backend_role" "trusted-orchestrator" {
+  role_name              = "trusted-orchestrator"
+  allowed_policies       = ["trusted-orchestrator"]
+  orphan                 = true
+  token_period           = "86400"
+  renewable              = true
+  token_explicit_max_ttl = "115200"
+  path_suffix            = "trusted-orchestrator"
+}
+
 resource "vault_token" "trusted-orchestrator" {
-  role_name = "app"
+  role_name = "trusted-orchestrator"
 
   policies = [vault_policy.trusted-orchestrator.name, "default"]
 
