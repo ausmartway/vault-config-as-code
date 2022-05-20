@@ -38,10 +38,10 @@ resource "vault_policy" "trusted-orchestrator" {
 resource "vault_token" "trusted-orchestrator" {
   role_name = "app"
 
-  policies = [vault_policy.trusted-orchestrator.name,"default"]
+  policies = [vault_policy.trusted-orchestrator.name, "default"]
 
   renewable = true
-  ttl = "728h"
+  ttl       = "728h"
 
   renew_min_lease = 43200
   renew_increment = 86400
