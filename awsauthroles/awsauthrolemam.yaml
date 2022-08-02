@@ -6,6 +6,7 @@ bound_account_ids:
 bound_ec2_instance_ids: []
 bound_iam_instance_profile_arns:
   - arn:aws:iam::711129375688:instance-profile/mam*
+  - arn:aws:iam::711129375688:instance-profile/cgm*
 bound_iam_principal_arns: []
 bound_regions: []
 bound_subnet_ids: []
