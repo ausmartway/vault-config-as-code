@@ -1,5 +1,5 @@
 ---
-role: mam-role
+role: mam_test_role
 backend: aws
 bound_account_ids:
   - '711129375688'
