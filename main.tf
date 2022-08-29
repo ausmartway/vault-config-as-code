@@ -2,6 +2,7 @@
 resource "vault_github_auth_backend" "hashicorp" {
   organization   = "hashicorp"
   token_policies = ["super-user"]
+  token_bound_cidrs = ["192.168.1.1/24","172.16.16.1/16"]
 }
 
 resource "vault_policy" "super-user" {
