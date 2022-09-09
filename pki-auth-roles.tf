@@ -14,7 +14,7 @@ resource "vault_cert_auth_backend_role" "authrole" {
   token_ttl      = each.value.ttl
   token_max_ttl  = each.value.maxttl
   token_policies = each.value.policies
-  allowed_names  = each.value.allowed_names
+  allowed_names  = each.value.allowed_machine_ids
 }
 
 resource "vault_policy" "pki-self-renewal" {
