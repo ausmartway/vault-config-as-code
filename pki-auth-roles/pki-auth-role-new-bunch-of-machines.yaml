@@ -7,7 +7,6 @@ policies:
   - pki-self-renewal
   - ad-consumer
   - mts-sec-consumer-prod
-  - default
 allowed_machine_ids:
   - internet-banking1.machine-id.customer.demo
   - vault-client.machine-id.customer.demo
