@@ -77,9 +77,9 @@ resource "vault_auth_backend" "cert" {
 # }
 
 resource "vault_pki_secret_backend_role" "vault-self" {
-  backend        = vault_mount.pki_intermediate.path
-  name           = "vault-self"
-  ttl            = 94608000 #3 years
+  backend = vault_mount.pki_intermediate.path
+  name    = "vault-self"
+  ttl     = 94608000 #3 years
   key_usage = [
     "DigitalSignature",
     "KeyAgreement",
