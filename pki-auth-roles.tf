@@ -59,7 +59,7 @@ resource "vault_token" "trusted-orchestrator" {
 
 output "trusted-orchestrator" {
   value = vault_token.trusted-orchestrator.client_token
-  sensitive=false
+  sensitive=true
 }
 
 resource "vault_egp_policy" "only-allow-machines-to-request-their-own-id" {
