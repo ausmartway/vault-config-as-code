@@ -78,7 +78,17 @@ if entity_is_trusted_orchestrator {
 } else {
   print("Your machine-id is:",identity.entity.aliases[0].name)
 }
-
+if trace {
+  if request is not undefined {
+    print("trace:Request:",request)
+  }
+  if token is not undefined {
+    print("trace:Token:",token)
+  }
+  if identity.entity is not undefined {
+    print("trace:identity.entity:",identity.entity)
+  }
+}
 print("You are not elidgiable to request machine-id:",request.data.common_name)
 
 main = rule {
