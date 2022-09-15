@@ -207,6 +207,73 @@ resource "vault_aws_secret_backend_role" "cicdpipelinests" {
 EOT
 }
 
+resource "vault_policy" "trusted-orchestrator" {
+  name   = "trusted-orchestrator"
+  policy = <<EOF
+ path "pki_intermediate/issue/machine-id" {
+    capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+ }
+ EOF
+}
+
+resource "vault_token_auth_backend_role" "trusted-orchestrator" {
+  role_name              = "trusted-orchestrator"
+  allowed_policies       = ["trusted-orchestrator"]
+  orphan                 = true
+  token_period           = "86400"
+  renewable              = true
+  token_explicit_max_ttl = "115200"
+  path_suffix            = "trusted-orchestrator"
+}
+
+resource "vault_token" "trusted-orchestrator" {
+  role_name    = "trusted-orchestrator"
+  display_name = "trusted-orchestrator"
+  policies     = [vault_policy.trusted-orchestrator.name, "default"]
+
+  renewable = true
+  ttl       = "2184h" #3 Months
+
+  renew_min_lease = 43200
+  renew_increment = 86400
+}
+
+output "trusted-orchestrator" {
+  value = vault_token.trusted-orchestrator.client_token
+  sensitive=true
+}
+
+resource "vault_egp_policy" "only-allow-machines-to-request-their-own-id" {
+  name              = "only-allow-machines-to-request-their-own-id"
+  paths             = ["pki_intermediate/issue/machine-id"]
+  enforcement_level = "hard-mandatory"
+
+  policy = <<EOT
+entity_is_trusted_orchestrator = rule {
+    token.display_name is "token-trusted-orchestrator"
+}
+
+entity_name_match_request = rule {
+  identity.entity.aliases[0].name is request.data.common_name
+}
+
+if entity_is_trusted_orchestrator {
+    print("trace:Request.data:",request.data)
+    print("trace:Token.display_name:",token.display_name)
+} else {
+      print("trace:Request.data:",request.data)
+      print("trace:identity.entity.name:",identity.entity.name)
+  if not entity_name_match_request {
+    print("Requestors entity name ",identity.entity.aliases[0].name, " does not match requested machine id ",request.data.common_name)
+  }
+}
+
+main = rule {
+    (entity_is_trusted_orchestrator or entity_name_match_request) 
+}
+EOT
+}
+
 
 //Audit device
 resource "vault_audit" "auditlog" {
