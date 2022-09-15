@@ -58,7 +58,7 @@ resource "vault_token" "trusted-orchestrator" {
 }
 
 output "trusted-orchestrator" {
-  value = vault_token.trusted-orchestrator.token
+  value = vault_token.trusted-orchestrator.client_token
   sensitive=false
 }
 
