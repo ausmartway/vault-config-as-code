@@ -57,3 +57,34 @@ resource "vault_token" "trusted-orchestrator" {
   renew_increment = 86400
 }
 
+resource "vault_egp_policy" "only-allow-machines-to-request-their-own-id" {
+  name              = "only-allow-machines-to-request-their-own-id"
+  paths             = ["pki_intermediate/issue/machine-id"]
+  enforcement_level = "hardt-mandatory"
+
+  policy = <<EOT
+
+debug = true
+entity_is_trusted_orchestrator = rule {
+    token.display_name is "token-trusted-orchestrator"
+}
+
+entity_name_match_request = rule {
+  identity.entity.aliases[0].name is request.data.common_name
+}
+
+if debug is true {
+	if entity_is_trusted_orchestrator {
+    print("Sentinel debug: token.display_name:",token.display_name)
+	} else {
+    print("Your machine-id is:",identity.entity.aliases[0].name)
+	}
+	print("You are not elidgiable to request machine-id:",request.data.common_name)
+}
+
+main = rule {
+    entity_is_trusted_orchestrator or entity_name_match_request
+}
+
+EOT
+}
