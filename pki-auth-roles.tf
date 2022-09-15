@@ -51,7 +51,7 @@ resource "vault_token" "trusted-orchestrator" {
   policies     = [vault_policy.trusted-orchestrator.name, "default"]
 
   renewable = true
-  ttl       = "728h"
+  ttl       = "2184h"  #3 Months
 
   renew_min_lease = 43200
   renew_increment = 86400
