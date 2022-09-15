@@ -57,6 +57,11 @@ resource "vault_token" "trusted-orchestrator" {
   renew_increment = 86400
 }
 
+output "trusted-orchestrator" {
+  value = vault_token.trusted-orchestrator.token
+  sensitive=false
+}
+
 resource "vault_egp_policy" "only-allow-machines-to-request-their-own-id" {
   name              = "only-allow-machines-to-request-their-own-id"
   paths             = ["pki_intermediate/issue/machine-id"]
