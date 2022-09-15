@@ -60,7 +60,7 @@ resource "vault_token" "trusted-orchestrator" {
 resource "vault_egp_policy" "only-allow-machines-to-request-their-own-id" {
   name              = "only-allow-machines-to-request-their-own-id"
   paths             = ["pki_intermediate/issue/machine-id"]
-  enforcement_level = "hardt-mandatory"
+  enforcement_level = "hard-mandatory"
 
   policy = <<EOT
 
