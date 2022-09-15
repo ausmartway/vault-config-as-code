@@ -51,7 +51,7 @@ resource "vault_token" "trusted-orchestrator" {
   policies     = [vault_policy.trusted-orchestrator.name, "default"]
 
   renewable = true
-  ttl       = "2184h"  #3 Months
+  ttl       = "2184h" #3 Months
 
   renew_min_lease = 43200
   renew_increment = 86400
@@ -64,7 +64,7 @@ resource "vault_egp_policy" "only-allow-machines-to-request-their-own-id" {
 
   policy = <<EOT
 
-debug = true
+trace = true
 entity_is_trusted_orchestrator = rule {
     token.display_name is "token-trusted-orchestrator"
 }
@@ -73,17 +73,17 @@ entity_name_match_request = rule {
   identity.entity.aliases[0].name is request.data.common_name
 }
 
-if debug is true {
-	if entity_is_trusted_orchestrator {
-    print("Sentinel debug: token.display_name:",token.display_name)
-	} else {
-    print("Your machine-id is:",identity.entity.aliases[0].name)
-	}
-	print("You are not elidgiable to request machine-id:",request.data.common_name)
+if entity_is_trusted_orchestrator {
+  print("Sentinel debug: token.display_name:",token.display_name)
+} else {
+  print("Your machine-id is:",identity.entity.aliases[0].name)
 }
 
+print("You are not elidgiable to request machine-id:",request.data.common_name)
+
 main = rule {
-    entity_is_trusted_orchestrator or entity_name_match_request
+  //Sentinel for Vault will only print when main rule is false, if we want trace info, we shoud always fail when trace=true
+    (entity_is_trusted_orchestrator or entity_name_match_request) and not trace
 }
 
 EOT
