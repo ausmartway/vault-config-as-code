@@ -23,10 +23,15 @@ resource "vault_auth_backend" "aws" {
 
 resource "vault_aws_auth_backend_client" "aws_client" {
   backend    = vault_auth_backend.aws.path
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
+  access_key = ""
+  secret_key = ""
 }
 
+resource "vault_aws_auth_backend_sts_role" "sts_role" {
+  backend    = vault_auth_backend.aws.path
+  account_id = "711129375688"
+  sts_role   = "arn:aws:iam::711129375688:role/hcp-vault-auth"
+}
 # //azure auth method
 # resource "vault_auth_backend" "azure" {
 #   type = "azure"
@@ -101,19 +106,78 @@ resource "vault_auth_backend" "approle" {
 # }
 
 
+// //pki root CA secret engine
+resource "vault_mount" "pki_root" {
+  path                      = "pki_root"
+  type                      = "pki"
+  default_lease_ttl_seconds = 3600 * 24 * 31 * 13     //13 Months
+  max_lease_ttl_seconds     = 3600 * 24 * 31 * 12 * 3 //3 Years
+}
+resource "vault_pki_secret_backend_root_cert" "self-signing-cert" {
+  backend              = vault_mount.pki_root.path
+  type                 = "internal"
+  common_name          = "Root CA"
+  ttl                  = "315360000"
+  format               = "pem"
+  private_key_format   = "der"
+  key_type             = "rsa"
+  key_bits             = 4096
+  exclude_cn_from_sans = true
+  ou                   = "APJ SE"
+  organization         = "Hashicorp Demo Org"
+}
+resource "vault_pki_secret_backend_config_urls" "config_urls" {
+  backend                 = vault_mount.pki_root.path
+  issuing_certificates    = ["${var.vault_url}/v1/${vault_mount.pki_root.path}/ca"]
+  crl_distribution_points = ["${var.vault_url}/v1/${vault_mount.pki_root.path}/crl"]
+}
+//pki intermediate CA secret engine
+resource "vault_mount" "pki_intermediate" {
+  depends_on                = [vault_pki_secret_backend_root_cert.self-signing-cert]
+  path                      = "pki_intermediate"
+  type                      = "pki"
+  default_lease_ttl_seconds = 2678400  //Default expiry of the certificates signed by this CA - 31 days
+  max_lease_ttl_seconds     = 24819200 //Max expiry of the certificates signed by this CA - 13 Months
+}
+resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
+  depends_on  = [vault_pki_secret_backend_root_cert.self-signing-cert]
+  backend     = vault_mount.pki_intermediate.path
+  type        = "internal"
+  common_name = "apj-ca.hashicorp.demo"
+}
+resource "vault_pki_secret_backend_root_sign_intermediate" "root" {
+  depends_on           = [vault_pki_secret_backend_root_cert.self-signing-cert, vault_pki_secret_backend_root_cert.self-signing-cert]
+  backend              = vault_mount.pki_root.path
+  csr                  = vault_pki_secret_backend_intermediate_cert_request.intermediate.csr
+  ttl                  = 3600 * 24 * 31 * 12 * 2 //2 Years
+  common_name          = "apj-ca.hashicorp.demo"
+  exclude_cn_from_sans = true
+  ou                   = "APJ SE"
+  organization         = "Hashicorp Demo Org"
+}
+resource "vault_pki_secret_backend_intermediate_set_signed" "intermediate" {
+depends_on = [vault_pki_secret_backend_config_urls.config_urls_int]
+  backend     = vault_mount.pki_intermediate.path
+  certificate = vault_pki_secret_backend_root_sign_intermediate.root.certificate
+}
+resource "vault_pki_secret_backend_config_urls" "config_urls_int" {
+  backend                 = vault_mount.pki_intermediate.path
+  issuing_certificates    = ["${var.vault_url}/v1/${vault_mount.pki_intermediate.path}/ca"]
+  crl_distribution_points = ["${var.vault_url}/v1/${vault_mount.pki_intermediate.path}/crl"]
+}
 
 //transit secret engine
 resource "vault_mount" "encryption-as-a-service" {
   path                      = "EaaS"
   type                      = "transit"
-  description               = "Encryption/Decryption as a Service for ${var.customername}"
+  description               = "Encryption/Decryption as a Service for HashiCorp SE"
   default_lease_ttl_seconds = 3600
   max_lease_ttl_seconds     = 86400
 }
 
 resource "vault_transit_secret_backend_key" "hashi-encryption-key" {
   backend                = vault_mount.encryption-as-a-service.path
-  name                   = "${var.customername}-encryption-key"
+  name                   = "hashi-encryption-key"
   deletion_allowed       = true
   exportable             = false
   allow_plaintext_backup = true
@@ -204,74 +268,6 @@ resource "vault_aws_secret_backend_role" "cicdpipelinests" {
     }
   ]
 }
-EOT
-}
-
-resource "vault_policy" "trusted-orchestrator" {
-  name   = "trusted-orchestrator"
-  policy = <<EOF
- path "pki_intermediate/issue/machine-id" {
-    capabilities = ["create", "read", "update", "delete", "list", "sudo"]
- }
- EOF
-}
-
-resource "vault_token_auth_backend_role" "trusted-orchestrator" {
-  role_name              = "trusted-orchestrator"
-  allowed_policies       = ["trusted-orchestrator"]
-  orphan                 = true
-  token_period           = "86400"
-  renewable              = true
-  token_explicit_max_ttl = "115200"
-  path_suffix            = "trusted-orchestrator"
-}
-
-resource "vault_token" "trusted-orchestrator" {
-  role_name    = "trusted-orchestrator"
-  display_name = "trusted-orchestrator"
-  policies     = [vault_policy.trusted-orchestrator.name, "default"]
-
-  renewable = true
-  ttl       = "2184h" #3 Months
-
-  renew_min_lease = 43200
-  renew_increment = 86400
-}
-
-output "trusted-orchestrator" {
-  value     = vault_token.trusted-orchestrator.client_token
-  sensitive = true
-}
-
-resource "vault_egp_policy" "only-allow-machines-to-request-their-own-id" {
-  name              = "only-allow-machines-to-request-their-own-id"
-  paths             = ["pki_intermediate/issue/machine-id"]
-  enforcement_level = "hard-mandatory"
-
-  policy = <<EOT
-entity_is_trusted_orchestrator = rule {
-	token.display_name is "token-trusted-orchestrator"
-}
-
-entity_name_match_request = rule {
-	identity.entity.aliases[0].name is request.data.common_name
-}
-
-if entity_is_trusted_orchestrator {
-	print("trace:Request.data:", request.data)
-	print("trace:Token.display_name:", token.display_name)
-} else {
-	print("trace:Request.data:", request.data)
-	print("trace:identity.entity.name:", identity.entity.name)
-	if not entity_name_match_request {
-		print("Requestors entity name ", identity.entity.aliases[0].name, " does not match requested machine id ", request.data.common_name)
-	}
-}
-
-main = rule {
-	(entity_is_trusted_orchestrator or entity_name_match_request)
-}
-
 EOT
 }
 

@@ -1,8 +1,0 @@
-appid: internet-banking
-name: internet-banking
-contact: yulei@hashicorp.com
-enable_approle: true
-enviroments:
-  - production
-  - dev
-  - test
