@@ -23,10 +23,18 @@ resource "vault_auth_backend" "aws" {
 
 resource "vault_aws_auth_backend_client" "aws_client" {
   backend    = vault_auth_backend.aws.path
-  access_key = ""
-  secret_key = ""
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
 }
 
+<<<<<<< HEAD
+=======
+resource "vault_aws_auth_backend_sts_role" "sts_role" {
+  backend    = vault_auth_backend.aws.path
+  account_id = "711129375688"
+  sts_role   = "arn:aws:iam::711129375688:role/hcp-vault-auth"
+}
+>>>>>>> 5fadbf49c4e2e0156ad20c0f48e68fa1594c4617
 # //azure auth method
 # resource "vault_auth_backend" "azure" {
 #   type = "azure"
@@ -276,10 +284,10 @@ EOT
 }
 
 
-//Audit device
-resource "vault_audit" "auditlog" {
-  type = "file"
-  options = {
-    file_path = "/tmp/vault_audit.log"
-  }
-}
+# //Audit device
+# resource "vault_audit" "auditlog" {
+#   type = "file"
+#   options = {
+#     file_path = "/tmp/vault_audit.log"
+#   }
+# }
