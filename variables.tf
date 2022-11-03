@@ -8,6 +8,16 @@ variable "customername" {
   default     = "customer"
 }
 
+variable "aws_secret_key" {
+  description = "aws_secret_key"
+  default=""
+}
+
+variable "aws_access_key" {
+  description = "aws_access_key"
+  default=""
+}
+
 # disable azure
 
 # variable "azure_tanent_id" {
