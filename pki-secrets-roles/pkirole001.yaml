@@ -2,6 +2,8 @@ name: fast-pki
 backend: pki_intermediate
 ttl: 180
 maxttl: 2419200
+server_flag: true
+client_flag: true
 contact: yulei@hashicorp.com
 allowed_domains:
   - anz.hashicorp.demo

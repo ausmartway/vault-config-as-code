@@ -29,3 +29,39 @@ resource "vault_pki_secret_backend_role" "role" {
   ]
 }
 
+resource "vault_pki_secret_backend_role" "server_pki" {
+name = server_pki
+backend= pki_intermediate
+ttl = 3 * 31 * 24 * 3600 //3 month
+maxttl = 12 * 31 * 24 * 3600 //3 month
+  allow_bare_domains = false
+  allow_subdomains   = true
+  allow_any_name     = false
+  allow_ip_sans      = false
+  require_cn         = true
+server_flag = true
+client_flag = false
+allowed_domains = ["customer.demo"]
+  depends_on = [
+    vault_mount.pki_intermediate
+  ]
+}
+
+resource "vault_pki_secret_backend_role" "client_pki" {
+  name = client_pki
+backend= pki_intermediate
+ttl = 3 * 31 * 24 * 3600 //3 month
+maxttl = 12 * 31 * 24 * 3600 //3 month
+  allow_bare_domains = false
+  allow_subdomains   = true
+  allow_any_name     = false
+  allow_ip_sans      = false
+  require_cn         = true
+server_flag = false
+client_flag = true
+allowed_domains = ["customer.demo"]
+  depends_on = [
+    vault_mount.pki_intermediate
+  ]
+  
+}

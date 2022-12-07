@@ -2,6 +2,8 @@ name: human-id
 backend: pki_intermediate
 ttl: 604800
 maxttl: 94608000
+server_flag: false
+client_flag: true
 contact: yulei@hashicorp.com
 allowed_domains:
   - human-id.customer.demo

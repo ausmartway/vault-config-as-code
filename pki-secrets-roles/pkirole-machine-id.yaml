@@ -2,6 +2,8 @@ name: machine-id
 backend: pki_intermediate
 ttl: 604800
 maxttl: 2419200
+server_flag: false
+client_flag: true
 contact: yulei@hashicorp.com
 allowed_domains:
   - machine-id.customer.demo
