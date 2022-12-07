@@ -33,7 +33,7 @@ resource "vault_pki_secret_backend_role" "server_pki" {
 name = "server_pki"
 backend= "pki_intermediate"
 ttl = 3 * 31 * 24 * 3600 //3 month
-maxttl = 12 * 31 * 24 * 3600 //3 month
+max_ttl = 12 * 31 * 24 * 3600 //12 month
   allow_bare_domains = false
   allow_subdomains   = true
   allow_any_name     = false
@@ -51,7 +51,7 @@ resource "vault_pki_secret_backend_role" "client_pki" {
   name = "client_pki"
 backend= "pki_intermediate"
 ttl = 3 * 31 * 24 * 3600 //3 month
-maxttl = 12 * 31 * 24 * 3600 //3 month
+max_ttl = 12 * 31 * 24 * 3600 //12 month
   allow_bare_domains = false
   allow_subdomains   = true
   allow_any_name     = false
