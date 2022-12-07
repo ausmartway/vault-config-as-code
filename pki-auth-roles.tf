@@ -29,7 +29,7 @@ resource "vault_policy" "pki-self-renewal" {
 resource "vault_policy" "server-pki" {
   name   = "pki-self-renewal"
   policy = <<EOF
- path "pki_intermediate/issue/server-pki" {
+ path "pki_intermediate/issue/server_pki" {
    capabilities = ["update","list"]
  }
  EOF
@@ -38,7 +38,7 @@ resource "vault_policy" "server-pki" {
 resource "vault_policy" "client-pki" {
   name   = "pki-self-renewal"
   policy = <<EOF
- path "pki_intermediate/issue/client-pki" {
+ path "pki_intermediate/issue/client_pki" {
    capabilities = ["update","list"]
  }
  EOF
