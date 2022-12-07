@@ -7,6 +7,8 @@ policies:
   - pki-self-renewal
   - super-user
   - ad-consumer
+  - server-pki
+  - client-pki
 allowed_machine_ids:
   - vault-client.machine-id.customer.demo
   - server1.machine-id.customer.demo
