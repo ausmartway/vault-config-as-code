@@ -9,7 +9,7 @@ resource "vault_pki_secret_backend_root_cert" "self-signing-cert" {
   backend              = vault_mount.pki_root.path
   type                 = "internal"
   common_name          = "Root CA"
-  ttl                  = "315360000"
+  ttl                  = 3600 * 24 * 31 * 12 * 5 //5 Years
   format               = "pem"
   private_key_format   = "der"
   key_type             = "rsa"
@@ -29,7 +29,7 @@ resource "vault_mount" "pki_intermediate" {
   path                      = "pki_intermediate"
   type                      = "pki"
   default_lease_ttl_seconds = 2678400  //Default expiry of the certificates signed by this CA - 31 days
-  max_lease_ttl_seconds     = 24819200 //Max expiry of the certificates signed by this CA - 13 Months
+  max_lease_ttl_seconds     = 3600 * 24 * 31 * 12 * 3 //3 Years 
 }
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
   depends_on  = [vault_pki_secret_backend_root_cert.self-signing-cert]
@@ -41,7 +41,7 @@ resource "vault_pki_secret_backend_root_sign_intermediate" "root" {
   depends_on           = [vault_pki_secret_backend_root_cert.self-signing-cert]
   backend              = vault_mount.pki_root.path
   csr                  = vault_pki_secret_backend_intermediate_cert_request.intermediate.csr
-  ttl                  = 3600 * 24 * 31 * 12 * 2 //2 Years
+  ttl                  = 3600 * 24 * 31 * 12 * 5 //5 Years
   common_name          = "ca.${var.customername}.hashicorp.demo"
   exclude_cn_from_sans = true
   ou                   = "${var.customername} Orgnisation Unit"
