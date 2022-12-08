@@ -3,7 +3,7 @@ resource "vault_mount" "pki_root" {
   path                      = "pki_root"
   type                      = "pki"
   default_lease_ttl_seconds = 3600 * 24 * 31 * 13     //13 Months
-  max_lease_ttl_seconds     = 3600 * 24 * 31 * 12 * 3 //3 Years
+  max_lease_ttl_seconds     = 3600 * 24 * 31 * 12 * 5 //3 Years
 }
 resource "vault_pki_secret_backend_root_cert" "self-signing-cert" {
   backend              = vault_mount.pki_root.path
@@ -29,7 +29,7 @@ resource "vault_mount" "pki_intermediate" {
   path                      = "pki_intermediate"
   type                      = "pki"
   default_lease_ttl_seconds = 2678400  //Default expiry of the certificates signed by this CA - 31 days
-  max_lease_ttl_seconds     = 3600 * 24 * 31 * 12 * 3 //3 Years 
+  max_lease_ttl_seconds     = 3600 * 24 * 31 * 12 * 5 //3 Years 
 }
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
   depends_on  = [vault_pki_secret_backend_root_cert.self-signing-cert]
