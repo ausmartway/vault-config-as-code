@@ -12,3 +12,18 @@ path "auth/token/*" {
 
 EOT
 }
+
+resource "vault_policy" "cicdpipeline" {
+  name = "cicdpipeline"
+
+  policy = <<EOT
+path "aws/creds/cicdpipeline" {
+  capabilities = ["read","list"]
+}
+
+path "auth/token/*" {
+  capabilities = ["create", "update"]
+}
+
+EOT
+}
