@@ -9,6 +9,7 @@ policies:
   - ad-consumer
   - server-pki
   - client-pki
+  - cicdpipeline
 allowed_machine_ids:
   - vault-client.machine-id.customer.demo
   - server1.machine-id.customer.demo
