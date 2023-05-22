@@ -1,0 +1,16 @@
+name: testrole
+backend: cert
+ttl: 604800
+maxttl: 2419200
+contact: yulei@hashicorp.com
+policies:
+  - pki-self-renewal
+  - super-user
+  - ad-consumer
+  - server-pki
+  - client-pki
+  - cicdpipeline
+allowed_machine_ids:
+  - vault-client.machine-id.customer.demo
+  - server1.machine-id.customer.demo
+  - server2.machine-id.customer.demo

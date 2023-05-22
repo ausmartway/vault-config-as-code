@@ -1,5 +1,5 @@
-appid: myfirstapplication
-name: myfirstapplication
+appid: internet-banking
+name: internet-banking
 contact: yulei@hashicorp.com
 enable_approle: true
 enviroments:
