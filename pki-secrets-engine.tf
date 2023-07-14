@@ -18,11 +18,20 @@ resource "vault_pki_secret_backend_root_cert" "self-signing-cert" {
   ou                   = "${var.customername} Orgnisation Unit"
   organization         = "${var.customername} Demo Org"
 }
+
+resource "vault_pki_secret_backend_issuer" "root-issuer" {
+  backend     = vault_pki_secret_backend_root_cert.self-signing-cert.backend
+  issuer_ref  = vault_pki_secret_backend_root_cert.self-signing-cert.issuer_id
+  issuer_name = "root-issuer"
+}
+
+
 resource "vault_pki_secret_backend_config_urls" "config_urls" {
   backend                 = vault_mount.pki_root.path
   issuing_certificates    = ["${var.vault_url}/v1/${vault_mount.pki_root.path}/ca"]
   crl_distribution_points = ["${var.vault_url}/v1/${vault_mount.pki_root.path}/crl"]
 }
+
 //pki intermediate CA secret engine
 resource "vault_mount" "pki_intermediate" {
   depends_on                = [vault_pki_secret_backend_root_cert.self-signing-cert]
