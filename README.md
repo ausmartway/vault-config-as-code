@@ -2,6 +2,4 @@
 
 This is a repository showing how to manage Hashicorp Vault configuration using Hashicorp Terraform.
 
-test change
-
 ## Challendges
