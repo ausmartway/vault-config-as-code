@@ -116,7 +116,7 @@ resource "vault_mount" "pki_root" {
 resource "vault_pki_secret_backend_root_cert" "self-signing-cert" {
   backend              = vault_mount.pki_root.path
   type                 = "internal"
-  common_name          = "Root CA"
+  common_name          = "SelfSigned Root CA for ${enviroment}"
   ttl                  = "315360000"
   format               = "pem"
   private_key_format   = "der"
@@ -150,7 +150,7 @@ resource "vault_pki_secret_backend_root_sign_intermediate" "root" {
   backend              = vault_mount.pki_root.path
   csr                  = vault_pki_secret_backend_intermediate_cert_request.intermediate.csr
   ttl                  = 3600 * 24 * 31 * 12 * 2 //2 Years
-  common_name          = "apj-ca.hashicorp.demo"
+  common_name          = "Intermediate CA for ${enviroment}"
   exclude_cn_from_sans = true
   ou                   = "APJ SE"
   organization         = "Hashicorp Demo Org"

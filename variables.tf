@@ -18,6 +18,10 @@ variable "aws_access_key" {
   default=""
 }
 
+variable "enviroment" {
+  description = "enviroment"
+  default="local"
+}
 # disable azure
 
 # variable "azure_tanent_id" {
