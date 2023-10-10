@@ -164,7 +164,7 @@ depends_on = [vault_pki_secret_backend_config_urls.config_urls_int]
 
 resource "vault_pki_secret_backend_issuer" "default" {
   backend     = vault_pki_secret_backend_intermediate_set_signed.intermediate.backend
-  issuer_ref  = vault_pki_secret_backend_intermediate_set_signed.intermediate.issuer_id
+  issuer_ref  = vault_pki_secret_backend_intermediate_set_signed.intermediate.imported_issuers[0]
   issuer_name = "example-issuer"
 }
 resource "vault_pki_secret_backend_config_urls" "config_urls_int" {
