@@ -10,17 +10,17 @@ variable "customername" {
 
 variable "aws_secret_key" {
   description = "aws_secret_key"
-  default=""
+  default     = ""
 }
 
 variable "aws_access_key" {
   description = "aws_access_key"
-  default=""
+  default     = ""
 }
 
 variable "enviroment" {
   description = "enviroment"
-  default="local"
+  default     = "local"
 }
 # disable azure
 

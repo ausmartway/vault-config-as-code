@@ -8,10 +8,10 @@ locals {
 
 
 resource "vault_aws_auth_backend_role" "aws-role" {
-  for_each                        = local.inputawsauthrolemap
-  role                            = each.value.role
-  backend                         = each.value.backend
-  auth_type                       = "iam"
+  for_each  = local.inputawsauthrolemap
+  role      = each.value.role
+  backend   = each.value.backend
+  auth_type = "iam"
 
   # Enable below so that HCP can validate iam from other account.
 
