@@ -117,7 +117,7 @@ resource "vault_pki_secret_backend_root_cert" "self-signing-cert" {
   backend              = vault_mount.pki_root.path
   type                 = "internal"
   common_name          = "SelfSigned Root CA for ${var.enviroment}"
-  ttl                  = "315360000"
+  ttl                  = 3600 * 24 * 31 * 12 * 10 //10 Years
   format               = "pem"
   private_key_format   = "der"
   key_type             = "rsa"
