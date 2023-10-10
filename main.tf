@@ -165,8 +165,39 @@ depends_on = [vault_pki_secret_backend_config_urls.config_urls_int]
 resource "vault_pki_secret_backend_issuer" "default" {
   backend     = vault_pki_secret_backend_intermediate_set_signed.intermediate.backend
   issuer_ref  = vault_pki_secret_backend_intermediate_set_signed.intermediate.imported_issuers[0]
-  issuer_name = "example-issuer"
+  issuer_name = "default-issuer"
 }
+
+resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate-alt" {
+  depends_on  = [vault_pki_secret_backend_root_cert.self-signing-cert]
+  backend     = vault_mount.pki_intermediate.path
+  type        = "internal"
+  common_name = "Intermediate CA for ${var.enviroment}"
+}
+resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate-alt" {
+  depends_on           = [vault_pki_secret_backend_root_cert.self-signing-cert, vault_pki_secret_backend_root_cert.self-signing-cert]
+  backend              = vault_mount.pki_root.path
+  csr                  = vault_pki_secret_backend_intermediate_cert_request.intermediate-alt.csr
+  ttl                  = 3600 * 24 * 31 * 12 * 3 //3 Years
+  common_name          = "alt issuer for Intermediate CA for ${var.enviroment}"
+  exclude_cn_from_sans = true
+  ou                   = "APJ SE"
+  organization         = "Hashicorp Demo Org"
+}
+
+resource "vault_pki_secret_backend_intermediate_set_signed" "intermediate-alt" {
+depends_on = [vault_pki_secret_backend_config_urls.config_urls_int]
+  backend     = vault_mount.pki_intermediate.path
+  certificate = vault_pki_secret_backend_root_sign_intermediate.intermediate-alt.certificate
+}
+
+resource "vault_pki_secret_backend_issuer" "alt-issuer" {
+  backend     = vault_pki_secret_backend_intermediate_set_signed.intermediate.backend
+  issuer_ref  = vault_pki_secret_backend_intermediate_set_signed.intermediate-alt.imported_issuers[0]
+  issuer_name = "alt-issuer"
+}
+
+
 resource "vault_pki_secret_backend_config_urls" "config_urls_int" {
   backend                 = vault_mount.pki_intermediate.path
   issuing_certificates    = ["${var.vault_url}/v1/${vault_mount.pki_intermediate.path}/ca"]
