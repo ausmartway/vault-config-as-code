@@ -143,9 +143,9 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
   depends_on  = [vault_pki_secret_backend_root_cert.self-signing-cert]
   backend     = vault_mount.pki_intermediate.path
   type        = "internal"
-  common_name = "apj-ca.hashicorp.demo"
+  common_name = "Intermediate CA for ${var.enviroment}"
 }
-resource "vault_pki_secret_backend_root_sign_intermediate" "root" {
+resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate" {
   depends_on           = [vault_pki_secret_backend_root_cert.self-signing-cert, vault_pki_secret_backend_root_cert.self-signing-cert]
   backend              = vault_mount.pki_root.path
   csr                  = vault_pki_secret_backend_intermediate_cert_request.intermediate.csr
@@ -158,7 +158,7 @@ resource "vault_pki_secret_backend_root_sign_intermediate" "root" {
 resource "vault_pki_secret_backend_intermediate_set_signed" "intermediate" {
 depends_on = [vault_pki_secret_backend_config_urls.config_urls_int]
   backend     = vault_mount.pki_intermediate.path
-  certificate = vault_pki_secret_backend_root_sign_intermediate.root.certificate
+  certificate = vault_pki_secret_backend_root_sign_intermediate.intermediate.certificate
 }
 resource "vault_pki_secret_backend_config_urls" "config_urls_int" {
   backend                 = vault_mount.pki_intermediate.path
