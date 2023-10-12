@@ -1,7 +1,7 @@
 name: cicdpipeline
 backend: cert
-ttl: 1200
-maxttl: 2400
+ttl: 40
+maxttl: 0
 contact: yulei@hashicorp.com
 policies:
   - pki-self-renewal
