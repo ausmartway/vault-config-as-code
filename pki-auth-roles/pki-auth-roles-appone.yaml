@@ -1,6 +1,6 @@
 name: cicdpipeline
 backend: cert
-ttl: 40
+ttl: 1200
 maxttl: 0
 contact: yulei@hashicorp.com
 policies:
