@@ -44,7 +44,7 @@ resource "vault_policy" "server-pki" {
 }
 
 resource "vault_policy" "client-pki" {
-  name   = "server-pki"
+  name   = "client-pki"
   policy = <<EOF
  path "pki_intermediate/issue/client_pki" {
    capabilities = ["update","list"]
