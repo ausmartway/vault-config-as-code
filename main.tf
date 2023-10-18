@@ -223,7 +223,7 @@ resource "vault_transit_secret_backend_key" "hashi-encryption-key" {
 
 //aws secrets engine
 resource "vault_aws_secret_backend" "aws" {
-  description               = "AWS secrets engine"
+  description               = "AWS secrets engine for ${var.enviroment}"
   region                    = "ap-southeast-2"
   default_lease_ttl_seconds = 600
   max_lease_ttl_seconds     = 3600 * 48 // two days
