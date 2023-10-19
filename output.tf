@@ -10,3 +10,6 @@ output pki_intermediate_cert {
   description = "the certificate of pki_intermediate default issuer"
 }
 
+output "welcome" {
+  value ="welcome to eHealth"
+}
