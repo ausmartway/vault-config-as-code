@@ -8,4 +8,3 @@ allowed_domains:
   - machine-id.jp.hashicorp.demo
   - machine-id.seasia.hashicorp.demo
   - machine-id.customer.demo
-
