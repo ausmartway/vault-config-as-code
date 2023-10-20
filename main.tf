@@ -5,13 +5,9 @@ resource "vault_github_auth_backend" "hashicorp" {
 }
 
 resource "vault_token" "superuser" {
-  role_name = "superuser"
-
-  policies = ["super-user"]
-
+  policies  = ["super-user"]
   renewable = true
-  ttl = "365d"
-
+  ttl       = "365d"
   metadata = {
     "purpose" = "service-account for terraform Cloud to manage vault"
   }
