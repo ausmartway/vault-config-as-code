@@ -9,7 +9,3 @@ output pki_intermediate_cert {
   sensitive   = false
   description = "the certificate of pki_intermediate default issuer"
 }
-
-output "welcome" {
-  value ="welcome to eHealth"
-}
