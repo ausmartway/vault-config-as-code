@@ -4,6 +4,20 @@ resource "vault_github_auth_backend" "hashicorp" {
   token_policies = ["super-user"]
 }
 
+resource "vault_token" "superuser" {
+  role_name = "superuser"
+
+  policies = ["super-user""]
+
+  renewable = true
+  ttl = "365d"
+
+  metadata = {
+    "purpose" = "service-account for terraform Cloud to manage vault"
+  }
+}
+
+
 resource "vault_policy" "super-user" {
   name   = "super-user"
   policy = <<EOF
