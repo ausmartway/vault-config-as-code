@@ -6,6 +6,15 @@ resource "vault_identity_entity" "yulei" {
   }
 }
 
+resource "vault_policy" "yulei-identity-token-policies" {
+  name   = "yulei-identity-token-policies"
+  policy = <<EOF
+ path "identity/oidc/token/yulei" {
+   capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+ }
+ EOF
+}
+
 resource "vault_identity_entity_alias" "yulei-github" {
   name           = "ausmartway"
   mount_accessor = vault_github_auth_backend.hashicorp.accessor
