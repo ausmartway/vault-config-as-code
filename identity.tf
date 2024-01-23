@@ -1,6 +1,6 @@
 resource "vault_identity_entity" "yulei" {
   name     = "yulei"
-  policies = ["superuser"]
+  policies = ["superuser","yulei-identity-token-policies"]
   metadata = {
     group = "SE"
   }
