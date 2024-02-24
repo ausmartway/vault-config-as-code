@@ -22,4 +22,14 @@ resource "vault_identity_entity_alias" "corebanking-aws-ec2" {
   canonical_id   = vault_identity_entity.corebanking.id
 }
 
+resource "vault_identity_oidc_key" "application_identity" {
+  name      = "application_identity"
+  algorithm = "RS256"
+}
+
+resource "vault_identity_oidc_role" "application_identity" {
+  name = "application_identity"
+  key  = vault_identity_oidc_key.application_identity.name
+}
+
 
