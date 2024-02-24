@@ -38,3 +38,12 @@ resource "vault_identity_entity_alias" "yulei-pki" {
   canonical_id   = vault_identity_entity.yulei.id
 }
 
+resource "vault_identity_oidc_key" "human_identity" {
+  name      = "human_identity"
+  algorithm = "RS256"
+}
+
+resource "vault_identity_oidc_role" "human_identity" {
+  name = "human_identity"
+  key  = vault_identity_oidc_key.human_identity.name
+}
