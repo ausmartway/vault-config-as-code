@@ -1,6 +1,6 @@
 resource vault_identity_entity "corebanking" {
   name     = "corebanking"
-  policies = ["superuser", "human-identity-token-policies"]
+  policies = ["superuser", "application-identity-token-policies"]
   metadata = {
     enviroment = "production"
     business_unit = "retail"
@@ -8,7 +8,7 @@ resource vault_identity_entity "corebanking" {
 }
 
 resource "vault_policy" "application-identity-token-policies" {
-  name   = "yulei-identity-token-policies"
+  name   = "application-identity-token-policies"
   policy = <<EOF
  path "identity/oidc/token/application" {
    capabilities = ["create", "read", "update", "delete", "list", "sudo"]
