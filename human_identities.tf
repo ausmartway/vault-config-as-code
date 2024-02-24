@@ -18,7 +18,7 @@ resource "vault_identity_entity" "yulei" {
 }
 
 resource "vault_policy" "human-identity-token-policies" {
-  name   = "yulei-identity-token-policies"
+  name   = "human-identity-token-policies"
   policy = <<EOF
  path "identity/oidc/token/human" {
    capabilities = ["create", "read", "update", "delete", "list", "sudo"]
