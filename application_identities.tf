@@ -1,8 +1,8 @@
-resource vault_identity_entity "corebanking" {
+resource "vault_identity_entity" "corebanking" {
   name     = "corebanking"
   policies = ["superuser", "application-identity-token-policies"]
   metadata = {
-    enviroment = "production"
+    enviroment    = "production"
     business_unit = "retail"
   }
 }
@@ -22,14 +22,29 @@ resource "vault_identity_entity_alias" "corebanking-aws-ec2" {
   canonical_id   = vault_identity_entity.corebanking.id
 }
 
+#create a signing key for the application identity
 resource "vault_identity_oidc_key" "application_identity" {
   name      = "application_identity"
   algorithm = "RS256"
 }
 
+#create application role so that it can be used to generate tokens. the token format is defined in the role 
+#example of the token format is azp = "spiffe://TRUSTDOMAIN/ENVIROMENT/BUSINESS_UNIT/ENTITY_NAME"
+
 resource "vault_identity_oidc_role" "application_identity" {
   name = "application_identity"
-  key  = vault_identity_oidc_key.application_identity.name
+  template = jsonencode(
+    {
+      azp = "spiffe://vault/{{identity.entity.metadata.enviroment}}/{{identity.entity.metadata.business_unit}}/{{identity.entity.name}}"
+    }
+  )
+  client_id = "spiffe://vault"
+  key       = vault_identity_oidc_key.application_identity.name
 }
 
+#allow the application identity to use the role/key to generate identity tokens
+resource "vault_identity_oidc_key_allowed_client_id" "application_identity" {
+  key_name          = vault_identity_oidc_key.application_identity.name
+  allowed_client_id = vault_identity_oidc_role.application_identity.client_id
+}
 
