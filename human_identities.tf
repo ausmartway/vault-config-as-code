@@ -51,7 +51,7 @@ resource "vault_identity_oidc_role" "human_identity" {
   name      = "human_identity"
   client_id = "spiffe://vault"
   key       = vault_identity_oidc_key.human_identity.name
-  template  = "\"azp\" : \"spiffe://vault/{{identity.entity.metadata.role}}/{{identity.entity.metadata.team}}/{{identity.entity.name}}\""
+  template  = "{\n    \"azp\": \"spiffe://vault/{{identity.entity.metadata.role}}/{{identity.entity.metadata.team}}/{{identity.entity.name}}\"\n}"
 }
 
 #allow the human identity to use the role/key to generate identity tokens
