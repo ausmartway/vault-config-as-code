@@ -33,13 +33,13 @@ resource "vault_identity_oidc_key" "application_identity" {
 
 resource "vault_identity_oidc_role" "application_identity" {
   name      = "application_identity"
+  client_id = "spiffe://vault"
+  key       = vault_identity_oidc_key.application_identity.name
   template  = <<EOF
 {
     "azp": "spiffe://vault/"
 }
   EOF
-  client_id = "spiffe://vault"
-  key       = vault_identity_oidc_key.application_identity.name
 }
 
 #allow the application identity to use the role/key to generate identity tokens
