@@ -38,12 +38,28 @@ resource "vault_identity_entity_alias" "yulei-pki" {
   canonical_id   = vault_identity_entity.yulei.id
 }
 
+#create a signing key for the human identity
 resource "vault_identity_oidc_key" "human_identity" {
   name      = "human_identity"
   algorithm = "RS256"
 }
 
+#create human role so that it can be used to generate tokens. the token format is defined in the role 
+#example of the token format is azp = "spiffe://TRUSTDOMAIN/ENVIROMENT/BUSINESS_UNIT/ENTITY_NAME"
+
 resource "vault_identity_oidc_role" "human_identity" {
-  name = "human_identity"
-  key  = vault_identity_oidc_key.human_identity.name
+  name      = "human_identity"
+  client_id = "spiffe://vault"
+  key       = vault_identity_oidc_key.human_identity.name
+  template  = <<EOF
+{
+    "azp": "spiffe://vault/"
+}
+  EOF
+}
+
+#allow the human identity to use the role/key to generate identity tokens
+resource "vault_identity_oidc_key_allowed_client_id" "hunam_identity" {
+  key_name          = vault_identity_oidc_key.human_identity.name
+  allowed_client_id = vault_identity_oidc_role.human_identity.client_id
 }
