@@ -35,7 +35,7 @@ resource "vault_identity_oidc_role" "application_identity" {
   name      = "application_identity"
   template  = <<EOF
 {
-    "azp": "spiffe://vault/{{identity.entity.metadata.enviroment}}/{{identity.entity.metadata.business_unit}}/{{identity.entity.name}}"
+    "azp": "spiffe://vault/"
 }
   EOF
   client_id = "spiffe://vault"
