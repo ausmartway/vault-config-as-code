@@ -53,7 +53,7 @@ resource "vault_identity_oidc_role" "human_identity" {
   key       = vault_identity_oidc_key.human_identity.name
   template  = <<EOF
 {
-    "azp": "spiffe://vault/"
+  "azp": "spiffe://vault/{{identity.entity.metadata.role}}/{{identity.entity.metadata.team}}/{{identity.entity.name}}",
 }
   EOF
 }
