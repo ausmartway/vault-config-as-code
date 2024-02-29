@@ -1,0 +1,22 @@
+type: object
+properties:
+  name:
+    type: string
+  email:
+    type: string
+  github:
+    type: string
+  pki:
+    type: string
+  role:
+    type: string
+  team:
+    type: string
+required:
+  - name
+  - email
+  - github
+  - pki
+  - role
+  - team
+additionalProperties: true
