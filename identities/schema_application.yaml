@@ -1,0 +1,23 @@
+type: object
+properties:
+  name:
+    type: string
+  contact:
+    type: string
+    format: email
+  environment:
+    type: string
+  business_unit:
+    type: string
+  aws_auth_role:
+    type: string
+  pki:
+    type: string
+required:
+  - name
+  - contact
+  - environment
+  - business_unit
+  - aws_auth_role
+  - pki
+additionalProperties: true
