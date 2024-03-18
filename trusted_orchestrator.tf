@@ -18,15 +18,15 @@ resource "vault_token_auth_backend_role" "trusted-orchestrator" {
 }
 
 resource "vault_token" "trusted-orchestrator" {
-  role_name    = "trusted-orchestrator"
-  display_name = "trusted-orchestrator"
-  policies     = [vault_policy.trusted-orchestrator.name]
-  no_parent = true
-  renewable = true
-  ttl       = "2184h" #3 Months
+  role_name         = "trusted-orchestrator"
+  display_name      = "trusted-orchestrator"
+  policies          = [vault_policy.trusted-orchestrator.name]
+  no_parent         = true
+  renewable         = true
+  ttl               = "2184h" #3 Months
   no_default_policy = false
-  renew_min_lease = 43200
-  renew_increment = 86400
+  renew_min_lease   = 43200
+  renew_increment   = 86400
 }
 
 output "trusted-orchestrator" {
