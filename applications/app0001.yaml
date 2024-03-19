@@ -1,0 +1,12 @@
+
+appid: APP000001
+name: myfirstapplication
+contact: yulei@hashicorp.com
+enable_approle: true
+enviroments:
+  - production
+  - prod-support
+  - dev
+  - test
+  - sit
+  - svt
