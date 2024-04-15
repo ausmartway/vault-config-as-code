@@ -10,7 +10,7 @@ locals {
 resource "vault_identity_entity" "human" {
   for_each = local.inputhumanmap
   name     = each.key
-  policies = ["human-identity-token-policies"]
+  policies = concat([for i in each.value.identity_policies : i], ["human-identity-token-policies"])
   metadata = {
     role      = each.value.role
     team      = each.value.team
@@ -43,7 +43,7 @@ locals {
 resource "vault_identity_entity" "application" {
   for_each = local.inputappidmap
   name     = each.key
-  policies = ["application-identity-token-policies"]
+  policies = [for i in each.value.identity_policies : i]
   metadata = {
     enviroment    = each.value.enviroment
     business_unit = each.value.business_unit

@@ -5,3 +5,6 @@ github: ausmartway
 pki: yulei.human-id.customer.demo
 role: sales
 team: sales_engineering_anz
+identity_policies:
+  - superuser
+  - sales_engineering_anz
