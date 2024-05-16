@@ -1,0 +1,10 @@
+# $schema: ./schema.yaml
+name: Ilche
+email: ilche@hashicorp.com
+github: ilche
+pki: ilche.human-id.customer.demo
+role: sales
+team: sales_engineering_anz
+identity_policies:
+  - superuser
+  - sales_engineering_anz

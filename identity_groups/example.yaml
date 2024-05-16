@@ -1,0 +1,10 @@
+name: identity_group1
+contact: yulei@hashicorp.com
+human_identities:
+  - Yulei Liu
+application_identities:
+  - corebanking
+sub_groups:
+identity_group_policies:
+  - superuser
+  - sales_engineering_anz
