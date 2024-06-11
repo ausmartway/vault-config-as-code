@@ -1,0 +1,13 @@
+name: identity_groupone
+contact: yulei@hashicorp.com
+human_identities:
+  - Yulei Liu
+  - Simon Lynch
+application_identities:
+  - Core Banking
+sub_groups:
+  - identity_groupone_prod
+  - identity_groupone_dev
+identity_group_policies:
+  - superuser
+  - sales_engineering_anz
