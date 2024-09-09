@@ -1,0 +1,9 @@
+name: Core Banking Backend group
+contact: yulei@hashicorp.com
+human_identities:
+  - Yulei Liu
+  - Simon Lynch
+application_identities:
+  - Core Banking Backend
+sub_groups: []
+identity_group_policies: []

@@ -1,0 +1,8 @@
+name: Core Banking Backend
+contact: yulei@hashicorp.com
+enviroment: production
+business_unit: retail_banking
+aws_auth_role: corebanking-backend
+pki: corebanking-backend.machine-id.customer.demo
+identity_policies:
+  - corebanking
