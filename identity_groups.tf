@@ -26,10 +26,10 @@ resource "vault_identity_group_member_entity_ids" "application_group" {
   exclusive         = false
 }
 
-# resource "vault_identity_group_member_group_ids" "group_group" {
-#   for_each          = local.inputidentitygroupmap
-#   group_id          = vault_identity_group.identity_group[each.key].id
-#   member_group_ids  = [for i in each.value.group_identities : vault_identity_group.identity_group[i].id]
-#   exclusive         = false
-# }
+resource "vault_identity_group_member_group_ids" "group_group" {
+  for_each          = local.inputidentitygroupmap
+  group_id          = vault_identity_group.identity_group[each.key].id
+  member_group_ids  = [for i in each.value.sub_groups : vault_identity_group.identity_group[i].id]
+  exclusive         = false
+}
 
