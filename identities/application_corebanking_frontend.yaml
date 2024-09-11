@@ -4,5 +4,6 @@ enviroment: production
 business_unit: retail_banking
 aws_auth_role: corebanking-frontend
 pki: corebanking-frontend.machine-id.customer.demo
+github_repo: ausmartway/vault-github-action-test
 identity_policies:
   - corebanking
