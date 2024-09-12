@@ -3,8 +3,7 @@ contact: yulei@hashicorp.com
 human_identities:
   - Yulei Liu
   - Simon Lynch
-application_identities:
-  - Core Banking
+application_identities: []
 sub_groups:
   - Core Banking Database group
   - Core Banking Frontend group

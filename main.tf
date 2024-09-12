@@ -24,6 +24,22 @@ resource "vault_policy" "super-user" {
 }
 
 
+// github repository jwt auth method
+resource "vault_jwt_auth_backend" "github_repo_jwt" {
+    description         = "jwt auth method for github repositories"
+    type = "jwt"
+    path                = "github_repo_jwt "
+    oidc_discovery_url  = "https://token.actions.githubusercontent.com"
+    bound_issuer        = "https://token.actions.githubusercontent.com"
+}
+
+resource "vault_jwt_auth_backend_role" "default" {
+  backend         = vault_jwt_auth_backend.github_repo_jwt.path
+  role_name       = "default"
+  bound_audiences = ["https://myco.test"]
+  user_claim      = "repository"
+  role_type       = "jwt"
+}
 //aws auth method
 
 resource "vault_auth_backend" "aws" {
