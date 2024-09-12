@@ -1,8 +1,0 @@
-name: Core Banking Dev
-contact: yulei@hashicorp.com
-enviroment: development
-business_unit: retail_banking
-aws_auth_role: corebanking
-pki: corebanking.machine-id.customer.demo
-identity_policies:
-  - corebanking

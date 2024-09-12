@@ -4,5 +4,6 @@ enviroment: production
 business_unit: retail_banking
 aws_auth_role: corebanking-database
 pki: corebanking-database.machine-id.customer.demo
+github_repo: 
 identity_policies:
   - corebanking
