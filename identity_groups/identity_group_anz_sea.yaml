@@ -1,0 +1,10 @@
+name: ANZ SEA group
+contact: yulei@hashicorp.com
+human_identities:
+  - Yulei Liu
+  - Simon Lynch
+  - Ilche
+application_identities: []
+sub_groups: []
+identity_group_policies:
+  - super-user

@@ -1,7 +1,7 @@
 //github auth backend, as long as you belong to the hashicorp orgnisation, you will be able to login to Vault and get super user previlige using your personal github token.
 resource "vault_github_auth_backend" "hashicorp" {
   organization   = "hashicorp"
-  token_policies = ["super-user"]
+  token_policies = [""]
 }
 
 resource "vault_token" "superuser" {
