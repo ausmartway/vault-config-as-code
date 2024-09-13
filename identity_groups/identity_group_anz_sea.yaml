@@ -7,4 +7,4 @@ human_identities:
 application_identities: []
 sub_groups: []
 identity_group_policies:
-  - superuser
+  - super-user

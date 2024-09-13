@@ -6,4 +6,4 @@ aws_auth_role: corebanking-database
 pki: corebanking-database.machine-id.customer.demo
 github_repo: 
 identity_policies:
-  - corebanking
+  - application-identity-token-policies
