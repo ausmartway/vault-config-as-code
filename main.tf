@@ -36,7 +36,7 @@ resource "vault_jwt_auth_backend" "github_repo_jwt" {
 resource "vault_jwt_auth_backend_role" "default" {
   backend         = vault_jwt_auth_backend.github_repo_jwt.path
   role_name       = "default"
-    = ["eXVsZWkncyBWYXVsdAo="]   ##Base64 encoded value of "Yulie's Vault"
+  bound_audiences  = ["eXVsZWkncyBWYXVsdAo="]   ##Base64 encoded value of "Yulie's Vault"
   user_claim      = "repository"
   role_type       = "jwt"
 }
