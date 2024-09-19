@@ -28,7 +28,7 @@ resource "vault_policy" "super-user" {
 resource "vault_jwt_auth_backend" "github_repo_jwt" {
     description         = "jwt auth method for github repositories"
     type = "jwt"
-    path                = "github_repo_jwt "
+    path                = "github_repo_jwt"
     oidc_discovery_url  = "https://token.actions.githubusercontent.com"
     bound_issuer        = "https://token.actions.githubusercontent.com"
 }
