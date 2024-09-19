@@ -13,7 +13,7 @@ resource "vault_token" "superuser" {
   }
 }
 
-
+### Super user policy ###
 resource "vault_policy" "super-user" {
   name   = "super-user"
   policy = <<EOF
@@ -36,7 +36,7 @@ resource "vault_jwt_auth_backend" "github_repo_jwt" {
 resource "vault_jwt_auth_backend_role" "default" {
   backend         = vault_jwt_auth_backend.github_repo_jwt.path
   role_name       = "default"
-  bound_audiences = ["https://myco.test"]
+  bound_audiences = ["yulei's Vault"]
   user_claim      = "repository"
   role_type       = "jwt"
 }
@@ -113,24 +113,6 @@ resource "vault_auth_backend" "approle" {
 # Approle should only be used when there is no better/native authentication, eg, aws/gcp/azure/k8s/ldap.
 # The approle roles in this repository will be created by the application module, for each application and enviroments. 
 # Below codes are just examples if you want to create approle roles outside of the application module.
-#
-# resource "vault_approle_auth_backend_role" "example" {
-#   backend   = vault_auth_backend.approle.path
-#   role_name = "test-role"
-#   policies  = ["default", "dev", "prod"]
-# }
-
-# resource "vault_approle_auth_backend_role_secret_id" "id" {
-#   backend   = vault_auth_backend.approle.path
-#   role_name = vault_approle_auth_backend_role.example.role_name
-# }
-
-# resource "vault_approle_auth_backend_login" "login" {
-#   backend   = vault_auth_backend.approle.path
-#   role_id   = vault_approle_auth_backend_role.example.role_id
-#   secret_id = vault_approle_auth_backend_role_secret_id.id.secret_id
-# }
-
 
 // //pki root CA secret engine
 resource "vault_mount" "pki_root" {
