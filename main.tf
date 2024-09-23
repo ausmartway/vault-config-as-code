@@ -5,16 +5,16 @@ resource "vault_github_auth_backend" "hashicorp" {
 }
 
 resource "vault_token" "superuser" {
-  policies  = ["super-user"]
+  policies     = ["super-user"]
   display_name = "superuser"
-  renewable = true
-  ttl       = "365d"
+  renewable    = true
+  ttl          = "365d"
   metadata = {
     "purpose" = "service-account for terraform Cloud to manage vault"
   }
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [time_static.rotate]
+    replace_triggered_by  = [time_static.rotate]
   }
 }
 
@@ -40,17 +40,17 @@ resource "vault_policy" "super-user" {
 
 // github repository jwt auth method
 resource "vault_jwt_auth_backend" "github_repo_jwt" {
-    description         = "jwt auth method for github repositories"
-    type = "jwt"
-    path                = "github_repo_jwt"
-    oidc_discovery_url  = "https://token.actions.githubusercontent.com"
-    bound_issuer        = "https://token.actions.githubusercontent.com"
+  description        = "jwt auth method for github repositories"
+  type               = "jwt"
+  path               = "github_repo_jwt"
+  oidc_discovery_url = "https://token.actions.githubusercontent.com"
+  bound_issuer       = "https://token.actions.githubusercontent.com"
 }
 
 resource "vault_jwt_auth_backend_role" "default" {
   backend         = vault_jwt_auth_backend.github_repo_jwt.path
   role_name       = "default"
-  bound_audiences  = ["eXVsZWkncyBWYXVsdAo="]   ##Base64 encoded value of "Yulie's Vault"
+  bound_audiences = ["eXVsZWkncyBWYXVsdAo="] ##Base64 encoded value of "Yulie's Vault"
   user_claim      = "repository"
   role_type       = "jwt"
 }
@@ -343,25 +343,25 @@ resource "vault_mount" "ssh-client-signer" {
 }
 
 resource "vault_ssh_secret_backend_ca" "ssh-ca" {
-  backend = vault_mount.ssh-client-signer.path
-  private_key = tls_private_key.ssh-ca-key.private_key_pem
-  public_key = tls_private_key.ssh-ca-key.public_key_openssh
+  backend              = vault_mount.ssh-client-signer.path
+  private_key          = tls_private_key.ssh-ca-key.private_key_pem
+  public_key           = tls_private_key.ssh-ca-key.public_key_openssh
   generate_signing_key = false
 }
 
 resource "vault_ssh_secret_backend_role" "ubuntu" {
-  backend = vault_mount.ssh-client-signer.path
-  name = "ubuntu"
-  key_type = "ca"
-  default_user = "ubuntu"
+  backend            = vault_mount.ssh-client-signer.path
+  name               = "ubuntu"
+  key_type           = "ca"
+  default_user       = "ubuntu"
   allowed_extensions = "permit-pty,permit-port-forwarding"
   default_extensions = {
-    permit-pty = true
+    permit-pty             = true
     permit-port-forwarding = true
   }
   allow_user_certificates = true
-  cidr_list = ""
-  ttl = 12*3600    #sighed ssh certificate will be valid for 12 hours
+  cidr_list               = ""
+  ttl                     = 12 * 3600 #sighed ssh certificate will be valid for 12 hours
 }
 
 

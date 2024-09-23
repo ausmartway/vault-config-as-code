@@ -7,9 +7,9 @@ locals {
   inputhumanmap = { for human in toset(local.inputhumanvars) : human.name => human }
 
   # Filter out any humans that do not have a github id
-  human_with_github = { for k, v in local.inputhumanmap : k => v  if v.github != tostring(null) }
+  human_with_github = { for k, v in local.inputhumanmap : k => v if v.github != tostring(null) }
   # Filter out any humans that do not have a pki
-  human_with_pki = { for k, v in local.inputhumanmap : k => v  if v.pki != tostring(null) }
+  human_with_pki = { for k, v in local.inputhumanmap : k => v if v.pki != tostring(null) }
 }
 
 resource "vault_identity_entity" "human" {
@@ -47,9 +47,9 @@ locals {
   inputappidmap = { for app in toset(local.inputappidvars) : app.name => app }
 
   # Filter out any applications that do not have a github_repo 
-  app_with_github_repo = { for k, v in local.inputappidmap :  k => v  if v.github_repo != tostring(null) }
+  app_with_github_repo = { for k, v in local.inputappidmap : k => v if v.github_repo != tostring(null) }
   # Filter out any applications that do not have a pki 
-  app_with_pki = { for k, v in local.inputappidmap : k => v  if v.pki != tostring(null) }
+  app_with_pki = { for k, v in local.inputappidmap : k => v if v.pki != tostring(null) }
 }
 
 resource "vault_identity_entity" "application" {
