@@ -16,6 +16,6 @@ Terraform is a tool for building, changing, and versioning infrastructure safely
 
 ### Enable and configure the pki secrets engine
 
-#### Using PKI secrets engine, impliment a Machine Identity service
+#### Using PKI secrets engine, impliment a Machine/Human Identity service
 
 ### 4.Enable and configure the Identity secrets engine
