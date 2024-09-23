@@ -6,4 +6,5 @@ human_identities:
 application_identities:
   - Core Banking Backend
 sub_groups: []
-identity_group_policies: []
+identity_group_policies: 
+  - corebanking-production-secret-consumer
