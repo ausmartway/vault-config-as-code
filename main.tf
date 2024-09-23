@@ -8,7 +8,7 @@ resource "vault_token" "superuser" {
   policies     = ["super-user"]
   display_name = "superuser"
   renewable    = true
-  ttl          = "365d"
+  ttl          = "768h"
   metadata = {
     "purpose" = "service-account for terraform Cloud to manage vault"
   }
@@ -18,12 +18,12 @@ resource "vault_token" "superuser" {
   }
 }
 
-resource "time_rotating" "rotate_335_days" {
-  rotation_days = 335
+resource "time_rotating" "rotate_30_days" {
+  rotation_days = 30
 }
 
 resource "time_static" "rotate" {
-  rfc3339 = time_rotating.rotate_335_days.rfc3339
+  rfc3339 = time_rotating.rotate_30_days.rfc3339
 }
 
 
