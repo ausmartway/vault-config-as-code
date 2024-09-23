@@ -1,0 +1,8 @@
+
+appid: Corebanking
+name: Corebanking
+contact: yulei@hashicorp.com
+enable_approle: true
+enviroments:
+  - production
+  - dev

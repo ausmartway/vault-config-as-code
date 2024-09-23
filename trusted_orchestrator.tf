@@ -23,10 +23,14 @@ resource "vault_token" "trusted-orchestrator" {
   policies          = [vault_policy.trusted-orchestrator.name]
   no_parent         = true
   renewable         = true
-  ttl               = "2184h" #3 Months
+  ttl               = "365d" # 1 year Months
   no_default_policy = false
   renew_min_lease   = 43200
   renew_increment   = 86400
+  lifecycle {
+    create_before_destroy = true
+    replace_triggered_by  = [time_static.rotate]
+  }
 }
 
 output "trusted-orchestrator" {
