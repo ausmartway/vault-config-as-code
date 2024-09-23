@@ -29,7 +29,7 @@ resource "vault_token" "trusted-orchestrator" {
   renew_increment   = 86400
   lifecycle {
     create_before_destroy = true
-    replace_triggered_by = [ time_static.rotate ]
+    replace_triggered_by  = [time_static.rotate]
   }
 }
 
