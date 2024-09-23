@@ -9,3 +9,9 @@ output "pki_intermediate_cert" {
   sensitive   = false
   description = "the certificate of pki_intermediate default issuer"
 }
+
+output "ssh_ca_cert" {
+  value       = vault_ssh_secret_backend_ca.ssh-ca.public_key
+  sensitive   = false
+  description = "The public key of the ssh CA"
+}
