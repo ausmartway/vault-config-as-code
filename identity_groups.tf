@@ -9,7 +9,8 @@ resource "vault_identity_group" "identity_group" {
   for_each                   = local.inputidentitygroupmap
   name                       = each.key
   type                       = "internal"
-  external_member_entity_ids = true
+  external_member_entity_ids = true # This is set to true bso member_entity_ids returned will not be considered as changes to this resource - they are mananged externally in a decoupled way
+  external_member_group_ids  = true # This is set to true bso member_group_ids returned will not be considered as changes to this resource - they are mananged externally in a decoupled way
 }
 
 resource "vault_identity_group_member_entity_ids" "human_group" {
