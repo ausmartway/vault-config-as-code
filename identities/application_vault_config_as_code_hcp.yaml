@@ -1,6 +1,6 @@
 name: vault_config_as_code_hcp
 contact: yulei@hashicorp.com
-enviroment: production
+enviroment: development
 business_unit: demo
 aws_auth_role: 
 pki: 
