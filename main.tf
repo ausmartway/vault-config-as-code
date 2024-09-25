@@ -54,6 +54,28 @@ resource "vault_jwt_auth_backend_role" "default" {
   user_claim      = "repository"
   role_type       = "jwt"
 }
+
+// Terraform Cloud auth method
+resource "vault_jwt_auth_backend" "terraform_cloud" {
+  description        = "jwt auth method for terraform cloud"
+  type               = "jwt"
+  path               = "terraform_cloud"
+  oidc_discovery_url = "https://app.terraform.io"
+  bound_issuer       = "https://app.terraform.io"
+  default_role       = "tfc_default"
+}
+
+resource "vault_jwt_auth_backend_role" "tfc_default" {
+  backend           = vault_jwt_auth_backend.terraform_cloud.path
+  role_name         = "tfc_default"
+  bound_audiences   = ["eXVsZWkncyBWYXVsdAo="]   ##Base64 encoded value of "Yulie's Vault"
+  user_claim        = "terraform_full_workspace" ##This is the FULL name of the workspace in Terraform Cloud, in the format of "organization:organization_name:project:project_name:workspace:workspace_name", 
+  bound_claims_type = "glob"
+  bound_claims      = { "terraform_organization_name" = "yulei" } ##This is the name of the organization in Terraform Cloud
+  role_type         = "jwt"
+}
+
+
 //aws auth method
 
 resource "vault_auth_backend" "aws" {
@@ -365,7 +387,7 @@ resource "vault_ssh_secret_backend_role" "ubuntu" {
 }
 
 resource "vault_config_ui_custom_message" "maintenance" {
-  title          = "This cluster is configured using terraform code"
+  title          = "HashiCorp Employees, welcome!"
   message_base64 = base64encode("\nHashiCorp Employees can login to Vault using their github personal token.\n\nThe configuration of this cluster is managed using terraform code. Please do not make any manual changes to the configuration.\n\nFor any changes, please raise a PR in the repository.")
   type           = "modal"
   link {
@@ -374,8 +396,7 @@ resource "vault_config_ui_custom_message" "maintenance" {
   }
 
   authenticated = false
-  start_time    = "2024-01-01T00:00:00.000Z"
-  end_time      = "2028-02-01T05:00:00.000Z"
+  start_time    = "2024-01-01T00:00:00Z"
 }
 
 # //Audit device
