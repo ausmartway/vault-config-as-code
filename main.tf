@@ -365,12 +365,12 @@ resource "vault_ssh_secret_backend_role" "ubuntu" {
 }
 
 resource "vault_config_ui_custom_message" "maintenance" {
-  title          = "This cluster is configured using below terraform code"
-  message_base64 = base64encode("HashiCorp Employees can login to Vault using their github personal token.")
-  type           = "banner"
+  title          = "This cluster is configured using terraform code"
+  message_base64 = base64encode("\nHashiCorp Employees can login to Vault using their github personal token.\n\nThe configuration of this cluster is managed using terraform code. Please do not make any manual changes to the configuration.\n\nFor any changes, please raise a PR in the repository.")
+  type           = "modal"
   link {
     href  = "https://github.com/ausmartway/vault-config-as-code"
-    title = "Vault-Config-as-Code"
+    title = "vault-config-as-code"
   }
 
   authenticated = false
