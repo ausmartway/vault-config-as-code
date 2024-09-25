@@ -364,6 +364,19 @@ resource "vault_ssh_secret_backend_role" "ubuntu" {
   ttl                     = 12 * 3600 #sighed ssh certificate will be valid for 12 hours
 }
 
+resource "vault_config_ui_custom_message" "maintenance" {
+  title          = "This cluster is configured using terraform code"
+  message_base64 = base64encode("\nHashiCorp Employees can login to Vault using their github personal token.\n\nThe configuration of this cluster is managed using terraform code. Please do not make any manual changes to the configuration.\n\nFor any changes, please raise a PR in the repository.")
+  type           = "modal"
+  link {
+    href  = "https://github.com/ausmartway/vault-config-as-code"
+    title = "vault-config-as-code"
+  }
+
+  authenticated = false
+  start_time    = "2024-01-01T00:00:00.000Z"
+  end_time      = "2028-02-01T05:00:00.000Z"
+}
 
 # //Audit device
 # resource "vault_audit" "auditlog" {
