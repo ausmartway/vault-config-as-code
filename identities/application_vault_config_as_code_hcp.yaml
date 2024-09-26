@@ -1,0 +1,10 @@
+name: vault_config_as_code_hcp
+contact: yulei@hashicorp.com
+enviroment: development
+business_unit: demo
+aws_auth_role: 
+pki: 
+github_repo: 
+tfc_workspace: "organization:yulei:project:Development:vault-config-as-code-hcp"
+identity_policies:
+  - application-identity-token-policies
