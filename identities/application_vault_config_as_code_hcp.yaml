@@ -5,6 +5,6 @@ business_unit: demo
 aws_auth_role: 
 pki: 
 github_repo: 
-tfc_workspace: "organization:yulei:project:Development:vault-config-as-code-hcp"
+tfc_workspace: "organization:yulei:project:Development:workspace:vault-config-as-code-hcp"
 identity_policies:
   - application-identity-token-policies
