@@ -1,0 +1,11 @@
+name: tfc-workload-identity-demo
+contact: yulei@hashicorp.com
+enviroment: development
+business_unit: demo
+aws_auth_role: 
+pki: 
+github_repo: 
+tfc_workspace: "organization:yulei:project:Development:workspace:tfc-workload-identity-demo"
+identity_policies:
+  - application-identity-token-policies
+  - super-user
