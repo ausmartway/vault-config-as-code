@@ -50,6 +50,7 @@ locals {
   app_with_github_repo = { for k, v in local.inputappidmap : k => v if v.github_repo != tostring(null) }
   # Filter out any applications that do not have a pki 
   app_with_pki = { for k, v in local.inputappidmap : k => v if v.pki != tostring(null) }
+  app_with_tfc_workspace = { for k, v in local.inputappidmap : k => v if v.tfc_workspace != tostring(null) }
 }
 
 resource "vault_identity_entity" "application" {
@@ -77,4 +78,12 @@ resource "vault_identity_entity_alias" "app_github_repo" {
   mount_accessor = vault_jwt_auth_backend.github_repo_jwt.accessor
   canonical_id   = vault_identity_entity.application[each.key].id
   name           = each.value.github_repo
+}
+
+# for each app with a tfc_workspace create an alias that points back to the application entity
+resource "vault_identity_entity_alias" "app_tfc_workspace" {
+  for_each       = local.app_with_tfc_workspace
+  mount_accessor = vault_jwt_auth_backend.terraform_cloud.accessor
+  canonical_id   = vault_identity_entity.application[each.key].id
+  name           = each.value.tfc_workspace
 }
