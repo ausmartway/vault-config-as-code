@@ -5,7 +5,7 @@ human_identities:
   - Simon Lynch
 application_identities:
   - Core Banking Frontend
-  - vault_config_as_code_hcp
+  - vault_config_as_code_aws
 sub_groups: []
 identity_group_policies: 
   - corebanking-production-secret-consumer
