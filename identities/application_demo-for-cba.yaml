@@ -1,0 +1,11 @@
+name: demo-for-cba
+contact: yulei@hashicorp.com
+enviroment: development
+business_unit: demo
+aws_auth_role: 
+pki: 
+github_repo: ausmartway/demo-for-cba
+tfc_workspace: "organization:yulei:project:Development:workspace:demo-for-cba"
+identity_policies:
+  - application-identity-token-policies
+  - super-user
