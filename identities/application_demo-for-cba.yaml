@@ -9,3 +9,4 @@ tfc_workspace: "organization:yulei:project:Development:workspace:demo-for-cba"
 identity_policies:
   - application-identity-token-policies
   - super-user
+  - corebanking-production-secret-consumer
