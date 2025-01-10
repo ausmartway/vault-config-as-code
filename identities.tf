@@ -49,7 +49,7 @@ locals {
   # Filter out any applications that do not have a github_repo 
   app_with_github_repo = { for k, v in local.inputappidmap : k => v if v.github_repo != tostring(null) }
   # Filter out any applications that do not have a pki 
-  app_with_pki = { for k, v in local.inputappidmap : k => v if v.pki != tostring(null) }
+  app_with_pki           = { for k, v in local.inputappidmap : k => v if v.pki != tostring(null) }
   app_with_tfc_workspace = { for k, v in local.inputappidmap : k => v if v.tfc_workspace != tostring(null) }
 }
 

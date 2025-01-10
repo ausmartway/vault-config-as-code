@@ -1,24 +1,29 @@
 variable "vault_url" {
+  type        = string
   description = "The URL to vault"
   default     = "http://vault.yulei.aws.hashidemos.io:8200/"
 }
 
-variable "customername" {
-  description = "Name of the customer that this demo is built for"
-  default     = "customer"
-}
+# variable "customername" {
+#   type        = string
+#   description = "Name of the customer that this demo is built for"
+#   default     = "customer"
+# }
 
-variable "aws_secret_key" {
-  description = "aws_secret_key"
-  default     = ""
-}
+# variable "aws_secret_key" {
+#   type        = string
+#   description = "aws_secret_key"
+#   default     = ""
+# }
 
-variable "aws_access_key" {
-  description = "aws_access_key"
-  default     = ""
-}
+# variable "aws_access_key" {
+#   type        = string
+#   description = "aws_access_key"
+#   default     = ""
+# }
 
 variable "enviroment" {
+  type        = string
   description = "enviroment"
   default     = "local"
 }
