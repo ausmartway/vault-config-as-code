@@ -18,6 +18,6 @@ output "ssh_ca_cert" {
 
 output "superuser_token" {
   value       = vault_token.superuser.client_token
-  sensitive   = false
+  sensitive   = true
   description = "The superuser token"
 }
