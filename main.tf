@@ -73,6 +73,42 @@ path "secret/*"
   capabilities = ["create", "read", "update", "delete", "list"]
 }
 
+# pki secrets engine
+path "pki/*"
+{
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+
+# pki_root secrets engine
+path "pki_root/*"
+{
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+
+#pki_intermediate secrets engine
+path "pki_intermediate/*"
+{
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+
+#EaaS secrets engine
+path "EaaS/*"
+{
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+
+# aws secrets engine
+path "aws/*"
+{
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+
+# ssh_client_signer secrets engine
+path "ssh-client-signer/*"
+{
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+
 # Allow managing leases
 path "sys/leases/*"
 {
@@ -93,6 +129,11 @@ path "sys/mounts/*"
 # List existing secrets engines.
 path "sys/mounts"
 {
+  capabilities = ["read"]
+}
+
+# For UI compatibility
+path "sys/internal/ui/mounts" {
   capabilities = ["read"]
 }
 
