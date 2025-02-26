@@ -1,7 +1,6 @@
 variable "vault_url" {
   type        = string
-  description = "The URL to vault"
-  default     = "http://vault.yulei.aws.hashidemos.io:8200/"
+  description = "The URL to vault, no default value provided"
 }
 
 # variable "customername" {
@@ -24,8 +23,7 @@ variable "vault_url" {
 
 variable "enviroment" {
   type        = string
-  description = "enviroment"
-  default     = "local"
+  description = "enviroment, no default value provided"
 }
 # disable azure
 

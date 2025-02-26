@@ -279,7 +279,7 @@ resource "vault_pki_secret_backend_root_cert" "self-signing-cert" {
   format               = "pem"
   private_key_format   = "der"
   key_type             = "rsa"
-  key_bits             = 4096
+  key_bits             = 2048
   exclude_cn_from_sans = true
   ou                   = "APJ SE"
   organization         = "Hashicorp Demo Org"
@@ -301,6 +301,8 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
   depends_on  = [vault_pki_secret_backend_root_cert.self-signing-cert]
   backend     = vault_mount.pki_intermediate.path
   type        = "internal"
+  key_type    = "rsa"
+  key_bits    = 2048
   common_name = "Intermediate CA for ${var.enviroment}"
 }
 resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate" {
