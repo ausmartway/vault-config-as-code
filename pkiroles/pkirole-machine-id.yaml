@@ -1,8 +1,15 @@
 name: machine-id
 backend: pki_intermediate
-ttl: 50
-maxttl: 2419200
+ttl: 7863400 # 3 months
+maxttl: 34214400 # 13 months
 contact: yulei@hashicorp.com
+ou: ANZ SEA
+organization: HashiCorp
+country: AU
+province: NSW
+locality: Sydney
+street_address: 1 Market Street
+postal_code: 2000
 allowed_domains:
   - machine-id.anz.hashicorp.demo
   - machine-id.jp.hashicorp.demo
