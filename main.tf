@@ -299,12 +299,21 @@ resource "vault_mount" "pki_intermediate" {
   default_lease_ttl_seconds = 2678400  //Default expiry of the certificates signed by this CA - 31 days
   max_lease_ttl_seconds     = 24819200 //Max expiry of the certificates signed by this CA - 13 Months
 }
+
+resource "vault_pki_secret_backend_key" "private_key" {
+  backend  = vault_mount.pki_intermediate.path
+  type     = "internal"
+  key_name = "private_key"
+  key_type = "rsa"
+  key_bits = "2048"
+}
+
+
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
   depends_on  = [vault_pki_secret_backend_root_cert.self-signing-cert]
   backend     = vault_mount.pki_intermediate.path
-  type        = "internal"
-  key_type    = "rsa"
-  key_bits    = 2048
+  type        = "existing"
+  key_ref     = vault_pki_secret_backend_key.private_key.key_id
   common_name = "Intermediate CA for ${var.enviroment}"
 }
 resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate" {
@@ -333,7 +342,8 @@ resource "vault_pki_secret_backend_issuer" "default" {
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate-alt" {
   depends_on  = [vault_pki_secret_backend_root_cert.self-signing-cert]
   backend     = vault_mount.pki_intermediate.path
-  type        = "internal"
+  type        = "existing"
+  key_ref     = vault_pki_secret_backend_key.private_key.key_id
   common_name = "Intermediate CA for ${var.enviroment}"
 }
 resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate-alt" {
