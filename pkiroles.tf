@@ -24,8 +24,9 @@ resource "vault_pki_secret_backend_role" "role" {
   allow_any_name     = false
   allow_ip_sans      = false
   require_cn         = true
+  issuer_ref         = vault_pki_secret_backend_issuer.default.issuer_ref
 
-  // the type of below fields should be just string, instead of list(string), I will fix it later
+  # the type of below fields should be just string, instead of list(string), I will fix it later
   ou             = [each.value.ou]
   organization   = [each.value.organization]
   country        = [each.value.country]
