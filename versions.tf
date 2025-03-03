@@ -5,7 +5,7 @@ terraform {
     # Update these to reflect the actual requirements of your module
     vault = {
       source  = "hashicorp/vault"
-      version = "~> 4.5.0"
+      version = "~> 4.6.0"
     }
 
     time = {
