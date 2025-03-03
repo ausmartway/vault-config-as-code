@@ -21,7 +21,7 @@ resource "vault_pki_secret_backend_role" "role" {
   ]
   allow_bare_domains = false
   allow_subdomains   = true
-  allow_any_name     = false
+  allow_any_name     = each.value.allow_any_name
   allow_ip_sans      = false
   require_cn         = true
   issuer_ref         = vault_pki_secret_backend_issuer.default.issuer_ref
