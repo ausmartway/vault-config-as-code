@@ -1,4 +1,11 @@
 
+# This file defines the Vault identity token configuration for both application and human identities.
+
+# This is the issuer URL for the identity tokens, typically the Vault server URL.
+resource "vault_identity_oidc" "default" {
+  issuer = var.vault_url
+}
+
 
 #create a signing key for the application identity
 resource "vault_identity_oidc_key" "application_identity" {
