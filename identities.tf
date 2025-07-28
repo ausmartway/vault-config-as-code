@@ -7,7 +7,7 @@ locals {
   inputhumanmap = { for human in toset(local.inputhumanvars) : human.identity.name => human }
 
   # Filter out any humans that do not have a github id
-  human_with_github = { for k, v in local.inputhumanmap : k => v if v.identity.github != tostring(null) }
+  human_with_github = { for k, v in local.inputhumanmap : k => v if v.authentication.github != tostring(null) }
   # Filter out any humans that do not have a pki
   human_with_pki = { for k, v in local.inputhumanmap : k => v if v.authentication.pki != tostring(null) }
 }
@@ -28,7 +28,7 @@ resource "vault_identity_entity_alias" "github" {
   for_each       = local.human_with_github
   mount_accessor = vault_github_auth_backend.hashicorp.accessor
   canonical_id   = vault_identity_entity.human[each.key].id
-  name           = each.value.identity.github
+  name           = each.value.authentication.github
 }
 
 # for each human with a pki create an alias that points back to the human entity
