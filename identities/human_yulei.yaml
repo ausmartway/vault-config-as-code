@@ -8,12 +8,12 @@ metadata:
 identity:
   name: "Yulei Liu"
   email: "yulei@hashicorp.com"
-  github: "ausmartway"
   role: "sales"
   team: "sales_engineering_anz"
 
 authentication:
   pki: "yulei.human-id.customer.demo"
+  github: "ausmartway"
 
 policies:
   identity_policies:

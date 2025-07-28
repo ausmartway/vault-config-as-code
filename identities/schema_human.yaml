@@ -35,10 +35,6 @@ properties:
         type: string
         format: email
         description: "Email address of the person"
-      github:
-        type: string
-        description: "GitHub username"
-        pattern: "^[a-zA-Z0-9\\-_]+$"
       role:
         type: string
         description: "Job role or position"
@@ -50,7 +46,6 @@ properties:
     required:
       - name
       - email
-      - github
       - role
       - team
   authentication:
@@ -60,8 +55,13 @@ properties:
         type: string
         description: "PKI certificate identifier"
         pattern: "^[a-zA-Z0-9\\-\\.]+$"
+      github:
+        type: string
+        description: "GitHub username"
+        pattern: "^[a-zA-Z0-9\\-_]+$"
     required:
       - pki
+      - github
   policies:
     type: object
     properties:

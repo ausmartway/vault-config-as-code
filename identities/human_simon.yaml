@@ -8,12 +8,12 @@ metadata:
 identity:
   name: "Simon Lynch"
   email: "simon.lynch@hashicorp.com"
-  github: "srlynch1"
   role: "sales"
   team: "sales_engineering_anz"
 
 authentication:
   pki: "simon.human-id.customer.demo"
+  github: "srlynch1"
 
 policies:
   identity_policies:
