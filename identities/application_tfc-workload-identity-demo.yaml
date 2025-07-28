@@ -1,16 +1,4 @@
-<<<<<<< HEAD:identities/application_tfc-workload-identity-demo.yaml
-name: tfc-workload-identity-demo
-contact: yulei@hashicorp.com
-enviroment: development
-business_unit: demo
-aws_auth_role: 
-pki: 
-github_repo: 
-tfc_workspace: "organization:yulei:project:Development:workspace:tfc-workload-identity-demo"
-identity_policies:
-  - application-identity-token-policies
-  - super-user
-=======
+
 $schema: "./schema_application.yaml"
 
 metadata:
@@ -34,4 +22,3 @@ policies:
   identity_policies:
     - "application-identity-token-policies"
     - "super-user"
->>>>>>> f541aac (make yaml file more structured, with validation script and readme):identities/application_vault_config_as_code_hcp.yaml
