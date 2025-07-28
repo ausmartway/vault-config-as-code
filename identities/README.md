@@ -16,8 +16,7 @@ This directory contains structured YAML configuration files for defining Vault i
 
 ### Validation Scripts
 
-- `validate_simple.py` - ⭐ Recommended lightweight validator
-- `validate_identities.py` - Full JSON Schema validator
+- `validate_identities.py` - Full-featured Python validator
 - `validate_identities.sh` - Shell script validator
 
 ## File Structure
@@ -64,12 +63,12 @@ metadata:
 identity:
   name: "Full Name"                    # Person's full name
   email: "email@domain.com"            # Email address
-  github: "username"                   # GitHub username
   role: "job-title"                    # Job role
   team: "team-name"                    # Team or department
 
 authentication:
   pki: "name.human-id.domain"          # PKI certificate identifier
+  github: "username"                   # GitHub username
 
 policies:
   identity_policies:                   # List of Vault policies
@@ -123,50 +122,20 @@ This directory contains validation tools to ensure all identity YAML files confo
 
 ## Available Validation Scripts
 
-### 1. Simple Python Validator (`validate_simple.py`) ⭐ **Recommended**
+### 1. Python Validator (`validate_identities.py`) ⭐ **Recommended**
 
-A lightweight validator that uses only built-in Python libraries and the `yq` tool.
+A comprehensive validator that can work with or without additional Python dependencies.
 
 **Prerequisites:**
 
 - `yq` (YAML processor): `brew install yq`
 - Python 3.6+
+- Optional: `pip install pyyaml jsonschema` for full JSON Schema validation
 
 **Usage:**
 
 ```bash
 # From this directory (recommended)
-./validate_simple.py
-
-# Show help
-./validate_simple.py --help
-```
-
-**Features:**
-
-- ✅ No Python dependencies to install
-- ✅ Fast and lightweight
-- ✅ Clear error messages
-- ✅ Validates required fields and structure
-- ✅ Checks environment enum values
-- ✅ Validates data types
-
-### 2. Full Python Validator (`validate_identities.py`)
-
-A comprehensive validator using JSON Schema validation.
-
-**Prerequisites:**
-
-- Python 3.6+
-- `pip install pyyaml jsonschema` (or use requirements.txt)
-
-**Usage:**
-
-```bash
-# Install dependencies (if needed)
-pip install -r requirements.txt
-
-# Run validation
 ./validate_identities.py
 
 # Show help
@@ -175,13 +144,13 @@ pip install -r requirements.txt
 
 **Features:**
 
-- ✅ Full JSON Schema validation
-- ✅ Detailed validation error messages
-- ✅ Comprehensive type checking
-- ✅ Pattern validation (emails, URLs, etc.)
-- ✅ Schema validation
+- ✅ Works with or without additional dependencies (graceful fallback)
+- ✅ Full JSON Schema validation (when dependencies available)
+- ✅ Comprehensive error messages
+- ✅ Command-line interface with options
+- ✅ Validates required fields and structure
 
-### 3. Shell Script Validator (`validate_identities.sh`)
+### 2. Shell Script Validator (`validate_identities.sh`)
 
 A bash script version using external tools.
 
@@ -205,8 +174,8 @@ A bash script version using external tools.
 ```bash
 # From the identities directory (recommended)
 cd identities
-chmod +x validate_simple.py
-./validate_simple.py
+chmod +x validate_identities.py
+./validate_identities.py
 ```
 
 ## Validation Rules
@@ -255,12 +224,12 @@ metadata:
 identity:
   name: "Full Name"             # Non-empty string
   email: "email@domain.com"     # Valid email
-  github: "username"            # Non-empty string
   role: "job-title"             # Non-empty string
   team: "team-name"             # Non-empty string
 
 authentication:
   pki: "name.domain"            # Non-empty string
+  github: "username"            # Non-empty string
 
 policies:
   identity_policies:            # Non-empty list
@@ -312,7 +281,7 @@ jobs:
         sudo chmod +x /usr/local/bin/yq
     
     - name: Validate Identity Files
-      run: ./identities/validate_simple.py
+      run: ./identities/validate_identities.py
 ```
 
 ### Pre-commit Hook
@@ -321,9 +290,9 @@ jobs:
 #!/bin/sh
 # .git/hooks/pre-commit
 cd "$(git rev-parse --show-toplevel)"
-if [ -f "identities/validate_simple.py" ]; then
+if [ -f "identities/validate_identities.py" ]; then
     echo "Validating identity YAML files..."
-    cd identities && ./validate_simple.py
+    cd identities && ./validate_identities.py
     if [ $? -ne 0 ]; then
         echo "❌ Identity validation failed. Please fix the errors and try again."
         exit 1
@@ -337,7 +306,7 @@ fi
 .PHONY: validate-identities
 validate-identities:
 	@echo "Validating identity YAML files..."
-	@cd identities && ./validate_simple.py
+	@cd identities && ./validate_identities.py
 
 .PHONY: validate-full
 validate-full:
@@ -401,8 +370,8 @@ For detailed debugging, you can:
 
 1. **Always validate before committing** - Set up pre-commit hooks
 2. **Run validation in CI/CD** - Prevent invalid files from merging
-3. **Use the simple validator for quick checks** - Faster feedback loop
-4. **Use the full validator for comprehensive checks** - Better error messages
+3. **Use the Python validator for development** - Fast feedback with graceful fallback
+4. **Use the shell validator for CI/CD** - Comprehensive validation with detailed errors
 5. **Keep schemas up to date** - Update validation rules as requirements change
 
 ## File Organization
@@ -414,8 +383,7 @@ vault-config-as-code/
 │   ├── schema_human.yaml           # Human schema
 │   ├── application_*.yaml          # Application identity files
 │   ├── human_*.yaml                # Human identity files
-│   ├── validate_simple.py          # ⭐ Recommended validator
-│   ├── validate_identities.py      # Full JSON Schema validator
+│   ├── validate_identities.py      # ⭐ Recommended Python validator
 │   ├── validate_identities.sh      # Shell script validator
 │   ├── requirements.txt            # Python dependencies
 │   └── README.md                   # This comprehensive guide

@@ -8,12 +8,12 @@ metadata:
 identity:
   name: "Ilche"
   email: "ilche@hashicorp.com"
-  github: "ilche"
   role: "sales"
   team: "sales_engineering_anz"
 
 authentication:
   pki: "ilche.human-id.customer.demo"
+  github: "ilche"
 
 policies:
   identity_policies:
