@@ -1,10 +1,22 @@
-name: Core Banking Frontend
-contact: yulei@hashicorp.com
-enviroment: production
-business_unit: retail_banking
-aws_auth_role: corebanking-frontend
-pki: corebanking-frontend.machine-id.customer.demo
-github_repo: ausmartway/vault-github-action-test
-tfc_workspace: "organization:yulei:project:Development:workspace:tfc-workload-identity-demo"
-identity_policies:
-  - application-identity-token-policies
+$schema: "./schema_application.yaml"
+
+metadata:
+  version: "1.0.0"
+  created_date: "2025-07-28"
+  description: "Core Banking Frontend Application Identity"
+
+identity:
+  name: "Core Banking Frontend"
+  contact: "yulei@hashicorp.com"
+  environment: "production"
+  business_unit: "retail_banking"
+
+authentication:
+  aws_auth_role: "corebanking-frontend"
+  pki: "corebanking-frontend.machine-id.customer.demo"
+  github_repo: "ausmartway/vault-github-action-test"
+  tfc_workspace: "organization:yulei:project:Development:workspace:tfc-workload-identity-demo"
+
+policies:
+  identity_policies:
+    - "application-identity-token-policies"

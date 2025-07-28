@@ -1,11 +1,23 @@
-name: vault_config_as_code_hcp
-contact: yulei@hashicorp.com
-enviroment: development
-business_unit: demo
-aws_auth_role: 
-pki: 
-github_repo: 
-tfc_workspace: "organization:yulei:project:Development:workspace:vault-config-as-code-hcp"
-identity_policies:
-  - application-identity-token-policies
-  - super-user
+$schema: "./schema_application.yaml"
+
+metadata:
+  version: "1.0.0"
+  created_date: "2025-07-28"
+  description: "Vault Config as Code HCP Application Identity"
+
+identity:
+  name: "vault_config_as_code_hcp"
+  contact: "yulei@hashicorp.com"
+  environment: "development"
+  business_unit: "demo"
+
+authentication:
+  aws_auth_role: "vault-config-as-code-hcp"
+  pki: ""
+  github_repo: ""
+  tfc_workspace: "organization:yulei:project:Development:workspace:vault-config-as-code-hcp"
+
+policies:
+  identity_policies:
+    - "application-identity-token-policies"
+    - "super-user"

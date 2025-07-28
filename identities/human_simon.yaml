@@ -1,9 +1,20 @@
-# $schema: ./schema.yaml
-name: Simon Lynch
-email: simon.lynch@hashicorp.com
-github: srlynch1
-pki: simon.human-id.customer.demo
-role: sales
-team: sales_engineering_anz
-identity_policies:
-  - human-identity-token-policies
+$schema: "./schema_human.yaml"
+
+metadata:
+  version: "1.0.0"
+  created_date: "2025-07-28"
+  description: "Human Identity for Simon Lynch"
+
+identity:
+  name: "Simon Lynch"
+  email: "simon.lynch@hashicorp.com"
+  github: "srlynch1"
+  role: "sales"
+  team: "sales_engineering_anz"
+
+authentication:
+  pki: "simon.human-id.customer.demo"
+
+policies:
+  identity_policies:
+    - "human-identity-token-policies"
