@@ -1,9 +1,20 @@
-# $schema: ./schema.yaml
-name: Ilche
-email: ilche@hashicorp.com
-github: ilche
-pki: ilche.human-id.customer.demo
-role: sales
-team: sales_engineering_anz
-identity_policies:
-  - human-identity-token-policies
+$schema: "./schema_human.yaml"
+
+metadata:
+  version: "1.0.0"
+  created_date: "2025-07-28"
+  description: "Human Identity for Ilche"
+
+identity:
+  name: "Ilche"
+  email: "ilche@hashicorp.com"
+  github: "ilche"
+  role: "sales"
+  team: "sales_engineering_anz"
+
+authentication:
+  pki: "ilche.human-id.customer.demo"
+
+policies:
+  identity_policies:
+    - "human-identity-token-policies"
