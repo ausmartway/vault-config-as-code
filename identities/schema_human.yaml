@@ -1,8 +1,12 @@
 $schema: "http://json-schema.org/draft-07/schema#"
 title: "Human Identity Schema"
 description: "Schema for defining human identities in Vault"
+$schema: "http://json-schema.org/draft-07/schema#"
+title: "Human Identity Schema"
+description: "Schema for defining human identities in Vault"
 type: object
 properties:
+  $schema:
   $schema:
     type: string
     description: "JSON Schema reference for this document"
@@ -35,6 +39,10 @@ properties:
         type: string
         format: email
         description: "Email address of the person"
+      github:
+        type: string
+        description: "GitHub username"
+        pattern: "^[a-zA-Z0-9\\-_]+$"
       role:
         type: string
         description: "Job role or position"
@@ -46,6 +54,7 @@ properties:
     required:
       - name
       - email
+      - github
       - role
       - team
   authentication:
@@ -55,13 +64,8 @@ properties:
         type: string
         description: "PKI certificate identifier"
         pattern: "^[a-zA-Z0-9\\-\\.]+$"
-      github:
-        type: string
-        description: "GitHub username"
-        pattern: "^[a-zA-Z0-9\\-_]+$"
     required:
       - pki
-      - github
   policies:
     type: object
     properties:
