@@ -1,10 +1,22 @@
-name: Core Banking Backend
-contact: yulei@hashicorp.com
-enviroment: production
-business_unit: retail_banking
-aws_auth_role: corebanking-backend
-pki: corebanking-backend.machine-id.customer.demo
-github_repo: 
-tfc_workspace:
-identity_policies:
-  - application-identity-token-policies
+$schema: "./schema_application.yaml"
+
+metadata:
+  version: "1.0.0"
+  created_date: "2025-07-28"
+  description: "Core Banking Backend Application Identity"
+
+identity:
+  name: "Core Banking Backend"
+  contact: "yulei@hashicorp.com"
+  environment: "production"
+  business_unit: "retail_banking"
+
+authentication:
+  aws_auth_role: "corebanking-backend"
+  pki: "corebanking-backend.machine-id.customer.demo"
+  github_repo: ""
+  tfc_workspace: ""
+
+policies:
+  identity_policies:
+    - "application-identity-token-policies"

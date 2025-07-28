@@ -1,9 +1,20 @@
-# $schema: ./schema.yaml
-name: Yulei Liu
-email: yulei@hashicorp.com
-github: ausmartway
-pki: yulei.human-id.customer.demo
-role: sales
-team: sales_engineering_anz
-identity_policies:
-  - human-identity-token-policies
+$schema: "./schema_human.yaml"
+
+metadata:
+  version: "1.0.0"
+  created_date: "2025-07-28"
+  description: "Human Identity for Yulei Liu"
+
+identity:
+  name: "Yulei Liu"
+  email: "yulei@hashicorp.com"
+  github: "ausmartway"
+  role: "sales"
+  team: "sales_engineering_anz"
+
+authentication:
+  pki: "yulei.human-id.customer.demo"
+
+policies:
+  identity_policies:
+    - "human-identity-token-policies"

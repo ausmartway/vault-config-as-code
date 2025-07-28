@@ -1,23 +1,89 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: "Application Identity Schema"
+description: "Schema for defining application identities in Vault"
 type: object
 properties:
-  name:
+  $schema:
     type: string
-  contact:
-    type: string
-    format: email
-  environment:
-    type: string
-  business_unit:
-    type: string
-  aws_auth_role:
-    type: string
-  pki:
-    type: string
+    description: "JSON Schema reference for this document"
+  metadata:
+    type: object
+    properties:
+      version:
+        type: string
+        pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        description: "Semantic version of this identity configuration"
+      created_date:
+        type: string
+        format: date
+        description: "Date when this identity was created"
+      description:
+        type: string
+        description: "Brief description of this application identity"
+    required:
+      - version
+      - created_date
+      - description
+  identity:
+    type: object
+    properties:
+      name:
+        type: string
+        description: "Human readable name of the application"
+        minLength: 1
+      contact:
+        type: string
+        format: email
+        description: "Email contact for this application"
+      environment:
+        type: string
+        enum: ["development", "staging", "production"]
+        description: "Environment where this application runs"
+      business_unit:
+        type: string
+        description: "Business unit that owns this application"
+        minLength: 1
+    required:
+      - name
+      - contact
+      - environment
+      - business_unit
+  authentication:
+    type: object
+    properties:
+      aws_auth_role:
+        type: string
+        description: "AWS authentication role for this application"
+        minLength: 1
+      pki:
+        type: string
+        description: "PKI certificate identifier"
+        pattern: "^$|^[a-zA-Z0-9\\-\\.]+$"
+      github_repo:
+        type: string
+        description: "GitHub repository URL (optional)"
+        pattern: "^$|^(https://github\\.com/)?[a-zA-Z0-9\\-_]+/[a-zA-Z0-9\\-_]+$"
+      tfc_workspace:
+        type: string
+        description: "Terraform Cloud workspace (optional)"
+    required:
+      - aws_auth_role
+      - pki
+    additionalProperties: false
+  policies:
+    type: object
+    properties:
+      identity_policies:
+        type: array
+        items:
+          type: string
+        description: "List of Vault policies assigned to this identity"
+        minItems: 1
+    required:
+      - identity_policies
 required:
-  - name
-  - contact
-  - environment
-  - business_unit
-  - aws_auth_role
-  - pki
-additionalProperties: true
+  - metadata
+  - identity
+  - authentication
+  - policies
+additionalProperties: false
