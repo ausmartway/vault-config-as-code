@@ -1,22 +1,81 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: "Human Identity Schema"
+description: "Schema for defining human identities in Vault"
 type: object
 properties:
-  name:
+  $schema:
     type: string
-  email:
-    type: string
-  github:
-    type: string
-  pki:
-    type: string
-  role:
-    type: string
-  team:
-    type: string
+    description: "JSON Schema reference for this document"
+  metadata:
+    type: object
+    properties:
+      version:
+        type: string
+        pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        description: "Semantic version of this identity configuration"
+      created_date:
+        type: string
+        format: date
+        description: "Date when this identity was created"
+      description:
+        type: string
+        description: "Brief description of this human identity"
+    required:
+      - version
+      - created_date
+      - description
+  identity:
+    type: object
+    properties:
+      name:
+        type: string
+        description: "Full name of the person"
+        minLength: 1
+      email:
+        type: string
+        format: email
+        description: "Email address of the person"
+      github:
+        type: string
+        description: "GitHub username"
+        pattern: "^[a-zA-Z0-9\\-_]+$"
+      role:
+        type: string
+        description: "Job role or position"
+        minLength: 1
+      team:
+        type: string
+        description: "Team or department"
+        minLength: 1
+    required:
+      - name
+      - email
+      - github
+      - role
+      - team
+  authentication:
+    type: object
+    properties:
+      pki:
+        type: string
+        description: "PKI certificate identifier"
+        pattern: "^[a-zA-Z0-9\\-\\.]+$"
+    required:
+      - pki
+  policies:
+    type: object
+    properties:
+      identity_policies:
+        type: array
+        items:
+          type: string
+        description: "List of Vault policies assigned to this identity"
+        minItems: 1
+    required:
+      - identity_policies
 required:
-  - name
-  - email
-  - github
-  - pki
-  - role
-  - team
-additionalProperties: true
+  - metadata
+  - identity
+  - authentication
+  - policies
+additionalProperties: false
