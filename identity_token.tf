@@ -21,11 +21,15 @@ resource "vault_identity_oidc_role" "application_identity" {
   template = <<EOT
 {
   "azp": {{identity.entity.metadata.spiffe_id}},
-  "nbf": {{time.now}}
+  "nbf": {{time.now}},
+  "appinfo": {
+    "business_unit": "{{identity.entity.metadata.business_unit}}",
+    "environment": "{{identity.entity.metadata.environment}}"
+  }
 }
 EOT
 
-  client_id = "spiffe://glueegateway"
+  client_id = "spiffe://kgateway"
   key       = vault_identity_oidc_key.application_identity.name
   ttl       = 30 * 60 // 30 minutes for application identity token
 }
@@ -58,10 +62,16 @@ resource "vault_identity_oidc_role" "human_identity" {
   template  = <<EOT
 {
   "azp": {{identity.entity.metadata.spiffe_id}},
-  "nbf": {{time.now}}
+  "nbf": {{time.now}},
+  "userinfo": {
+    "name": "{{identity.entity.name}}",
+    "email": "{{identity.entity.metadata.email}}",
+    "role": "{{identity.entity.metadata.role}}",
+    "team": "{{identity.entity.metadata.team}}"
+    }
 }
 EOT
-  client_id = "spiffe://glueegateway"
+  client_id = "spiffe://kgateway"
   key       = vault_identity_oidc_key.human_identity.name
   ttl       = 8 * 60 * 60 // 8 hours for human identity token
 }
