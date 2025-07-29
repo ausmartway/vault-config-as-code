@@ -1,6 +1,6 @@
 name: Linux Hosts
 contact: yulei@hashicorp.com
-human_identities:
+human_identities: []
 application_identities:
   - vault-client.machine-id.customer.demo
 sub_groups: []
