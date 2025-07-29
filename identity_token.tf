@@ -22,9 +22,11 @@ resource "vault_identity_oidc_role" "application_identity" {
 {
   "azp": {{identity.entity.metadata.spiffe_id}},
   "nbf": {{time.now}},
+  "groups": {{identity.entity.groups.names}},
   "appinfo": {
     "business_unit": "{{identity.entity.metadata.business_unit}}",
-    "environment": "{{identity.entity.metadata.environment}}"
+    "environment": "{{identity.entity.metadata.environment}}",
+
   }
 }
 EOT
@@ -63,6 +65,7 @@ resource "vault_identity_oidc_role" "human_identity" {
 {
   "azp": {{identity.entity.metadata.spiffe_id}},
   "nbf": {{time.now}},
+  "groups": {{identity.entity.groups.names}},
   "userinfo": {
     "name": "{{identity.entity.name}}",
     "email": "{{identity.entity.metadata.email}}",
