@@ -24,9 +24,8 @@ resource "vault_identity_oidc_role" "application_identity" {
   "nbf": {{time.now}},
   "groups": {{identity.entity.groups.names}},
   "appinfo": {
-    "business_unit": "{{identity.entity.metadata.business_unit}}",
-    "environment": "{{identity.entity.metadata.environment}}",
-
+    "business_unit": {{identity.entity.metadata.business_unit}},
+    "environment": "{{identity.entity.metadata.environment}}"
   }
 }
 EOT
@@ -67,10 +66,10 @@ resource "vault_identity_oidc_role" "human_identity" {
   "nbf": {{time.now}},
   "groups": {{identity.entity.groups.names}},
   "userinfo": {
-    "name": "{{identity.entity.name}}",
-    "email": "{{identity.entity.metadata.email}}",
-    "role": "{{identity.entity.metadata.role}}",
-    "team": "{{identity.entity.metadata.team}}"
+    "name": {{identity.entity.name}},
+    "email": {{identity.entity.metadata.email}},
+    "role": {{identity.entity.metadata.role}},
+    "team": {{identity.entity.metadata.team}}
     }
 }
 EOT
