@@ -25,7 +25,7 @@ resource "vault_identity_oidc_role" "application_identity" {
   "groups": {{identity.entity.groups.names}},
   "appinfo": {
     "business_unit": {{identity.entity.metadata.business_unit}},
-    "environment": "{{identity.entity.metadata.environment}}"
+    "environment": {{identity.entity.metadata.environment}}
   }
 }
 EOT
