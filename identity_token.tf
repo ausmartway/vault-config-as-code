@@ -93,3 +93,13 @@ resource "vault_policy" "human-identity-token-policies" {
  }
  EOF
 }
+
+resource "vault_identity_oidc_provider" "default" {
+  name          = "default"
+  https_enabled = true
+  issuer_host   = "nginx:443"
+  allowed_client_ids = [
+    vault_identity_oidc_role.application_identity.client_id,
+    vault_identity_oidc_role.human_identity.client_id
+  ]
+}
