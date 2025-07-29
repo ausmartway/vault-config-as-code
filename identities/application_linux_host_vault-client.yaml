@@ -1,0 +1,23 @@
+$schema: "./schema_application.yaml"
+
+metadata:
+  version: "1.0.0"
+  created_date: "2025-07-28"
+  description: "linux host vault-client.machine-id.customer.demo Identity"
+
+identity:
+  name: "vault-client.machine-id.customer.demo"
+  contact: "yulei@hashicorp.com"
+  environment: "production"
+  business_unit: "retail_banking"
+
+authentication:
+  aws_auth_role: ""
+  pki: "vault-client.machine-id.customer.demo"
+  github_repo: ""
+  tfc_workspace: ""
+
+policies:
+  identity_policies:
+    - "application-identity-token-policies"
+    - "super-user"
