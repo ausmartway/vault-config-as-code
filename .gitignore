@@ -29,7 +29,7 @@ backend.tf
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
 
-# Local development files (main-dev branch only)
+# Local development files
 docker-compose.yml
 dev-config/
 license/
