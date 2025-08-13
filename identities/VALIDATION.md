@@ -1,123 +1,4 @@
-# Identity Configuration Files
-
-This directory contains structured YAML configuration files for defining Vault identities, including both application and human identities.
-
-## Structure Overview
-
-### Schema Files
-
-- `schema_application.yaml` - JSON Schema for application identity configuration
-- `schema_human.yaml` - JSON Schema for human identity configuration
-
-### Identity Files
-
-- `application_*.yaml` - Application identity definitions
-- `human_*.yaml` - Human identity definitions
-
-### Validation Scripts
-
-- `validate_simple.py` - ⭐ Recommended lightweight validator
-- `validate_identities.py` - Full JSON Schema validator
-- `validate_identities.sh` - Shell script validator
-
-## File Structure
-
-All identity files follow a consistent hierarchical structure:
-
-### Application Identity Structure
-
-```yaml
-$schema: "./schema_application.yaml"
-
-metadata:
-  version: "1.0.0"                    # Semantic version
-  created_date: "2025-07-28"          # Creation date (YYYY-MM-DD)
-  description: "Brief description"     # Purpose description
-
-identity:
-  name: "Application Name"             # Human-readable name
-  contact: "email@domain.com"          # Contact email
-  environment: "production"            # Environment (development/staging/production)
-  business_unit: "unit_name"           # Owning business unit
-
-authentication:
-  aws_auth_role: "role-name"           # AWS authentication role
-  pki: "cert.machine-id.domain"       # PKI certificate identifier
-  github_repo: "owner/repo"            # GitHub repository (optional)
-  tfc_workspace: "org:proj:workspace"  # Terraform Cloud workspace (optional)
-
-policies:
-  identity_policies:                   # List of Vault policies
-    - "policy-name"
-```
-
-### Human Identity Structure
-
-```yaml
-$schema: "./schema_human.yaml"
-
-metadata:
-  version: "1.0.0"                    # Semantic version
-  created_date: "2025-07-28"          # Creation date (YYYY-MM-DD)
-  description: "Brief description"     # Purpose description
-
-identity:
-  name: "Full Name"                    # Person's full name
-  email: "email@domain.com"            # Email address
-  github: "username"                   # GitHub username
-  role: "job-title"                    # Job role
-  team: "team-name"                    # Team or department
-
-authentication:
-  pki: "name.human-id.domain"          # PKI certificate identifier
-
-policies:
-  identity_policies:                   # List of Vault policies
-    - "policy-name"
-```
-
-## Schema Validation
-
-Each identity file includes a schema reference at the top:
-
-- Application identities: `$schema: "./schema_application.yaml"`
-- Human identities: `$schema: "./schema_human.yaml"`
-
-The schemas provide:
-
-- **Type validation** - Ensures correct data types
-- **Required field enforcement** - Validates all mandatory fields are present
-- **Format validation** - Validates emails, patterns, and enums
-- **Documentation** - Describes each field's purpose
-
-## Benefits of This Structure
-
-1. **Consistency** - All files follow the same hierarchical structure
-2. **Validation** - Schema validation prevents configuration errors
-3. **Maintainability** - Clear separation of concerns with logical grouping
-4. **Documentation** - Self-documenting with descriptions and examples
-5. **Versioning** - Built-in version tracking for configuration changes
-6. **Type Safety** - Strong typing prevents common configuration mistakes
-
-## Usage Guidelines
-
-1. **Creating New Identities**:
-   - Copy an existing file as a template
-   - Update all fields according to the schema
-   - Ensure the schema reference is correct
-
-2. **Modifying Existing Identities**:
-   - Update the version number using semantic versioning
-   - Validate against the schema before committing
-
-3. **Schema Updates**:
-   - Update schema files when adding new fields
-   - Maintain backward compatibility when possible
-   - Update all existing files to match new schema requirements
-
----
-
-## Validation Tools
+# Identity YAML Validation Tools
 
 This directory contains validation tools to ensure all identity YAML files conform to their respective schemas.
 
@@ -128,22 +9,25 @@ This directory contains validation tools to ensure all identity YAML files confo
 A lightweight validator that uses only built-in Python libraries and the `yq` tool.
 
 **Prerequisites:**
-
 - `yq` (YAML processor): `brew install yq`
 - Python 3.6+
 
 **Usage:**
+```bash
+## 🚀 Quick Start
 
 ```bash
-# From this directory (recommended)
+# From the identities directory (recommended)
+cd identities
+chmod +x validate_simple.py
 ./validate_simple.py
 
-# Show help
-./validate_simple.py --help
+# From the project root (alternative)
+cd identities && ./validate_simple.py
+```
 ```
 
 **Features:**
-
 - ✅ No Python dependencies to install
 - ✅ Fast and lightweight
 - ✅ Clear error messages
@@ -156,25 +40,23 @@ A lightweight validator that uses only built-in Python libraries and the `yq` to
 A comprehensive validator using JSON Schema validation.
 
 **Prerequisites:**
-
 - Python 3.6+
 - `pip install pyyaml jsonschema` (or use requirements.txt)
 
 **Usage:**
-
 ```bash
 # Install dependencies (if needed)
 pip install -r requirements.txt
 
-# Run validation
+# From the identities directory
+cd identities
 ./validate_identities.py
 
-# Show help
-./validate_identities.py --help
+# From project root
+./identities/validate_identities.py --dir identities
 ```
 
 **Features:**
-
 - ✅ Full JSON Schema validation
 - ✅ Detailed validation error messages
 - ✅ Comprehensive type checking
@@ -186,27 +68,19 @@ pip install -r requirements.txt
 A bash script version using external tools.
 
 **Prerequisites:**
-
 - `yq`: `brew install yq`
 - `ajv-cli`: `npm install -g ajv-cli`
 
 **Usage:**
-
 ```bash
-# Run validation
+# From the identities directory
 ./validate_identities.sh
+
+# Validate files in a custom directory
+./validate_identities.sh /path/to/identities
 
 # Show help
 ./validate_identities.sh --help
-```
-
-## 🚀 Quick Start
-
-```bash
-# From the identities directory (recommended)
-cd identities
-chmod +x validate_simple.py
-./validate_simple.py
 ```
 
 ## Validation Rules
@@ -214,7 +88,6 @@ chmod +x validate_simple.py
 ### Application Identity Files (`application_*.yaml`)
 
 **Required Structure:**
-
 ```yaml
 $schema: "./schema_application.yaml"
 
@@ -243,7 +116,6 @@ policies:
 ### Human Identity Files (`human_*.yaml`)
 
 **Required Structure:**
-
 ```yaml
 $schema: "./schema_human.yaml"
 
@@ -270,24 +142,21 @@ policies:
 ## Common Validation Errors
 
 ### Missing Required Fields
-
-```text
+```
 ❌ Missing required section: metadata
 ❌ Missing required identity field: name
 ❌ Missing required authentication field: pki
 ```
 
 ### Invalid Values
-
-```text
+```
 ❌ Invalid environment: prod. Must be one of: [development, staging, production]
 ❌ identity_policies cannot be empty
 ❌ identity_policies must be a list
 ```
 
 ### Structure Issues
-
-```text
+```
 ❌ Failed to parse YAML file: invalid syntax
 ❌ Cannot determine type for file: unknown_file.yaml
 ```
@@ -295,7 +164,6 @@ policies:
 ## Integration with CI/CD
 
 ### GitHub Actions Example
-
 ```yaml
 name: Validate Identity Files
 on: [push, pull_request]
@@ -316,7 +184,6 @@ jobs:
 ```
 
 ### Pre-commit Hook
-
 ```bash
 #!/bin/sh
 # .git/hooks/pre-commit
@@ -332,7 +199,6 @@ fi
 ```
 
 ### Makefile Integration
-
 ```makefile
 .PHONY: validate-identities
 validate-identities:
@@ -368,15 +234,15 @@ apply: validate-identities
 
 3. **Permission denied**
    ```bash
-   chmod +x validate_simple.py
-   chmod +x validate_identities.py
-   chmod +x validate_identities.sh
+   chmod +x identities/validate_simple.py
+   chmod +x identities/validate_identities.py
+   chmod +x identities/validate_identities.sh
    ```
 
 4. **Files not found**
-   - Ensure you're running from the identities directory
-   - Check that schema files are present
-   - Verify YAML files exist
+   - Ensure you're running from the project root
+   - Check that `identities/` directory exists
+   - Verify schema files are present
 
 ### Debug Mode
 
@@ -384,17 +250,17 @@ For detailed debugging, you can:
 
 1. Check individual files manually:
    ```bash
-   yq eval application_example.yaml
+   yq eval identities/application_example.yaml
    ```
 
 2. Validate JSON conversion:
    ```bash
-   yq eval -o=json application_example.yaml | jq .
+   yq eval -o=json identities/application_example.yaml | jq .
    ```
 
 3. Check schema syntax:
    ```bash
-   yq eval schema_application.yaml
+   yq eval identities/schema_application.yaml
    ```
 
 ## Best Practices
@@ -407,7 +273,7 @@ For detailed debugging, you can:
 
 ## File Organization
 
-```text
+```
 vault-config-as-code/
 ├── identities/                      # ⭐ All identity-related files
 │   ├── schema_application.yaml      # Application schema
@@ -418,6 +284,7 @@ vault-config-as-code/
 │   ├── validate_identities.py      # Full JSON Schema validator
 │   ├── validate_identities.sh      # Shell script validator
 │   ├── requirements.txt            # Python dependencies
-│   └── README.md                   # This comprehensive guide
+│   ├── VALIDATION.md               # This validation guide
+│   └── README.md                   # Schema documentation
 └── [other terraform files...]      # Main Terraform configuration
 ```

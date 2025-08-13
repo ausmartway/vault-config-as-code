@@ -3,19 +3,19 @@ $schema: "./schema_application.yaml"
 metadata:
   version: "1.0.0"
   created_date: "2025-07-28"
-  description: "Vault Config as Code HCP Application Identity"
+  description: "TFC Workload Identity Demo Application"
 
 identity:
-  name: "vault_config_as_code_hcp"
+  name: "tfc-workload-identity-demo"
   contact: "yulei@hashicorp.com"
   environment: "development"
   business_unit: "demo"
 
 authentication:
-  aws_auth_role: "vault-config-as-code-hcp"
+  aws_auth_role: ""
   pki: ""
   github_repo: ""
-  tfc_workspace: "organization:yulei:project:Development:workspace:vault-config-as-code-hcp"
+  tfc_workspace: "organization:yulei:project:Development:workspace:tfc-workload-identity-demo"
 
 policies:
   identity_policies:

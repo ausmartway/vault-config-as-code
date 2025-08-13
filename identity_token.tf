@@ -21,16 +21,11 @@ resource "vault_identity_oidc_role" "application_identity" {
   template = <<EOT
 {
   "azp": {{identity.entity.metadata.spiffe_id}},
-  "nbf": {{time.now}},
-  "groups": {{identity.entity.groups.names}},
-  "appinfo": {
-    "business_unit": {{identity.entity.metadata.business_unit}},
-    "environment": {{identity.entity.metadata.environment}}
-  }
+  "nbf": {{time.now}}
 }
 EOT
 
-  client_id = "spiffe://kgateway"
+  client_id = "spiffe://glueegateway"
   key       = vault_identity_oidc_key.application_identity.name
   ttl       = 30 * 60 // 30 minutes for application identity token
 }
@@ -63,17 +58,10 @@ resource "vault_identity_oidc_role" "human_identity" {
   template  = <<EOT
 {
   "azp": {{identity.entity.metadata.spiffe_id}},
-  "nbf": {{time.now}},
-  "groups": {{identity.entity.groups.names}},
-  "userinfo": {
-    "name": {{identity.entity.name}},
-    "email": {{identity.entity.metadata.email}},
-    "role": {{identity.entity.metadata.role}},
-    "team": {{identity.entity.metadata.team}}
-    }
+  "nbf": {{time.now}}
 }
 EOT
-  client_id = "spiffe://kgateway"
+  client_id = "spiffe://glueegateway"
   key       = vault_identity_oidc_key.human_identity.name
   ttl       = 8 * 60 * 60 // 8 hours for human identity token
 }
@@ -92,14 +80,4 @@ resource "vault_policy" "human-identity-token-policies" {
    capabilities = ["read"]
  }
  EOF
-}
-
-resource "vault_identity_oidc_provider" "default" {
-  name          = "default"
-  https_enabled = true
-  issuer_host   = "nginx:443"
-  allowed_client_ids = [
-    vault_identity_oidc_role.application_identity.client_id,
-    vault_identity_oidc_role.human_identity.client_id
-  ]
 }
