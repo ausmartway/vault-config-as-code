@@ -15,7 +15,7 @@ authentication:
   aws_auth_role: "corebanking-frontend"
   pki: "corebanking-frontend.machine-id.customer.demo"
   github_repo: "ausmartway/vault-github-action-test"
-  tfc_workspace: "organization:yulei:project:Development:workspace:tfc-workload-identity-demo"
+  tfc_workspace: ""
 
 policies:
   identity_policies:
