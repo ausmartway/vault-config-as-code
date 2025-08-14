@@ -21,9 +21,9 @@ variable "vault_url" {
 #   default     = ""
 # }
 
-variable "enviroment" {
+variable "environment" {
   type        = string
-  description = "enviroment, no default value provided"
+  description = "environment, no default value provided"
 }
 # disable azure
 
