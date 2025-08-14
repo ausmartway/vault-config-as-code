@@ -6,4 +6,6 @@ repos:
     - id: terraform_tflint
     - id: terraform_trivy
     - id: terraform_validate
+      args:
+        - --hook-config=--retry-once-with-cleanup=true
 

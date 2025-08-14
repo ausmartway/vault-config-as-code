@@ -263,7 +263,7 @@ resource "vault_auth_backend" "approle" {
 }
 
 # Approle should only be used when there is no better/native authentication, eg, aws/gcp/azure/k8s/ldap.
-# The approle roles in this repository will be created by the application module, for each application and enviroments. 
+# The approle roles in this repository will be created by the application module, for each application and environments. 
 # Below codes are just examples if you want to create approle roles outside of the application module.
 
 // //pki root CA secret engine
@@ -276,7 +276,7 @@ resource "vault_mount" "pki_root" {
 resource "vault_pki_secret_backend_root_cert" "self-signing-cert" {
   backend              = vault_mount.pki_root.path
   type                 = "internal"
-  common_name          = "SelfSigned Root CA for ${var.enviroment}"
+  common_name          = "SelfSigned Root CA for ${var.environment}"
   ttl                  = 3600 * 24 * 31 * 12 * 10 //10 Years
   format               = "pem"
   private_key_format   = "der"
@@ -314,14 +314,14 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
   backend     = vault_mount.pki_intermediate.path
   type        = "existing"
   key_ref     = vault_pki_secret_backend_key.private_key.key_id
-  common_name = "Intermediate CA for ${var.enviroment}"
+  common_name = "Intermediate CA for ${var.environment}"
 }
 resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate" {
   depends_on           = [vault_pki_secret_backend_root_cert.self-signing-cert, vault_pki_secret_backend_root_cert.self-signing-cert]
   backend              = vault_mount.pki_root.path
   csr                  = vault_pki_secret_backend_intermediate_cert_request.intermediate.csr
   ttl                  = 3600 * 24 * 31 * 12 * 2 //2 Years
-  common_name          = "Intermediate CA for ${var.enviroment}"
+  common_name          = "Intermediate CA for ${var.environment}"
   exclude_cn_from_sans = true
   ou                   = "APJ SE"
   organization         = "Hashicorp Demo Org"
@@ -344,14 +344,14 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate-alt"
   backend     = vault_mount.pki_intermediate.path
   type        = "existing"
   key_ref     = vault_pki_secret_backend_key.private_key.key_id
-  common_name = "Intermediate CA for ${var.enviroment}"
+  common_name = "Intermediate CA for ${var.environment}"
 }
 resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate-alt" {
   depends_on           = [vault_pki_secret_backend_root_cert.self-signing-cert, vault_pki_secret_backend_root_cert.self-signing-cert]
   backend              = vault_mount.pki_root.path
   csr                  = vault_pki_secret_backend_intermediate_cert_request.intermediate-alt.csr
   ttl                  = 3600 * 24 * 31 * 12 * 3 //3 Years
-  common_name          = "alt issuer for Intermediate CA for ${var.enviroment}"
+  common_name          = "alt issuer for Intermediate CA for ${var.environment}"
   exclude_cn_from_sans = true
   ou                   = "APJ SE"
   organization         = "Hashicorp Demo Org"
@@ -395,7 +395,7 @@ resource "vault_transit_secret_backend_key" "hashi-encryption-key" {
 
 //aws secrets engine
 resource "vault_aws_secret_backend" "aws" {
-  description               = "AWS secrets engine for ${var.enviroment}"
+  description               = "AWS secrets engine for ${var.environment}"
   region                    = "ap-southeast-2"
   default_lease_ttl_seconds = 600
   max_lease_ttl_seconds     = 3600 * 48 // two days
