@@ -1,6 +1,7 @@
 # Identity Configuration Files
 
-This directory contains structured YAML configuration files for defining Vault identities, including both application and human identities.
+This directory contains structured YAML configuration files for defining Vault
+identities, including both application and human identities.
 
 ## Structure Overview
 
@@ -44,7 +45,7 @@ authentication:
   aws_auth_role: "role-name"           # AWS authentication role
   pki: "cert.machine-id.domain"       # PKI certificate identifier
   github_repo: "owner/repo"            # GitHub repository (optional)
-  tfc_workspace: "org:proj:workspace"  # Terraform Cloud workspace (optional)
+  tfc_workspace: "org:proj:workspace"  # Terraform Cloud workspace
 
 policies:
   identity_policies:                   # List of Vault policies
@@ -125,7 +126,8 @@ This directory contains validation tools to ensure all identity YAML files confo
 
 ### 1. Simple Python Validator (`validate_simple.py`) ⭐ **Recommended**
 
-A lightweight validator that uses only built-in Python libraries and the `yq` tool.
+A lightweight validator that uses only built-in Python
+libraries and the `yq` tool.
 
 **Prerequisites:**
 
@@ -280,7 +282,8 @@ policies:
 ### Invalid Values
 
 ```text
-❌ Invalid environment: prod. Must be one of: [development, staging, production]
+❌ Invalid environment: prod. Must be one of:
+[development, staging, production]
 ❌ identity_policies cannot be empty
 ❌ identity_policies must be a list
 ```
@@ -308,7 +311,8 @@ jobs:
     
     - name: Install yq
       run: |
-        sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+        sudo wget -qO /usr/local/bin/yq \
+          https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
         sudo chmod +x /usr/local/bin/yq
     
     - name: Validate Identity Files
@@ -336,20 +340,20 @@ fi
 ```makefile
 .PHONY: validate-identities
 validate-identities:
-	@echo "Validating identity YAML files..."
-	@cd identities && ./validate_simple.py
+    @echo "Validating identity YAML files..."
+    @cd identities && ./validate_simple.py
 
 .PHONY: validate-full
 validate-full:
-	@echo "Running full validation with JSON Schema..."
-	@cd identities && ./validate_identities.py
+    @echo "Running full validation with JSON Schema..."
+    @cd identities && ./validate_identities.py
 
 # Run validation before apply
 plan: validate-identities
-	terraform plan
+    terraform plan
 
 apply: validate-identities
-	terraform apply
+    terraform apply
 ```
 
 ## Troubleshooting
@@ -357,16 +361,19 @@ apply: validate-identities
 ### Common Issues
 
 1. **`yq not found`**
+
    ```bash
    brew install yq
    ```
 
 2. **`jsonschema not found`**
+
    ```bash
    pip install jsonschema pyyaml
    ```
 
 3. **Permission denied**
+
    ```bash
    chmod +x validate_simple.py
    chmod +x validate_identities.py
@@ -383,16 +390,19 @@ apply: validate-identities
 For detailed debugging, you can:
 
 1. Check individual files manually:
+
    ```bash
    yq eval application_example.yaml
    ```
 
 2. Validate JSON conversion:
+
    ```bash
    yq eval -o=json application_example.yaml | jq .
    ```
 
 3. Check schema syntax:
+
    ```bash
    yq eval schema_application.yaml
    ```
