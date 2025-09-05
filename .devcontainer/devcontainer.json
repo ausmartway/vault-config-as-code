@@ -1,0 +1,62 @@
+{
+  "name": "Vault Config as Code",
+  "image": "ausmartwayhashi/devops-base:latest",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "nodeGypDependencies": true,
+      "version": "lts",
+      "nvmVersion": "latest"
+    },
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {},
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": true,
+      "dockerDashComposeVersion": "v2"
+    },
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+      "version": "latest",
+      "helm": "latest",
+      "minikube": "none"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.vscode-json",
+        "ms-python.python",
+        "hashicorp.terraform",
+        "hashicorp.hcl",
+        "ms-vscode.vscode-yaml",
+        "redhat.vscode-yaml"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/bin/zsh"
+          }
+        }
+      }
+    }
+  },
+
+  "containerEnv": {
+    "SHELL": "/bin/zsh"
+  },
+
+  "remoteUser": "vscode",
+  
+  "forwardPorts": [8200, 3000],
+
+  "portsAttributes": {
+    "8200": {
+      "label": "Vault Server",
+      "onAutoForward": "notify"
+    },
+    "3000": {
+      "label": "Application",
+      "onAutoForward": "notify"
+    }
+  }
+}
