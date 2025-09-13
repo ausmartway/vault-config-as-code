@@ -46,3 +46,4 @@ nginx.conf
 dev.tfvars
 backend-local.tf
 .env
+validation.tfplan
