@@ -1,0 +1,15 @@
+name: yulei.dev
+backend: pki_intermediate
+ttl: 7863400 # 3 months
+maxttl: 34214400 # 13 months
+contact: yulei@hashicorp.com
+allow_any_name: false
+ou: ANZ SEA
+organization: HashiCorp
+country: AU
+province: NSW
+locality: Sydney
+street_address: 1 Market Street
+postal_code: 2000
+allowed_domains:
+  - yulei.dev
