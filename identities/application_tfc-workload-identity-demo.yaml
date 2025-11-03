@@ -3,19 +3,19 @@ $schema: "./schema_application.yaml"
 metadata:
   version: "1.0.0"
   created_date: "2025-07-28"
-  description: "linux host vault-client.machine-id.customer.demo Identity"
+  description: "TFC Workload Identity Demo Application"
 
 identity:
-  name: "vault-client.machine-id.customer.demo"
+  name: "tfc-workload-identity-demo"
   contact: "yulei@hashicorp.com"
-  environment: "production"
-  business_unit: "retail_banking"
+  environment: "development"
+  business_unit: "demo"
 
 authentication:
   aws_auth_role: ""
-  pki: "vault-client.machine-id.customer.demo"
+  pki: ""
   github_repo: ""
-  tfc_workspace: ""
+  tfc_workspace: "organization:yulei:project:Development:workspace:tfc-workload-identity-demo"
 
 policies:
   identity_policies:
