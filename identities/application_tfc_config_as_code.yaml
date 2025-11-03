@@ -1,0 +1,22 @@
+$schema: "./schema_application.yaml"
+
+metadata:
+  version: "1.0.0"
+  created_date: "2025-07-28"
+  description: "TFC Config as Code HCP Application Identity"
+
+identity:
+  name: "tfc_config_as_code"
+  contact: "yulei@hashicorp.com"
+  environment: "development"
+  business_unit: "demo"
+
+authentication:
+  aws_auth_role: ""
+  pki: ""
+  github_repo: ""
+  tfc_workspace: "organization:yulei:project:Management:workspace:tfc-config-as-code"
+
+policies:
+  identity_policies:
+    - "azure-secrets-consumer"
