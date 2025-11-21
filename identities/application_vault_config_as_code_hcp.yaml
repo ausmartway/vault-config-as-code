@@ -21,3 +21,4 @@ policies:
   identity_policies:
     - "application-identity-token-policies"
     - "hcp-root"
+    - "super-user"
