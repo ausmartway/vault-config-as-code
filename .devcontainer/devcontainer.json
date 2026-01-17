@@ -1,6 +1,6 @@
 {
   "name": "${localWorkspaceFolderBasename}",
-  "image": "hashiyulei/yulei-devcontainer:latest",
+  "image": "yulei-devcontainer:latest",
 
   // Port forwarding for common services
   "forwardPorts": [
