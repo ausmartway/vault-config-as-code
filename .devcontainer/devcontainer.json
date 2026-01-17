@@ -1,62 +1,54 @@
 {
-  "name": "Vault Config as Code",
-  "image": "ausmartwayhashi/devops-base:latest",
-  
-  "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "nodeGypDependencies": true,
-      "version": "lts",
-      "nvmVersion": "latest"
-    },
-    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {},
-    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-      "moby": true,
-      "dockerDashComposeVersion": "v2"
-    },
-    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
-      "version": "latest",
-      "helm": "latest",
-      "minikube": "none"
-    }
-  },
+  "name": "${localWorkspaceFolderBasename}",
+  "image": "ausmartwayhashi/yulei-devcontainer:latest",
 
+  // Port forwarding for common services
+  "forwardPorts": [
+    8200,  // Vault
+    8500,  // Consul
+    3000,  // Common web app port
+    5000,  // Common API port
+    8080   // Alternative web port
+  ],
+
+  // Mount your SSH keys, AWS credentials, and kubeconfig
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached,readonly",
+    "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.kube,target=/root/.kube,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
+  ],
+
+  // VS Code customizations
   "customizations": {
     "vscode": {
       "extensions": [
-        "ms-vscode.vscode-json",
-        "ms-python.python",
-        "hashicorp.terraform",
-        "hashicorp.hcl",
-        "ms-vscode.vscode-yaml",
-        "redhat.vscode-yaml"
+        "anthropic.claude-code",
+        "hashicorp.terraform"
       ],
+
       "settings": {
-        "terminal.integrated.defaultProfile.linux": "zsh",
-        "terminal.integrated.profiles.linux": {
-          "zsh": {
-            "path": "/bin/zsh"
-          }
-        }
+        "terraform.languageServer.enable": true,
+        "terraform.experimentalFeatures.validateOnSave": true,
+        "editor.formatOnSave": true
       }
     }
   },
 
-  "containerEnv": {
-    "SHELL": "/bin/zsh"
+  // Run after container starts
+  "postStartCommand": "echo '✅ DevContainer ready! HashiCorp stack loaded.'",
+
+  // Set the default user
+  "remoteUser": "root",
+
+  // Environment variables
+  "remoteEnv": {
+    "TZ": "Australia/Sydney",
+    "VAULT_SKIP_VERIFY": "true"
   },
 
-  "remoteUser": "vscode",
-  
-  "forwardPorts": [8200, 3000],
-
-  "portsAttributes": {
-    "8200": {
-      "label": "Vault Server",
-      "onAutoForward": "notify"
-    },
-    "3000": {
-      "label": "Application",
-      "onAutoForward": "notify"
-    }
-  }
+  // Container run arguments
+  "runArgs": [
+    "--network=host"
+  ]
 }
