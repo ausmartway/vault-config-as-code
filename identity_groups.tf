@@ -1,9 +1,13 @@
+################################################################################
+# IDENTITY GROUPS
+################################################################################
+
 resource "vault_identity_group" "identity_group" {
   for_each                   = local.identity_groups_map
   name                       = each.key
   type                       = "internal"
-  external_member_entity_ids = true # This is set to true bso member_entity_ids returned will not be considered as changes to this resource - they are mananged externally in a decoupled way
-  external_member_group_ids  = true # This is set to true bso member_group_ids returned will not be considered as changes to this resource - they are mananged externally in a decoupled way
+  external_member_entity_ids = true # Set to true because member_entity_ids are managed externally in a decoupled way
+  external_member_group_ids  = true # Set to true because member_group_ids are managed externally in a decoupled way
   policies                   = [for i in each.value.identity_group_policies : i]
 }
 

@@ -1,4 +1,9 @@
+################################################################################
+# IDENTITY ENTITIES
+################################################################################
 
+# Human Identity Entities
+# Created from identities/human_*.yaml files
 resource "vault_identity_entity" "human" {
   for_each = local.human_identities_map
   name     = each.key
@@ -10,7 +15,8 @@ resource "vault_identity_entity" "human" {
   }
 }
 
-# for each human with a github create an alias that points back to the human entity
+# GitHub OAuth Authentication - Human users via browser login
+# Links GitHub usernames to Vault identity entities
 resource "vault_identity_entity_alias" "github" {
   for_each       = local.human_with_github
   mount_accessor = vault_github_auth_backend.hashicorp.accessor
@@ -18,7 +24,8 @@ resource "vault_identity_entity_alias" "github" {
   name           = each.value.authentication.github
 }
 
-# for each human with a pki create an alias that points back to the human entity
+# PKI Certificate Authentication - Human identity via X.509 certificates
+# Links certificate common names to Vault identity entities
 resource "vault_identity_entity_alias" "pki" {
   for_each       = local.human_with_pki
   mount_accessor = vault_auth_backend.cert.accessor
@@ -26,6 +33,8 @@ resource "vault_identity_entity_alias" "pki" {
   name           = each.value.authentication.pki
 }
 
+# Application Identity Entities
+# Created from identities/application_*.yaml files
 resource "vault_identity_entity" "application" {
   for_each = local.application_identities_map
   name     = each.key
@@ -37,7 +46,8 @@ resource "vault_identity_entity" "application" {
   }
 }
 
-# for each app with a pki create an alias that points back to the application entity
+# PKI Certificate Authentication - Machine identity via X.509 certificates
+# Links certificate common names to application identity entities
 resource "vault_identity_entity_alias" "app_pki" {
   for_each       = local.app_with_pki
   mount_accessor = vault_auth_backend.cert.accessor
@@ -45,7 +55,8 @@ resource "vault_identity_entity_alias" "app_pki" {
   name           = each.value.authentication.pki
 }
 
-# for each app with a github_repo create an alias that points back to the application entity
+# GitHub Actions JWT Authentication - CI/CD pipeline identity
+# Links GitHub repository names to application identity entities
 resource "vault_identity_entity_alias" "app_github_repo" {
   for_each       = local.app_with_github_repo
   mount_accessor = vault_jwt_auth_backend.github_repo_jwt.accessor
@@ -53,7 +64,8 @@ resource "vault_identity_entity_alias" "app_github_repo" {
   name           = each.value.authentication.github_repo
 }
 
-# for each app with a tfc_workspace create an alias that points back to the application entity
+# Terraform Cloud JWT Authentication - Infrastructure automation identity
+# Links Terraform Cloud workspace names to application identity entities
 resource "vault_identity_entity_alias" "app_tfc_workspace" {
   for_each       = local.app_with_tfc_workspace
   mount_accessor = vault_jwt_auth_backend.terraform_cloud.accessor

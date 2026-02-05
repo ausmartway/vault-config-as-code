@@ -1,11 +1,25 @@
-//github auth backend, as long as you belong to the hashicorp orgnisation, you will be able to login to Vault and get super user previlige using your personal github token.
+################################################################################
+# AUTHENTICATION BACKENDS
+################################################################################
+
+# GitHub OAuth Authentication
+# Members of the HashiCorp organization can login to Vault using their personal
+# GitHub token. This provides human user authentication with team-based access.
 resource "vault_github_auth_backend" "hashicorp" {
   organization   = "hashicorp"
-  token_ttl      = 3600 * 8      #8 hours
-  token_max_ttl  = 3600 * 24 * 7 #7 days
+  token_ttl      = 3600 * 8      # 8 hours - balances security with user convenience
+  token_max_ttl  = 3600 * 24 * 7 # 7 days - maximum session length before re-authentication
   token_policies = [""]
 }
 
+################################################################################
+# TOKEN AUTO-ROTATION MECHANISM
+################################################################################
+
+# Token Auto-Rotation Mechanism
+# - time_rotating triggers every 30 days
+# - time_static captures the rotation timestamp
+# - vault_token lifecycle replaces token when time_static changes
 resource "vault_token" "superuser" {
   policies     = ["super-user"]
   display_name = "superuser"
@@ -29,7 +43,11 @@ resource "time_static" "rotate" {
 }
 
 
-### Super user policy ###
+################################################################################
+# POLICIES
+################################################################################
+
+# Super user policy - full administrative access
 resource "vault_policy" "super-user" {
   name   = "super-user"
   policy = <<EOF
@@ -153,8 +171,13 @@ path "sys/config/ui"
  EOF
 }
 
+################################################################################
+# JWT AUTHENTICATION BACKENDS
+################################################################################
 
-// github repository jwt auth method
+# GitHub Actions JWT Authentication
+# Enables GitHub Actions workflows to authenticate to Vault using OIDC tokens.
+# This is the recommended way for CI/CD pipelines to access Vault secrets.
 resource "vault_jwt_auth_backend" "github_repo_jwt" {
   description        = "jwt auth method for github repositories"
   type               = "jwt"
@@ -166,12 +189,13 @@ resource "vault_jwt_auth_backend" "github_repo_jwt" {
 resource "vault_jwt_auth_backend_role" "default" {
   backend         = vault_jwt_auth_backend.github_repo_jwt.path
   role_name       = "default"
-  bound_audiences = ["eXVsZWkncyBWYXVsdAo="] ##Base64 encoded value of "Yulie's Vault"
+  bound_audiences = ["eXVsZWkncyBWYXVsdAo="] # Base64 encoded value of "Yulie's Vault"
   user_claim      = "repository"
   role_type       = "jwt"
 }
 
-// Terraform Cloud auth method
+# Terraform Cloud JWT Authentication
+# Enables Terraform Cloud workspaces to authenticate to Vault using workload identity.
 resource "vault_jwt_auth_backend" "terraform_cloud" {
   description        = "jwt auth method for terraform cloud"
   type               = "jwt"
@@ -184,16 +208,19 @@ resource "vault_jwt_auth_backend" "terraform_cloud" {
 resource "vault_jwt_auth_backend_role" "tfc_default" {
   backend           = vault_jwt_auth_backend.terraform_cloud.path
   role_name         = "tfc_default"
-  bound_audiences   = ["eXVsZWkncyBWYXVsdAo="]   ##Base64 encoded value of "Yulie's Vault"
-  user_claim        = "terraform_full_workspace" ##This is the FULL name of the workspace in Terraform Cloud, in the format of "organization:organization_name:project:project_name:workspace:workspace_name", 
+  bound_audiences   = ["eXVsZWkncyBWYXVsdAo="]   # Base64 encoded value of "Yulie's Vault"
+  user_claim        = "terraform_full_workspace" # Full workspace name: "organization:org_name:project:proj_name:workspace:ws_name"
   bound_claims_type = "glob"
-  bound_claims      = { "terraform_organization_name" = "yulei" } ##This is the name of the organization in Terraform Cloud
+  bound_claims      = { "terraform_organization_name" = "yulei" } # Terraform Cloud organization name
   role_type         = "jwt"
 }
 
+################################################################################
+# AWS AUTHENTICATION & SECRETS ENGINE
+################################################################################
 
-//aws auth method
-
+# AWS IAM Authentication
+# Enables AWS services to authenticate to Vault using their IAM credentials.
 resource "vault_auth_backend" "aws" {
   type = "aws"
   path = "aws"
@@ -210,7 +237,11 @@ resource "vault_aws_auth_backend_sts_role" "sts_role" {
   account_id = "711129375688"
   sts_role   = "arn:aws:iam::711129375688:role/hcp-vault-auth"
 }
-# //azure auth method
+
+# Azure Authentication (Disabled)
+# Azure auth backend configuration is managed separately.
+# Uncomment and configure when Azure integration is required.
+# Note: Fix "tanent" typo to "tenant" when enabling.
 # resource "vault_auth_backend" "azure" {
 #   type = "azure"
 #   path = "azure"
@@ -233,8 +264,7 @@ resource "vault_aws_auth_backend_sts_role" "sts_role" {
 #   token_policies         = []
 # }
 
-# //azure secret engine
-
+# Azure Secrets Engine (Disabled)
 # resource "vault_azure_secret_backend" "azure" {
 #   subscription_id = var.azure_subscription_id
 #   tenant_id       = var.azure_tanent_id
@@ -255,29 +285,38 @@ resource "vault_aws_auth_backend_sts_role" "sts_role" {
 #   }
 # }
 
+################################################################################
+# APPROLE AUTHENTICATION
+################################################################################
 
-//Approle auth method
-
+# AppRole Authentication
+# Provides machine-to-machine authentication when native auth methods (AWS/GCP/Azure/K8s)
+# are not available. AppRole roles are created per-application via the application module.
 resource "vault_auth_backend" "approle" {
   type = "approle"
 }
 
-# Approle should only be used when there is no better/native authentication, eg, aws/gcp/azure/k8s/ldap.
-# The approle roles in this repository will be created by the application module, for each application and environments. 
-# Below codes are just examples if you want to create approle roles outside of the application module.
+# Note: AppRole roles are created by the application module for each application
+# and environment. Below is example code for manual AppRole role creation.
 
-// //pki root CA secret engine
+################################################################################
+# PKI INFRASTRUCTURE
+################################################################################
+
+# PKI Root CA - Self-signed certificate authority
+# This is the trust anchor for the PKI hierarchy. Kept offline in production.
 resource "vault_mount" "pki_root" {
   path                      = "pki_root"
   type                      = "pki"
-  default_lease_ttl_seconds = 3600 * 24 * 31 * 13     //13 Months
-  max_lease_ttl_seconds     = 3600 * 24 * 31 * 12 * 3 //3 Years
+  default_lease_ttl_seconds = 3600 * 24 * 31 * 13     # ~13 months - default cert validity
+  max_lease_ttl_seconds     = 3600 * 24 * 31 * 12 * 3 # 3 years - maximum cert validity
 }
+
 resource "vault_pki_secret_backend_root_cert" "self-signing-cert" {
   backend              = vault_mount.pki_root.path
   type                 = "internal"
   common_name          = "SelfSigned Root CA for ${var.environment}"
-  ttl                  = 3600 * 24 * 31 * 12 * 10 //10 Years
+  ttl                  = 3600 * 24 * 31 * 12 * 10 # 10 years - root CA lifetime
   format               = "pem"
   private_key_format   = "der"
   key_type             = "rsa"
@@ -286,18 +325,21 @@ resource "vault_pki_secret_backend_root_cert" "self-signing-cert" {
   ou                   = "APJ SE"
   organization         = "Hashicorp Demo Org"
 }
+
 resource "vault_pki_secret_backend_config_urls" "config_urls" {
   backend                 = vault_mount.pki_root.path
   issuing_certificates    = ["${var.vault_url}/v1/${vault_mount.pki_root.path}/ca"]
   crl_distribution_points = ["${var.vault_url}/v1/${vault_mount.pki_root.path}/crl"]
 }
-//pki intermediate CA secret engine
+
+# PKI Intermediate CA - Signs end-entity certificates
+# This CA is used for day-to-day certificate issuance.
 resource "vault_mount" "pki_intermediate" {
   depends_on                = [vault_pki_secret_backend_root_cert.self-signing-cert]
   path                      = "pki_intermediate"
   type                      = "pki"
-  default_lease_ttl_seconds = 2678400  //Default expiry of the certificates signed by this CA - 31 days
-  max_lease_ttl_seconds     = 24819200 //Max expiry of the certificates signed by this CA - 13 Months
+  default_lease_ttl_seconds = 2678400  # 31 days - default cert validity
+  max_lease_ttl_seconds     = 24819200 # ~13 months - max cert validity
 }
 
 resource "vault_pki_secret_backend_key" "private_key" {
@@ -316,11 +358,12 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate" {
   key_ref     = vault_pki_secret_backend_key.private_key.key_id
   common_name = "Intermediate CA for ${var.environment}"
 }
+
 resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate" {
   depends_on           = [vault_pki_secret_backend_root_cert.self-signing-cert, vault_pki_secret_backend_root_cert.self-signing-cert]
   backend              = vault_mount.pki_root.path
   csr                  = vault_pki_secret_backend_intermediate_cert_request.intermediate.csr
-  ttl                  = 3600 * 24 * 31 * 12 * 2 //2 Years
+  ttl                  = 3600 * 24 * 31 * 12 * 2 # 2 years - intermediate CA lifetime
   common_name          = "Intermediate CA for ${var.environment}"
   exclude_cn_from_sans = true
   ou                   = "APJ SE"
@@ -339,6 +382,7 @@ resource "vault_pki_secret_backend_issuer" "default" {
   issuer_name = "default-issuer"
 }
 
+# Alternative Intermediate CA Issuer - Redundancy/failover
 resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate-alt" {
   depends_on  = [vault_pki_secret_backend_root_cert.self-signing-cert]
   backend     = vault_mount.pki_intermediate.path
@@ -346,11 +390,12 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "intermediate-alt"
   key_ref     = vault_pki_secret_backend_key.private_key.key_id
   common_name = "Intermediate CA for ${var.environment}"
 }
+
 resource "vault_pki_secret_backend_root_sign_intermediate" "intermediate-alt" {
   depends_on           = [vault_pki_secret_backend_root_cert.self-signing-cert, vault_pki_secret_backend_root_cert.self-signing-cert]
   backend              = vault_mount.pki_root.path
   csr                  = vault_pki_secret_backend_intermediate_cert_request.intermediate-alt.csr
-  ttl                  = 3600 * 24 * 31 * 12 * 3 //3 Years
+  ttl                  = 3600 * 24 * 31 * 12 * 3 # 3 years - alt issuer lifetime
   common_name          = "alt issuer for Intermediate CA for ${var.environment}"
   exclude_cn_from_sans = true
   ou                   = "APJ SE"
@@ -376,13 +421,18 @@ resource "vault_pki_secret_backend_config_urls" "config_urls_int" {
   crl_distribution_points = ["${var.vault_url}/v1/${vault_mount.pki_intermediate.path}/crl"]
 }
 
-//transit secret engine
+################################################################################
+# SECRETS ENGINES
+################################################################################
+
+# Transit Secrets Engine - Encryption as a Service (EaaS)
+# Provides cryptographic operations without exposing keys.
 resource "vault_mount" "encryption-as-a-service" {
   path                      = "EaaS"
   type                      = "transit"
   description               = "Encryption/Decryption as a Service for HashiCorp SE"
-  default_lease_ttl_seconds = 3600
-  max_lease_ttl_seconds     = 86400
+  default_lease_ttl_seconds = 3600  # 1 hour
+  max_lease_ttl_seconds     = 86400 # 24 hours
 }
 
 resource "vault_transit_secret_backend_key" "hashi-encryption-key" {
@@ -393,12 +443,12 @@ resource "vault_transit_secret_backend_key" "hashi-encryption-key" {
   allow_plaintext_backup = true
 }
 
-//aws secrets engine
+# AWS Secrets Engine - Dynamic AWS credentials
 resource "vault_aws_secret_backend" "aws" {
   description               = "AWS secrets engine for ${var.environment}"
   region                    = "ap-southeast-2"
-  default_lease_ttl_seconds = 600
-  max_lease_ttl_seconds     = 3600 * 48 // two days
+  default_lease_ttl_seconds = 600       # 10 minutes
+  max_lease_ttl_seconds     = 3600 * 48 # 48 hours (2 days)
 }
 
 
@@ -481,7 +531,7 @@ resource "vault_aws_secret_backend_role" "cicdpipelinests" {
 EOT
 }
 
-# ssh secret engine
+# SSH Secrets Engine - Signed SSH certificates
 resource "tls_private_key" "ssh-ca-key" {
   algorithm = "RSA"
   rsa_bits  = 4096
@@ -511,8 +561,12 @@ resource "vault_ssh_secret_backend_role" "ubuntu" {
   }
   allow_user_certificates = true
   cidr_list               = ""
-  ttl                     = 12 * 3600 #sighed ssh certificate will be valid for 12 hours
+  ttl                     = 12 * 3600 # 12 hours - signed SSH certificate validity
 }
+
+################################################################################
+# UI CONFIGURATION
+################################################################################
 
 resource "vault_config_ui_custom_message" "maintenance" {
   title          = "HashiCorp Employees, welcome!"
@@ -527,7 +581,7 @@ resource "vault_config_ui_custom_message" "maintenance" {
   start_time    = "2024-01-01T00:00:00Z"
 }
 
-# //Audit device
+# Audit Device (Disabled)
 # resource "vault_audit" "auditlog" {
 #   type = "file"
 #   options = {
