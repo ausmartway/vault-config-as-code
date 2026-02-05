@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(terraform init:*)"
     ],
     "deny": [],
     "ask": []
