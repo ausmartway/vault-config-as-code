@@ -38,3 +38,6 @@ dev.tfvars
 backend-local.tf
 .env
 validation.tfplan
+
+# Claude Code local settings (may contain tokens)
+.claude/settings.local.json
