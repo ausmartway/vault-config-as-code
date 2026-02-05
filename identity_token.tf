@@ -1,5 +1,9 @@
+################################################################################
+# IDENTITY TOKENS (OIDC)
+################################################################################
 
-# This file defines the Vault identity token configuration for both application and human identities.
+# This file defines the Vault identity token configuration for both application
+# and human identities. These tokens enable workload identity federation.
 
 # This is the issuer URL for the identity tokens, typically the Vault server URL.
 resource "vault_identity_oidc" "default" {
@@ -7,14 +11,14 @@ resource "vault_identity_oidc" "default" {
 }
 
 
-#create a signing key for the application identity
+# Create a signing key for application identity tokens
 resource "vault_identity_oidc_key" "application_identity" {
   name      = "application_identity"
   algorithm = "RS256"
 }
 
-#create application role so that it can be used to generate tokens. the token format is defined in the role 
-#example of the token format is azp = "spiffe://TRUSTDOMAIN/ENVIROMENT/BUSINESS_UNIT/ENTITY_NAME"
+# Create application role for generating identity tokens
+# Token format: azp = "spiffe://TRUSTDOMAIN/ENVIRONMENT/BUSINESS_UNIT/ENTITY_NAME"
 
 resource "vault_identity_oidc_role" "application_identity" {
   name     = "application_identity"
@@ -32,16 +36,16 @@ EOT
 
   client_id = "spiffe://kgateway"
   key       = vault_identity_oidc_key.application_identity.name
-  ttl       = 30 * 60 // 30 minutes for application identity token
+  ttl       = 30 * 60 # 30 minutes - short-lived for CI/CD ephemeral jobs
 }
 
-#allow the application identity to use the role/key to generate identity tokens
+# Allow the application identity to use the role/key to generate identity tokens
 resource "vault_identity_oidc_key_allowed_client_id" "application_identity" {
   key_name          = vault_identity_oidc_key.application_identity.name
   allowed_client_id = vault_identity_oidc_role.application_identity.client_id
 }
 
-#create a policy that allows the applications to generate identity tokens
+# Policy allowing applications to generate identity tokens
 resource "vault_policy" "application-identity-token-policies" {
   name   = "application-identity-token-policies"
   policy = <<EOF
@@ -51,13 +55,13 @@ resource "vault_policy" "application-identity-token-policies" {
  EOF
 }
 
-#create a signing key for the human identity
+# Create a signing key for human identity tokens
 resource "vault_identity_oidc_key" "human_identity" {
   name      = "human_identity"
   algorithm = "RS256"
 }
 
-#cretae a role for the human identity so that it can be used to generate tokens. the token format is defined in the role
+# Create a role for human identity token generation
 resource "vault_identity_oidc_role" "human_identity" {
   name      = "human_identity"
   template  = <<EOT
@@ -75,16 +79,16 @@ resource "vault_identity_oidc_role" "human_identity" {
 EOT
   client_id = "spiffe://kgateway"
   key       = vault_identity_oidc_key.human_identity.name
-  ttl       = 8 * 60 * 60 // 8 hours for human identity token
+  ttl       = 8 * 60 * 60 # 8 hours - matches typical workday session
 }
 
-#allow the human identity to use the role/key to generate identity tokens
+# Allow human identity to use the role/key to generate identity tokens
 resource "vault_identity_oidc_key_allowed_client_id" "human_identity" {
   key_name          = vault_identity_oidc_key.human_identity.name
   allowed_client_id = vault_identity_oidc_role.human_identity.client_id
 }
 
-#create a policy that allows the humans to generate identity tokens
+# Policy allowing humans to generate identity tokens
 resource "vault_policy" "human-identity-token-policies" {
   name   = "human-identity-token-policies"
   policy = <<EOF

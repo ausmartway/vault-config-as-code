@@ -1,5 +1,10 @@
+################################################################################
+# YAML CONFIGURATION LOADING
+################################################################################
+
 # Modern Data Sources Pattern for YAML Configuration Loading
 # This file centralizes all YAML file loading and provides a single source of truth
+# for configuration data used throughout the Terraform codebase.
 
 # Load all YAML configuration files using data sources
 data "local_file" "config_files" {
@@ -60,7 +65,9 @@ locals {
     config.name => config
   }
 
-  # PKI Auth Roles: keyed by name
+  # PKI Authentication Backend Role Configurations (cert-auth method)
+  # These define how X.509 certificates authenticate to Vault via the cert auth backend.
+  # Not to be confused with pki_roles_map which defines certificate issuance templates.
   pki_auth_roles_map = {
     for filename, config in local.configs_by_type.pki_auth_roles :
     config.name => config
@@ -72,7 +79,9 @@ locals {
     config.name => config
   }
 
-  # PKI Roles: keyed by name
+  # PKI Certificate Issuance Role Configurations (certificate templates)
+  # These define certificate properties like allowed domains, TTLs, and key usage.
+  # Not to be confused with pki_auth_roles_map which defines authentication roles.
   pki_roles_map = {
     for filename, config in local.configs_by_type.pkiroles :
     config.name => config

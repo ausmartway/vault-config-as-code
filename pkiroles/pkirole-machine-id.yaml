@@ -1,7 +1,7 @@
 name: machine-id
 backend: pki_intermediate
-ttl: 7863400 # 3 months
-maxttl: 34214400 # 13 months
+ttl: 7863400     # ~3 months - machine certificate validity period
+maxttl: 34214400 # ~13 months - maximum certificate validity
 contact: yulei@hashicorp.com
 allow_any_name: false
 ou: ANZ SEA

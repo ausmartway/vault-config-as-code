@@ -3,33 +3,23 @@ variable "vault_url" {
   description = "The URL to vault, no default value provided"
 }
 
-# variable "customername" {
-#   type        = string
-#   description = "Name of the customer that this demo is built for"
-#   default     = "customer"
-# }
-
-# variable "aws_secret_key" {
-#   type        = string
-#   description = "aws_secret_key"
-#   default     = ""
-# }
-
-# variable "aws_access_key" {
-#   type        = string
-#   description = "aws_access_key"
-#   default     = ""
-# }
-
 variable "environment" {
   type        = string
   description = "environment, no default value provided"
 }
-# disable azure
 
-# variable "azure_tanent_id" {
+################################################################################
+# DISABLED CONFIGURATIONS
+################################################################################
+
+# Azure Authentication (Disabled)
+# Azure auth backend configuration is managed separately.
+# Uncomment and configure when Azure integration is required.
+# Note: Fix "tanent" typo to "tenant" when enabling.
+
+# variable "azure_tenant_id" {
 #   type        = string
-#   description = "Azure tanent id"
+#   description = "Azure tenant id"
 # }
 
 # variable "azure_client_id" {
