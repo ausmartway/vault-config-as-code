@@ -13,13 +13,25 @@ identities, PKI, and authentication.
 
 | Branch | Target Vault | Purpose |
 |--------|--------------|---------|
-| `main` | Production | Stable, production-ready configuration |
+| `main` | Production | Stable, production-ready configuration, this is not applied to any vault instances. |
 | `main-dev` | Local Docker | Development, validated before merge to main |
 | `hcp` | HCP Vault Dedicated | HCP-specific configuration |
 | `local` | Local Vault | Local development configuration |
 
 **Development Workflow:** Validate and apply changes on `main-dev` against the
 local Docker Vault, then merge to `main` for production deployment.
+
+## Formatting & Linting
+
+Always run markdown linting checks after editing .md files (e.g., `markdownlint` or equivalent). Ensure table rows do not exceed line length limits. After any formatting changes, verify no linting errors remain before committing.
+
+## Session Completion
+
+When working on multi-part tasks, complete each task fully (including verification) before moving to the next. If a task has multiple steps, use TodoWrite to track progress and ensure nothing is left incomplete.
+
+## Terraform Guidelines
+
+When modifying Terraform files (.tf), only make cosmetic/readability changes unless explicitly asked for infrastructure changes. Always run `terraform plan` after changes to verify no state drift or unintended modifications. Never apply changes without explicit user approval.
 
 ## Architecture
 
