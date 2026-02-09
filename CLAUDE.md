@@ -142,3 +142,36 @@ Create `pkiroles/{rolename}.yaml` with allowed domains, TTLs, and certificate pr
 
 - `VAULT_LICENSE` - Enterprise license key (in `.env`, gitignored)
 - Variables in `dev.tfvars`: `vault_url`, `environment`
+
+## Devcontainer Development
+
+This project includes a comprehensive devcontainer setup for automated Vault Enterprise
+development. See [`.devcontainer/README.md`](.devcontainer/README.md) for detailed usage
+instructions.
+
+### Quick Start
+
+1. Ensure `VAULT_LICENSE` is set in `.env` file
+2. Open project in VS Code: "Reopen in Container"
+3. Vault starts automatically on `http://localhost:8200`
+4. Terraform initializes and pre-commit hooks install automatically
+
+### Devcontainer Features
+
+- **Vault Enterprise**: Automatically started as companion service
+- **Terraform**: Pre-configured with providers and auto-initialized
+- **Pre-commit Hooks**: Automatically installed for code quality
+- **VS Code Extensions**: Terraform, HCL, YAML, Claude Code
+- **Environment Variables**: VAULT_ADDR, TF_VAR_* pre-configured
+
+### Manual Vault Start (Without Devcontainer)
+
+If not using devcontainer, start Vault manually:
+
+```bash
+# Requires VAULT_LICENSE in .env
+docker compose up -d
+
+# Verify Vault is running
+vault status
+```

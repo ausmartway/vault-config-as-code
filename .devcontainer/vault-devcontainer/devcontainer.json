@@ -1,0 +1,57 @@
+{
+  "name": "${localWorkspaceFolderBasename}",
+  "dockerComposeFile": "../docker-compose.devcontainer.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "runServices": ["vault-dev"],
+  "postCreateCommand": "bash /workspace/.devcontainer/vault-devcontainer/scripts/post-create.sh",
+
+  "forwardPorts": [8200],
+
+  "runArgs": ["--network=host"],
+
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2.12.4": {}
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "hashicorp.terraform",
+        "HashiCorp.HCL",
+        "redhat.vscode-yaml",
+        "anthropic.claude-code"
+      ],
+      "settings": {
+        "terraform.languageServer.enable": true,
+        "terraform.experimentalFeatures.validateOnSave": true,
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "hashicorp.terraform",
+        "[yaml]": {
+          "editor.defaultFormatter": "redhat.vscode-yaml"
+        },
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+
+  "remoteUser": "node",
+
+  "mounts": [
+    "source=vault-devcontainer-bashhistory,target=/commandhistory,type=volume",
+    "type=bind,source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,readonly",
+    "type=bind,source=${localEnv:HOME}/.aws,target=/home/node/.aws",
+    "type=bind,source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,readonly",
+    "source=vault-devcontainer-config,target=/home/node/.claude,type=volume"
+  ],
+
+  "remoteEnv": {
+    "TZ": "${localEnv:TZ:Australia/Sydney}",
+    "VAULT_ADDR": "http://localhost:8200",
+    "VAULT_TOKEN": "dev-root-token",
+    "TF_VAR_vault_url": "http://localhost:8200",
+    "TF_VAR_environment": "local-dev",
+    "VAULT_SKIP_VERIFY": "true",
+    "CLAUDE_CONFIG_DIR": "/home/node/.claude"
+  }
+}

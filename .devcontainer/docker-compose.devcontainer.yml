@@ -1,0 +1,48 @@
+services:
+  app:
+    build:
+      context: ./vault-devcontainer
+      dockerfile: Dockerfile
+      args:
+        TZ: ${TZ:-Australia/Sydney}
+    volumes:
+      - ../:/workspace:cached
+    command: sleep infinity
+    depends_on:
+      vault-dev:
+        condition: service_healthy
+    networks:
+      - vault-network
+    # Environment for Vault access
+    environment:
+      VAULT_ADDR: http://vault-dev:8200
+      VAULT_TOKEN: dev-root-token
+      TF_VAR_vault_url: http://vault-dev:8200
+      TF_VAR_environment: local-dev
+
+  vault-dev:
+    image: hashicorp/vault-enterprise:latest
+    container_name: vault-dev-enterprise
+    ports:
+      - "8200:8200"
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: "dev-root-token"
+      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+      VAULT_ADDR: "http://0.0.0.0:8200"
+      VAULT_API_ADDR: "http://localhost:8200"
+      VAULT_LICENSE: ${VAULT_LICENSE}
+    cap_add:
+      - IPC_LOCK
+    command: vault server -dev -dev-root-token-id=dev-root-token -dev-listen-address=0.0.0.0:8200
+    healthcheck:
+      test: ["CMD", "vault", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - vault-network
+
+networks:
+  vault-network:
+    driver: bridge
