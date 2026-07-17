@@ -1,10 +1,28 @@
 FROM hashiyulei/yulei-devcontainer:latest
 
+# Switch to root to install system packages
+USER root
+
 # Install additional tools for Vault development
 RUN apt-get update && apt-get install -y \
     jq \
     curl \
+    wget \
+    unzip \
     && rm -rf /var/lib/apt/lists/*
+
+# Install Vault CLI (supports multi-arch via architecture detection)
+RUN ARCH=$(dpkg --print-architecture) && \
+    VAULT_VERSION="1.21.3" && \
+    if [ "$ARCH" = "arm64" ] || [ "$ARCH" = "aarch64" ]; then \
+        VAULT_ARCH="arm64"; \
+    else \
+        VAULT_ARCH="amd64"; \
+    fi && \
+    wget https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_${VAULT_ARCH}.zip && \
+    unzip vault_${VAULT_VERSION}_linux_${VAULT_ARCH}.zip -d /usr/local/bin && \
+    rm vault_${VAULT_VERSION}_linux_${VAULT_ARCH}.zip && \
+    chmod +x /usr/local/bin/vault
 
 # Install Claude Code CLI and status line
 RUN npm install -g @anthropic-ai/claude-code ccstatusline && \
