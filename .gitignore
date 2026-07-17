@@ -37,6 +37,7 @@ nginx.conf
 dev.tfvars
 backend-local.tf
 .env
+.envrc
 validation.tfplan
 
 # Claude Code local settings (may contain tokens)
