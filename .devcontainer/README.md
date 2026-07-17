@@ -72,7 +72,7 @@ The devcontainer uses Docker Compose to orchestrate two services:
 ```text
 ┌─────────────────────────────────────┐
 │   Dev Container (app)               │
-│   - hashiyulei/vault-devcontainer   │
+│   - ausmartway/vault-devcontainer   │
 │   - Terraform tooling               │
 │   - VS Code extensions              │
 │   - Workspace mounted               │
@@ -85,6 +85,17 @@ The devcontainer uses Docker Compose to orchestrate two services:
 │   - Port 8200 exposed               │
 │   - Dev mode with root token        │
 └─────────────────────────────────────┘
+```
+
+### Building and publishing the image
+
+From the repository root (Docker Hub user must match the image namespace):
+
+```bash
+docker build -t ausmartway/vault-devcontainer:latest \
+  -f .devcontainer/vault-devcontainer/Dockerfile \
+  .devcontainer/vault-devcontainer
+docker push ausmartway/vault-devcontainer:latest
 ```
 
 ### Network Configuration

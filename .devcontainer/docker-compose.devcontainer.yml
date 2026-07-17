@@ -1,5 +1,6 @@
 services:
   app:
+    image: ausmartway/vault-devcontainer:latest
     build:
       context: ./vault-devcontainer
       dockerfile: Dockerfile
